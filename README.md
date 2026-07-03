@@ -12,8 +12,9 @@ Compare pay-as-you-go LLM inference pricing across providers. Enter your token v
 
 ## Usage
 
-- **Compare by Model**: Pick a specific model (or "All models") to see pricing across providers.
-- **Compare by Provider**: Pick a provider to see all their models.
+- **Search by provider**: Type an org name (e.g. "openai", "z.ai", "deepseek") to filter results to that model creator across all API platforms.
+- **Search by model**: Type a model name (e.g. "glm", "kimi", "gpt-4o") to filter results to matching models across all providers.
+- **Both together**: Use both search fields simultaneously (AND filter) — e.g. "z-ai" + "glm" shows only GLM models served under the Z.ai org.
 - **Token input**: Enter total tokens (in millions) and set the percentage breakdown across input, cached input, and output. The calculator computes costs per offering and sorts cheapest-first.
 
 ### Token calculation

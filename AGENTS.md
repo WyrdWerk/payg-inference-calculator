@@ -37,7 +37,7 @@ Org aliases normalized: `deepseek-ai`→`deepseek`, `zai-org`→`z-ai`, `meta-ll
 
 ### Canonical model ID
 
-Used for cross-provider matching: strips provider prefix, removes `:free` suffix, lowercases. Example: `z-ai/glm-5.2` and `GLM-5.2` both canonicalize to `glm-5.2`.
+Used for cross-provider matching: strips provider prefix, removes suffixes (`:free`, date suffixes like `-2024-08-06`, `-preview`, `-preview-05-06`, `:thinking`), and lowercases. Turbo variants are kept separate (genuinely different SKUs). Example: `z-ai/glm-5.2`, `zai-org/GLM-5.2`, `GLM-5.2` (Wafer) all canonicalize to `glm-5.2`.
 
 ### Cost computation
 
@@ -70,9 +70,7 @@ Cloudflare Pages project: `payg-inference-calculator`
 
 Manual deploy: `npx wrangler pages deploy public --branch main --commit-dirty true`
 
-## Known limitations / Next steps
+## Next steps
 
-1. **OpenRouter segregation**: OpenRouter models have org prefixes but are still labeled as provider "openrouter" in the frontend. Should display org as the actual provider.
-2. **Model aggregation**: `canonicalModelId` doesn't handle case/hyphen variants (`Kimi-K2.6` vs `kimi-k2.6` vs `Kimi-K2.6`). Needs more aggressive normalization.
-3. **Search UX**: Current mode dropdown + select pattern should be replaced with dual typeahead search fields (provider search + model search).
-4. **Canonicalization near-misses**: Date-suffixed variants (`gpt-4o-2024-08-06` vs `gpt-4o`) don't merge. 14 known cases.
+1. **OpenRouter MCP server**: Could use `https://mcp.openrouter.ai/mcp` for enriched model metadata, but current org extraction from model ID prefixes already covers all 56 orgs.
+2. **Turbo/preview pricing comparison**: Currently turbo and preview variants are kept separate. Could add UI to group them with their base model for side-by-side comparison.

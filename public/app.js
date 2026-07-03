@@ -1,24 +1,22 @@
 // PAYG Inference Calculator — app.js
-// Loads pricing.json, lets the user pick a model or provider, enter token volumes
-// as total + percentage breakdown, and computes per-offering cost. Results sorted cheapest-first.
+// Loads pricing.json, lets the user search by provider (org) and/or model name,
+// enter token volumes as total + percentage breakdown, and computes per-offering cost.
 
 const state = {
-  data: null,         // { generated_at, providers, models }
-  mode: 'model',      // 'model' | 'provider'
-  selectedModel: 'all',  // canonical model key, or 'all'
-  selectedProvider: 'all', // provider key or 'all'
+  data: null,             // { generated_at, providers, models }
+  providerSearch: '',     // org name filter text
+  modelSearch: '',        // canonical model name filter text
+  orgDisplayName: {},     // org key → pretty display name (e.g. "z-ai" → "Z.ai")
+  modelDisplayName: {},   // canonical → display name
 };
 
 // ── DOM ───────────────────────────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
 const els = {
-  mode: $('mode'),
-  modelSelect: $('modelSelect'),
-  providerSelect: $('providerSelect'),
-  modelGroup: $('model-group'),
-  providerGroup: $('provider-group'),
-  searchGroup: $('search-group'),
-  search: $('search'),
+  providerSearch: $('providerSearch'),
+  modelSearch: $('modelSearch'),
+  orgList: $('orgList'),
+  modelList: $('modelList'),
   totalTokens: $('totalTokens'),
   inputPct: $('inputPct'),
   cacheReadPct: $('cacheReadPct'),
@@ -41,68 +39,65 @@ async function init() {
   }
 
   els.lastUpdated.textContent = `Data updated: ${new Date(state.data.generated_at).toLocaleString()}`;
-  populateSelectors();
+  populateDatalists();
   attachListeners();
   computeAndRender();
 }
 
-// ── Canonicalization ──────────────────────────────────────────────────────────
-
 /** Build a canonical model key for cross-provider matching.
- *  Strips provider prefixes, lowercases, removes version suffixes like :free. */
+ *  Strips provider prefix, suffixes (:free, dates like -2024-08-06,
+ *  -preview, -preview-05-06, :thinking), and lowercases.
+ *  Used for MATCHING only — display ID stays as-is.
+ *  Turbo variants kept separate (different SKUs). */
 function canonicalModelId(id) {
   let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
-  k = k.replace(/:free$/, '').toLowerCase().trim();
+  k = k.replace(/:free$/, '')
+       .replace(/:thinking$/, '')
+       .replace(/-(\d{4})-\d{2}-\d{2}$/, '')
+       .replace(/-preview-\d{2}-\d{2}$/, '')
+       .replace(/-preview$/, '')
+       .toLowerCase().trim();
   return k;
 }
 
 // ── Selectors ──────────────────────────────────────────────────────────────────
 
-function populateSelectors() {
-  // Model dropdown: "All models" + unique canonical model keys, sorted alphabetically
+function populateDatalists() {
+  // Build org display names and populate org datalist
+  const orgCounts = {};
+  for (const m of state.data.models) {
+    orgCounts[m.org] = (orgCounts[m.org] || 0) + 1;
+  }
+  state.orgDisplayName = {};
+  els.orgList.innerHTML = Object.keys(orgCounts)
+    .sort((a, b) => orgCounts[b] - orgCounts[a])  // most models first
+    .map((org) => {
+      const display = orgDisplay(org);
+      state.orgDisplayName[org] = display;
+      return `<option value="${display}">`;
+    })
+    .join('');
+
+  // Build canonical model display names and populate model datalist
   const modelKeys = new Map(); // canonical -> display name
   for (const m of state.data.models) {
     const c = canonicalModelId(m.id);
     if (!modelKeys.has(c)) modelKeys.set(c, m.id.includes('/') ? m.id.split('/').slice(-1)[0] : m.id);
   }
+  state.modelDisplayName = {};
   const sortedKeys = [...modelKeys.keys()].sort();
-  els.modelSelect.innerHTML =
-    `<option value="all">All models</option>` +
-    sortedKeys
-      .map((k) => `<option value="${k}">${modelKeys.get(k)}</option>`)
-      .join('');
-
-  // Provider dropdown
-  els.providerSelect.innerHTML =
-    `<option value="all">All providers</option>` +
-    state.data.providers
-      .filter((p) => p.status === 'ok')
-      .map((p) => `<option value="${p.key}">${p.name} (${p.model_count})</option>`)
-      .join('');
+  els.modelList.innerHTML = sortedKeys
+    .map((k) => {
+      state.modelDisplayName[k] = modelKeys.get(k);
+      return `<option value="${modelKeys.get(k)}">`;
+    })
+    .join('');
 }
 
 // ── Event listeners ────────────────────────────────────────────────────────────
-
 function attachListeners() {
-  els.mode.addEventListener('change', () => {
-    state.mode = els.mode.value;
-    els.modelGroup.classList.toggle('hidden', state.mode !== 'model');
-    els.providerGroup.classList.toggle('hidden', state.mode !== 'provider');
-    els.searchGroup.classList.toggle('hidden', state.mode !== 'model');
-    computeAndRender();
-  });
-
-  els.modelSelect.addEventListener('change', () => {
-    state.selectedModel = els.modelSelect.value;
-    computeAndRender();
-  });
-
-  els.providerSelect.addEventListener('change', () => {
-    state.selectedProvider = els.providerSelect.value;
-    computeAndRender();
-  });
-
-  els.search.addEventListener('input', () => computeAndRender());
+  els.providerSearch.addEventListener('input', () => computeAndRender());
+  els.modelSearch.addEventListener('input', () => computeAndRender());
 
   for (const id of ['totalTokens', 'inputPct', 'cacheReadPct', 'outputPct']) {
     els[id].addEventListener('input', () => computeAndRender());
@@ -169,7 +164,8 @@ function costFor(pricing, tokens) {
 function computeAndRender() {
   if (!state.data) return;
   const tokens = getTokens();
-  const search = els.search.value.trim().toLowerCase();
+  const provSearch = els.providerSearch.value.trim().toLowerCase();
+  const modSearch = els.modelSearch.value.trim().toLowerCase();
 
   // Update breakdown display
   const fmtM = (n) => n >= 1e6 ? `${(n / 1e6).toFixed(1)}M` : `${Math.round(n / 1e3)}K`;
@@ -183,26 +179,33 @@ function computeAndRender() {
     els.pctSum.className = 'pct-warn';
   }
 
-  // Filter offerings based on mode
-  let offerings;
-  if (state.mode === 'model') {
-    const canon = state.selectedModel;
-    if (canon === 'all') {
-      offerings = [...state.data.models];
-      els.resultsTitle.textContent = 'All models across all providers';
-    } else {
-      offerings = state.data.models.filter((m) => canonicalModelId(m.id) === canon);
-      els.resultsTitle.textContent = `Results for "${modelDisplayName(canon)}" across providers`;
+  // Filter offerings: AND of provider search + model search
+  // Provider search matches against org (display name or raw key)
+  // Model search matches against canonical model display name
+  let offerings = state.data.models.filter((m) => {
+    if (provSearch) {
+      const orgDisplay = (state.orgDisplayName[m.org] || m.org).toLowerCase();
+      if (!orgDisplay.includes(provSearch) && !m.org.toLowerCase().includes(provSearch)) return false;
     }
-    if (search) offerings = offerings.filter((m) => m.id.toLowerCase().includes(search));
-  } else {
-    offerings = state.selectedProvider === 'all'
-      ? [...state.data.models]
-      : state.data.models.filter((m) => m.provider === state.selectedProvider);
-    els.resultsTitle.textContent = `All models from ${
-      state.selectedProvider === 'all' ? 'all providers' : providerName(state.selectedProvider)
-    }`;
+    if (modSearch) {
+      const canon = canonicalModelId(m.id);
+      const modDisplay = (state.modelDisplayName[canon] || canon).toLowerCase();
+      const rawId = m.id.split('/').slice(-1)[0].toLowerCase();
+      if (!modDisplay.includes(modSearch) && !rawId.includes(modSearch)) return false;
+    }
+    return true;
+  });
+
+  // Build results title
+  let title = 'All models across all providers';
+  if (modSearch && provSearch) {
+    title = `'${modSearch}' from '${provSearch}'`;
+  } else if (modSearch) {
+    title = `Results for '${modSearch}'`;
+  } else if (provSearch) {
+    title = `All models from '${provSearch}'`;
   }
+  els.resultsTitle.textContent = title;
 
   // Compute costs
   const rows = offerings
@@ -215,14 +218,35 @@ function computeAndRender() {
   renderTable(rows, tokens);
 }
 
+/** Pretty-display an org key: "z-ai" → "Z.ai", "openai" → "OpenAI", "deepseek" → "DeepSeek" */
+function orgDisplay(org) {
+  // Known proper names
+  const known = {
+    'z-ai': 'Z.ai',
+    'openai': 'OpenAI',
+    'deepseek': 'DeepSeek',
+    'meta': 'Meta',
+    'google': 'Google',
+    'anthropic': 'Anthropic',
+    'mistral': 'Mistral',
+    'moonshot': 'Moonshot',
+    'minimax': 'MiniMax',
+    'nvidia': 'NVIDIA',
+    'bytedance': 'ByteDance',
+    'nous': 'Nous',
+    'ibm': 'IBM',
+    'sao10k': 'Sao10K',
+    'stepfun': 'StepFun',
+    'xiaomi': 'Xiaomi',
+  };
+  if (known[org]) return known[org];
+  // Title-case fallback: "first-word" → "First-word"
+  return org.charAt(0).toUpperCase() + org.slice(1);
+}
+
 function providerName(key) {
   const p = state.data.providers.find((p) => p.key === key);
   return p ? p.name : key;
-}
-
-function modelDisplayName(canon) {
-  const opt = [...els.modelSelect.options].find((o) => o.value === canon);
-  return opt ? opt.textContent : canon;
 }
 
 function fmtPrice(p) {
@@ -256,7 +280,7 @@ function renderTable(rows, tokens) {
       const cheapest = i === 0 && r.cost > 0;
       return `<tr>
         <td class="rank">${i + 1}${cheapest ? ' 🏆' : ''}</td>
-        <td><span class="org-badge">${esc(r.model.org)}</span></td>
+        <td><span class="org-badge">${esc(orgDisplay(r.model.org))}</span></td>
         <td><span class="provider-badge">${esc(providerName(r.model.provider))}</span></td>
         <td>${esc(r.model.id)}</td>
         <td class="num">${fmtPrice(p.input)}</td>

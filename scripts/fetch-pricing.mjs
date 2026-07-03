@@ -115,10 +115,19 @@ function orgFromName(name) {
   return ORG_ALIASES[org] || org;
 }
 
-/** Build canonical model ID for cross-referencing. */
+/** Build canonical model ID for cross-referencing.
+ *  Strips provider prefix, suffixes (:free, dates like -2024-08-06,
+ *  -preview, -preview-05-06, :thinking), and lowercases.
+ *  Used for MATCHING only — display ID stays as-is.
+ *  Turbo variants are kept separate (genuinely different SKUs). */
 function canonicalId(id) {
   let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
-  k = k.replace(/:free$/, '').toLowerCase().trim();
+  k = k.replace(/:free$/, '')
+       .replace(/:thinking$/, '')
+       .replace(/-(\d{4})-\d{2}-\d{2}$/, '')           // date-suffixed: gpt-4o-2024-08-06 → gpt-4o
+       .replace(/-preview-\d{2}-\d{2}$/, '')            // gemini-2.5-pro-preview-05-06 → gemini-2.5-pro
+       .replace(/-preview$/, '')                        // gpt-4-turbo-preview → gpt-4-turbo
+       .toLowerCase().trim();
   return k;
 }
 

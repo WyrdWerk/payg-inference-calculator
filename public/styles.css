@@ -82,7 +82,6 @@ select, input[type="text"] {
   transition: border-color 0.15s;
 }
 select:focus, input:focus { border-color: var(--accent); }
-.hidden { display: none; }
 
 /* ── Token inputs ──────────────────────────────────────── */
 .token-inputs {

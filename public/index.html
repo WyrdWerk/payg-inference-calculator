@@ -18,26 +18,15 @@
     <!-- ── Controls ─────────────────────────────────────────────────────── -->
     <section class="controls" id="controls">
       <div class="control-group">
-        <label for="mode">Compare by</label>
-        <select id="mode">
-          <option value="model">Model</option>
-          <option value="provider">Provider</option>
-        </select>
+        <label for="providerSearch">Search by provider</label>
+        <input type="text" id="providerSearch" placeholder="Type an org name…" list="orgList" autocomplete="off" />
+        <datalist id="orgList"></datalist>
       </div>
 
-      <div class="control-group" id="model-group">
-        <label for="modelSelect">Model</label>
-        <select id="modelSelect"><option value="all">All models</option></select>
-      </div>
-
-      <div class="control-group hidden" id="provider-group">
-        <label for="providerSelect">Provider</label>
-        <select id="providerSelect"><option>Loading…</option></select>
-      </div>
-
-      <div class="control-group" id="search-group">
-        <label for="search">Search</label>
-        <input type="text" id="search" placeholder="Filter models…" />
+      <div class="control-group">
+        <label for="modelSearch">Search by model</label>
+        <input type="text" id="modelSearch" placeholder="Type a model name…" list="modelList" autocomplete="off" />
+        <datalist id="modelList"></datalist>
       </div>
     </section>
 
