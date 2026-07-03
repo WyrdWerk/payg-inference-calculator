@@ -34,17 +34,24 @@ Presets: Agentic (2.5/97/0.5), Balanced (30/50/20), Heavy output (10/0/90), No c
 
 ## Data sources
 
-| Provider | Key | Models | Unit source |
-|---|---|---|---|
-| OpenRouter | `openrouter` | ~313 | $/token → ×1e6 |
-| DeepInfra | `deepinfra` | ~114 | $/M (passthrough) |
-| Crof | `crof` | ~23 | $/M (passthrough) |
-| EmberCloud | `ember` | ~12 | $/token → ×1e6 |
-| Wafer (Pass) | `wafer` | ~7 | cents/M → ÷100 |
+| Provider | Key | Models | Source | Unit source |
+|---|---|---|---|---|
+| OpenRouter | `openrouter` | ~310 | API | $/token → ×1e6 |
+| DeepInfra | `deepinfra` | ~114 | API | $/M (passthrough) |
+| Crof | `crof` | ~23 | API | $/M (passthrough) |
+| EmberCloud | `ember` | ~12 | API | $/token → ×1e6 |
+| Wafer (Pass) | `wafer` | ~7 | API | cents/M → ÷100 |
+| LLMGateway | `llmgateway` | ~195 | API | $/token → ×1e6 |
+| Synthetic | `synthetic` | ~11 | API | $/token → ×1e6, cache=20% input |
+| Lilac | `lilac` | ~6 | API | $/token → ×1e6 |
+| Hyper | `hyper` | ~20 | CSV | $/M (passthrough) |
+| Makora | `makora` | ~9 | CSV | $/M (passthrough) |
+| Xiaomimimo | `xiaomimimo` | ~3 | CSV | $/M (passthrough) |
+| OpenCode Go | `opencode` | ~16 | Hardcoded | $/M (passthrough) |
 
-**Total: ~469 models across 56 underlying orgs** (Anthropic, OpenAI, Google, DeepSeek, Z.ai, Qwen, Meta, Mistral, etc.)
+**Total: ~726 models across 12 providers and 60+ underlying orgs** (Anthropic, OpenAI, Google, DeepSeek, Z.ai, Qwen, Meta, Mistral, etc.)
 
-OpenRouter is an aggregator — the `org` field extracts the underlying model creator from the model ID prefix (e.g., `anthropic/claude-sonnet-5` → org: `anthropic`).
+OpenRouter and LLMGateway are aggregators — the `org` field extracts the underlying model creator from the model ID prefix (e.g., `anthropic/claude-sonnet-5` → org: `anthropic`). For LLMGateway (bare IDs like `gpt-4o-mini`), org is extracted from the `providers[0].providerId` field. For Synthetic (alias IDs like `syn:large:text`), org is extracted from the `hugging_face_id` field. CSV-sourced providers (Hyper, Makora, Xiaomimimo) use cross-referencing against the canonical→org map built from API providers.
 
 ## Development
 
@@ -66,9 +73,11 @@ Requires Node ≥18 (uses native `fetch`). No dependencies.
 ```
 scripts/
   fetch-pricing.mjs          # Provider fetch + normalization + org extraction
+data/
+  manual-pricing.csv          # Static pricing for CSV-sourced providers (Hyper, Makora, Xiaomimimo)
 public/
-  index.html                 # UI: controls, usage inputs, results table
-  app.js                     # State, selectors, cost computation, rendering
+  index.html                 # UI: dual search, usage inputs, results table
+  app.js                     # State, search, cost computation, rendering
   styles.css                 # Dark/light theme via prefers-color-scheme
   pricing.json               # Generated data (refreshed daily by CI)
 .github/workflows/
