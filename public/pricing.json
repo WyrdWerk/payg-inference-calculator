@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-03T18:16:55.984Z",
+  "generated_at": "2026-07-03T18:28:39.960Z",
   "providers": [
     {
       "key": "openrouter",
@@ -4103,30 +4103,17 @@
       "org": "openai"
     },
     {
-      "id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-      "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "id": "BAAI/bge-en-icl",
+      "name": "BAAI/bge-en-icl",
       "provider": "deepinfra",
-      "context_length": 131072,
+      "context_length": 8192,
       "pricing": {
-        "input": 0.1,
-        "output": 0.32,
+        "input": 0.01,
+        "output": null,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "meta"
-    },
-    {
-      "id": "nvidia/Nemotron-Content-Safety-3.5",
-      "name": "nvidia/Nemotron-Content-Safety-3.5",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.2,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia"
+      "org": "baai"
     },
     {
       "id": "deepseek-ai/DeepSeek-V3.1",
@@ -4142,69 +4129,30 @@
       "org": "deepseek"
     },
     {
-      "id": "google/gemma-3-12b-it",
-      "name": "google/gemma-3-12b-it",
+      "id": "openai/gpt-oss-120b",
+      "name": "openai/gpt-oss-120b",
       "provider": "deepinfra",
       "context_length": 131072,
       "pricing": {
-        "input": 0.05,
-        "output": 0.15,
+        "input": 0.039,
+        "output": 0.16999999999999998,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "google"
+      "org": "openai"
     },
     {
-      "id": "Qwen/Qwen3.5-27B",
-      "name": "Qwen/Qwen3.5-27B",
+      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 327680,
       "pricing": {
-        "input": 0.26,
-        "output": 2.5999999999999996,
+        "input": 0.1,
+        "output": 0.3,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "qwen"
-    },
-    {
-      "id": "intfloat/multilingual-e5-large-instruct",
-      "name": "intfloat/multilingual-e5-large-instruct",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "intfloat"
-    },
-    {
-      "id": "anthropic/claude-opus-4-8",
-      "name": "anthropic/claude-opus-4-8",
-      "provider": "deepinfra",
-      "context_length": 1000000,
-      "pricing": {
-        "input": 5,
-        "output": 25,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic"
-    },
-    {
-      "id": "ByteDance/Seed-1.8",
-      "name": "ByteDance/Seed-1.8",
-      "provider": "deepinfra",
-      "context_length": 256000,
-      "pricing": {
-        "input": 0.25,
-        "output": 2,
-        "cache_read": 0.05,
-        "cache_write": null
-      },
-      "org": "bytedance"
+      "org": "meta"
     },
     {
       "id": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
@@ -4220,60 +4168,21 @@
       "org": "meta"
     },
     {
-      "id": "google/embeddinggemma-300m",
-      "name": "google/embeddinggemma-300m",
+      "id": "nvidia/Nemotron-3-Nano-30B-A3B",
+      "name": "nvidia/Nemotron-3-Nano-30B-A3B",
       "provider": "deepinfra",
-      "context_length": 2048,
+      "context_length": 262144,
       "pricing": {
-        "input": 0.0019999999999999996,
-        "output": null,
+        "input": 0.05,
+        "output": 0.2,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "google"
+      "org": "nvidia"
     },
     {
-      "id": "BAAI/bge-m3",
-      "name": "BAAI/bge-m3",
-      "provider": "deepinfra",
-      "context_length": 8192,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "baai"
-    },
-    {
-      "id": "MiniMaxAI/MiniMax-M2.7",
-      "name": "MiniMaxAI/MiniMax-M2.7",
-      "provider": "deepinfra",
-      "context_length": 196608,
-      "pricing": {
-        "input": 0.25,
-        "output": 1,
-        "cache_read": 0.05,
-        "cache_write": null
-      },
-      "org": "minimax"
-    },
-    {
-      "id": "Qwen/Qwen3-Embedding-8B",
-      "name": "Qwen/Qwen3-Embedding-8B",
-      "provider": "deepinfra",
-      "context_length": 32768,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
-      "name": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+      "id": "sentence-transformers/paraphrase-MiniLM-L6-v2",
+      "name": "sentence-transformers/paraphrase-MiniLM-L6-v2",
       "provider": "deepinfra",
       "context_length": 512,
       "pricing": {
@@ -4285,186 +4194,30 @@
       "org": "sentence-transformers"
     },
     {
-      "id": "MiniMaxAI/MiniMax-M2.5",
-      "name": "MiniMaxAI/MiniMax-M2.5",
+      "id": "Qwen/Qwen3-Embedding-0.6B",
+      "name": "Qwen/Qwen3-Embedding-0.6B",
       "provider": "deepinfra",
-      "context_length": 196608,
-      "pricing": {
-        "input": 0.15,
-        "output": 1.15,
-        "cache_read": 0.03,
-        "cache_write": null
-      },
-      "org": "minimax"
-    },
-    {
-      "id": "Qwen/Qwen3-Max",
-      "name": "Qwen/Qwen3-Max",
-      "provider": "deepinfra",
-      "context_length": 256000,
-      "pricing": {
-        "input": 1.2,
-        "output": 5.999999999999999,
-        "cache_read": 0.24,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "intfloat/e5-large-v2",
-      "name": "intfloat/e5-large-v2",
-      "provider": "deepinfra",
-      "context_length": 512,
+      "context_length": 32768,
       "pricing": {
         "input": 0.01,
         "output": null,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "intfloat"
+      "org": "qwen"
     },
     {
-      "id": "google/gemini-3.1-pro",
-      "name": "google/gemini-3.1-pro",
+      "id": "deepseek-ai/DeepSeek-V4-Flash",
+      "name": "deepseek-ai/DeepSeek-V4-Flash",
       "provider": "deepinfra",
-      "context_length": 1000000,
-      "pricing": {
-        "input": 2,
-        "output": 11.999999999999998,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "anthropic/claude-opus-4-7",
-      "name": "anthropic/claude-opus-4-7",
-      "provider": "deepinfra",
-      "context_length": 1000000,
-      "pricing": {
-        "input": 5,
-        "output": 25,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic"
-    },
-    {
-      "id": "zai-org/GLM-4.7-Flash",
-      "name": "zai-org/GLM-4.7-Flash",
-      "provider": "deepinfra",
-      "context_length": 202752,
-      "pricing": {
-        "input": 0.060000000000000005,
-        "output": 0.4,
-        "cache_read": 0.0100000002,
-        "cache_write": null
-      },
-      "org": "z-ai"
-    },
-    {
-      "id": "moonshotai/Kimi-K2.5",
-      "name": "moonshotai/Kimi-K2.5",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.45,
-        "output": 2.25,
-        "cache_read": 0.070000002,
-        "cache_write": null
-      },
-      "org": "moonshot"
-    },
-    {
-      "id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
-      "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
-      "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 1048576,
       "pricing": {
         "input": 0.09,
-        "output": 0.1,
-        "cache_read": null,
+        "output": 0.18,
+        "cache_read": 0.018,
         "cache_write": null
       },
-      "org": "qwen"
-    },
-    {
-      "id": "Sao10K/L3.1-70B-Euryale-v2.2",
-      "name": "Sao10K/L3.1-70B-Euryale-v2.2",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.85,
-        "output": 0.85,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "sao10k"
-    },
-    {
-      "id": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-      "name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.02,
-        "output": 0.030000000000000002,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta"
-    },
-    {
-      "id": "thenlper/gte-large",
-      "name": "thenlper/gte-large",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "thenlper"
-    },
-    {
-      "id": "Qwen/Qwen3.6-27B",
-      "name": "Qwen/Qwen3.6-27B",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.32,
-        "output": 3.2,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning",
-      "name": "nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.8,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia"
-    },
-    {
-      "id": "BAAI/bge-base-en-v1.5",
-      "name": "BAAI/bge-base-en-v1.5",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.005,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "baai"
+      "org": "deepseek"
     },
     {
       "id": "sentence-transformers/all-mpnet-base-v2",
@@ -4480,118 +4233,157 @@
       "org": "sentence-transformers"
     },
     {
-      "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
-      "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+      "id": "Qwen/Qwen2.5-72B-Instruct",
+      "name": "Qwen/Qwen2.5-72B-Instruct",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 32768,
       "pricing": {
-        "input": 0.3,
-        "output": 1,
-        "cache_read": 0.09999999899999999,
+        "input": 0.36,
+        "output": 0.4,
+        "cache_read": null,
         "cache_write": null
       },
       "org": "qwen"
     },
     {
-      "id": "Qwen/Qwen3.5-397B-A17B",
-      "name": "Qwen/Qwen3.5-397B-A17B",
+      "id": "sentence-transformers/all-MiniLM-L12-v2",
+      "name": "sentence-transformers/all-MiniLM-L12-v2",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 512,
       "pricing": {
-        "input": 0.45,
-        "output": 2.9999999999999996,
-        "cache_read": 0.22000000050000001,
+        "input": 0.005,
+        "output": null,
+        "cache_read": null,
         "cache_write": null
       },
-      "org": "qwen"
+      "org": "sentence-transformers"
     },
     {
-      "id": "anthropic/claude-haiku-4-5",
-      "name": "anthropic/claude-haiku-4-5",
+      "id": "thenlper/gte-large",
+      "name": "thenlper/gte-large",
       "provider": "deepinfra",
-      "context_length": 200000,
+      "context_length": 512,
       "pricing": {
-        "input": 1,
-        "output": 5,
+        "input": 0.01,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "thenlper"
+    },
+    {
+      "id": "anthropic/claude-opus-4-7",
+      "name": "anthropic/claude-opus-4-7",
+      "provider": "deepinfra",
+      "context_length": 1000000,
+      "pricing": {
+        "input": 5,
+        "output": 25,
         "cache_read": null,
         "cache_write": null
       },
       "org": "anthropic"
     },
     {
-      "id": "zai-org/GLM-5",
-      "name": "zai-org/GLM-5",
+      "id": "intfloat/multilingual-e5-large",
+      "name": "intfloat/multilingual-e5-large",
       "provider": "deepinfra",
-      "context_length": 202752,
+      "context_length": 512,
       "pricing": {
-        "input": 0.6,
-        "output": 2.08,
-        "cache_read": 0.12,
+        "input": 0.01,
+        "output": null,
+        "cache_read": null,
         "cache_write": null
       },
-      "org": "z-ai"
+      "org": "intfloat"
     },
     {
-      "id": "Qwen/Qwen3.7-Max",
-      "name": "Qwen/Qwen3.7-Max",
+      "id": "anthropic/claude-sonnet-4-6",
+      "name": "anthropic/claude-sonnet-4-6",
       "provider": "deepinfra",
-      "context_length": 256000,
+      "context_length": 1000000,
       "pricing": {
-        "input": 2.5,
-        "output": 7.5,
-        "cache_read": 0.5,
+        "input": 2.9999999999999996,
+        "output": 15,
+        "cache_read": null,
         "cache_write": null
       },
-      "org": "qwen"
+      "org": "anthropic"
     },
     {
-      "id": "XiaomiMiMo/MiMo-V2.5-Pro",
-      "name": "XiaomiMiMo/MiMo-V2.5-Pro",
+      "id": "intfloat/multilingual-e5-large-instruct",
+      "name": "intfloat/multilingual-e5-large-instruct",
       "provider": "deepinfra",
-      "context_length": 1048576,
+      "context_length": 512,
       "pricing": {
-        "input": 1,
-        "output": 2.9999999999999996,
-        "cache_read": 0.2,
+        "input": 0.01,
+        "output": null,
+        "cache_read": null,
         "cache_write": null
       },
-      "org": "xiaomi"
+      "org": "intfloat"
     },
     {
-      "id": "openai/gpt-oss-120b",
-      "name": "openai/gpt-oss-120b",
+      "id": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+      "name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
       "provider": "deepinfra",
       "context_length": 131072,
       "pricing": {
-        "input": 0.039,
-        "output": 0.16999999999999998,
+        "input": 0.02,
+        "output": 0.05,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "openai"
+      "org": "meta"
     },
     {
-      "id": "Qwen/Qwen3-235B-A22B-Thinking-2507",
-      "name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
+      "id": "Qwen/Qwen3-Max",
+      "name": "Qwen/Qwen3-Max",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 256000,
       "pricing": {
-        "input": 0.22999999999999998,
-        "output": 2.3,
-        "cache_read": 0.20000000059999998,
+        "input": 1.2,
+        "output": 5.999999999999999,
+        "cache_read": 0.24,
         "cache_write": null
       },
       "org": "qwen"
     },
     {
-      "id": "MiniMaxAI/MiniMax-M2.7-Turbo",
-      "name": "MiniMaxAI/MiniMax-M2.7-Turbo",
+      "id": "BAAI/bge-base-en-v1.5",
+      "name": "BAAI/bge-base-en-v1.5",
+      "provider": "deepinfra",
+      "context_length": 512,
+      "pricing": {
+        "input": 0.005,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "baai"
+    },
+    {
+      "id": "Qwen/Qwen3.5-9B",
+      "name": "Qwen/Qwen3.5-9B",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.15,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.7",
+      "name": "MiniMaxAI/MiniMax-M2.7",
       "provider": "deepinfra",
       "context_length": 196608,
       "pricing": {
-        "input": 0.4,
-        "output": 2,
-        "cache_read": null,
+        "input": 0.25,
+        "output": 1,
+        "cache_read": 0.05,
         "cache_write": null
       },
       "org": "minimax"
@@ -4610,49 +4402,192 @@
       "org": "z-ai"
     },
     {
-      "id": "Gryphe/MythoMax-L2-13b",
-      "name": "Gryphe/MythoMax-L2-13b",
-      "provider": "deepinfra",
-      "context_length": 4096,
-      "pricing": {
-        "input": 0.4,
-        "output": 0.4,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "gryphe"
-    },
-    {
-      "id": "anthropic/claude-sonnet-4-6",
-      "name": "anthropic/claude-sonnet-4-6",
+      "id": "google/gemini-2.5-pro",
+      "name": "google/gemini-2.5-pro",
       "provider": "deepinfra",
       "context_length": 1000000,
       "pricing": {
-        "input": 2.9999999999999996,
-        "output": 15,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic"
-    },
-    {
-      "id": "google/gemini-3.5-flash",
-      "name": "google/gemini-3.5-flash",
-      "provider": "deepinfra",
-      "context_length": 1000000,
-      "pricing": {
-        "input": 1.4999999999999998,
-        "output": 9,
+        "input": 1.25,
+        "output": 10,
         "cache_read": null,
         "cache_write": null
       },
       "org": "google"
     },
     {
-      "id": "BAAI/bge-m3-multi",
-      "name": "BAAI/bge-m3-multi",
+      "id": "google/gemma-4-31B-it-turbo",
+      "name": "google/gemma-4-31B-it-turbo",
       "provider": "deepinfra",
-      "context_length": 8192,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.12000000000000001,
+        "output": 0.37,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "openai/gpt-oss-120b-Turbo",
+      "name": "openai/gpt-oss-120b-Turbo",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "openai"
+    },
+    {
+      "id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "name": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "provider": "deepinfra",
+      "context_length": 128000,
+      "pricing": {
+        "input": 0.075,
+        "output": 0.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "mistral"
+    },
+    {
+      "id": "Qwen/Qwen3-Max-Thinking",
+      "name": "Qwen/Qwen3-Max-Thinking",
+      "provider": "deepinfra",
+      "context_length": 256000,
+      "pricing": {
+        "input": 1.2,
+        "output": 5.999999999999999,
+        "cache_read": 0.24,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "Sao10K/L3.1-70B-Euryale-v2.2",
+      "name": "Sao10K/L3.1-70B-Euryale-v2.2",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.85,
+        "output": 0.85,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "sao10k"
+    },
+    {
+      "id": "zai-org/GLM-4.7-Flash",
+      "name": "zai-org/GLM-4.7-Flash",
+      "provider": "deepinfra",
+      "context_length": 202752,
+      "pricing": {
+        "input": 0.060000000000000005,
+        "output": 0.4,
+        "cache_read": 0.0100000002,
+        "cache_write": null
+      },
+      "org": "z-ai"
+    },
+    {
+      "id": "nvidia/Nemotron-Content-Safety-3.5",
+      "name": "nvidia/Nemotron-Content-Safety-3.5",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nvidia"
+    },
+    {
+      "id": "google/gemma-4-26B-A4B-it",
+      "name": "google/gemma-4-26B-A4B-it",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.33999999999999997,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "Qwen/Qwen3.7-Max",
+      "name": "Qwen/Qwen3.7-Max",
+      "provider": "deepinfra",
+      "context_length": 256000,
+      "pricing": {
+        "input": 2.5,
+        "output": 7.5,
+        "cache_read": 0.5,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "google/embeddinggemma-300m",
+      "name": "google/embeddinggemma-300m",
+      "provider": "deepinfra",
+      "context_length": 2048,
+      "pricing": {
+        "input": 0.0019999999999999996,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "google/gemma-3-4b-it",
+      "name": "google/gemma-3-4b-it",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.1,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "anthropic/claude-opus-4-8",
+      "name": "anthropic/claude-opus-4-8",
+      "provider": "deepinfra",
+      "context_length": 1000000,
+      "pricing": {
+        "input": 5,
+        "output": 25,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic"
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+      "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.08499999999999999,
+        "output": 0.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nvidia"
+    },
+    {
+      "id": "BAAI/bge-large-en-v1.5",
+      "name": "BAAI/bge-large-en-v1.5",
+      "provider": "deepinfra",
+      "context_length": 512,
       "pricing": {
         "input": 0.01,
         "output": null,
@@ -4675,6 +4610,45 @@
       "org": "qwen"
     },
     {
+      "id": "Qwen/Qwen3.6-27B",
+      "name": "Qwen/Qwen3.6-27B",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.32,
+        "output": 3.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.09,
+        "output": 0.1,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "Gryphe/MythoMax-L2-13b",
+      "name": "Gryphe/MythoMax-L2-13b",
+      "provider": "deepinfra",
+      "context_length": 4096,
+      "pricing": {
+        "input": 0.4,
+        "output": 0.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "gryphe"
+    },
+    {
       "id": "openai/gpt-oss-20b",
       "name": "openai/gpt-oss-20b",
       "provider": "deepinfra",
@@ -4688,69 +4662,82 @@
       "org": "openai"
     },
     {
-      "id": "meta-llama/Meta-Llama-3.1-8B-Instruct",
-      "name": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+      "id": "meta-llama/Llama-Guard-4-12B",
+      "name": "meta-llama/Llama-Guard-4-12B",
       "provider": "deepinfra",
-      "context_length": 131072,
+      "context_length": 163840,
       "pricing": {
-        "input": 0.02,
-        "output": 0.05,
+        "input": 0.18,
+        "output": 0.18,
         "cache_read": null,
         "cache_write": null
       },
       "org": "meta"
     },
     {
-      "id": "Qwen/Qwen3.6-35B-A3B",
-      "name": "Qwen/Qwen3.6-35B-A3B",
+      "id": "intfloat/e5-large-v2",
+      "name": "intfloat/e5-large-v2",
+      "provider": "deepinfra",
+      "context_length": 512,
+      "pricing": {
+        "input": 0.01,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "intfloat"
+    },
+    {
+      "id": "google/gemini-1.5-flash",
+      "name": "google/gemini-1.5-flash",
+      "provider": "deepinfra",
+      "context_length": 1000000,
+      "pricing": {
+        "input": 0.075,
+        "output": 0.3,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "name": "Qwen/Qwen3-Next-80B-A3B-Instruct",
       "provider": "deepinfra",
       "context_length": 262144,
       "pricing": {
-        "input": 0.15,
-        "output": 0.95,
+        "input": 0.09,
+        "output": 1.1,
         "cache_read": null,
         "cache_write": null
       },
       "org": "qwen"
     },
     {
-      "id": "ByteDance/Seed-2.0-mini",
-      "name": "ByteDance/Seed-2.0-mini",
+      "id": "google/gemini-3.1-pro",
+      "name": "google/gemini-3.1-pro",
       "provider": "deepinfra",
-      "context_length": 256000,
+      "context_length": 1000000,
       "pricing": {
-        "input": 0.1,
-        "output": 0.4,
-        "cache_read": 0.020000000000000004,
+        "input": 2,
+        "output": 11.999999999999998,
+        "cache_read": null,
         "cache_write": null
       },
-      "org": "bytedance"
+      "org": "google"
     },
     {
-      "id": "zai-org/GLM-4.6",
-      "name": "zai-org/GLM-4.6",
+      "id": "XiaomiMiMo/MiMo-V2.5",
+      "name": "XiaomiMiMo/MiMo-V2.5",
       "provider": "deepinfra",
-      "context_length": 202752,
+      "context_length": 262144,
       "pricing": {
-        "input": 0.43,
-        "output": 1.74,
-        "cache_read": 0.0799999993,
+        "input": 0.4,
+        "output": 2,
+        "cache_read": 0.08000000000000002,
         "cache_write": null
       },
-      "org": "z-ai"
-    },
-    {
-      "id": "ByteDance/Seed-2.0-pro",
-      "name": "ByteDance/Seed-2.0-pro",
-      "provider": "deepinfra",
-      "context_length": 256000,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.9999999999999996,
-        "cache_read": 0.1,
-        "cache_write": null
-      },
-      "org": "bytedance"
+      "org": "xiaomi"
     },
     {
       "id": "stepfun-ai/Step-3.7-Flash",
@@ -4766,26 +4753,143 @@
       "org": "stepfun"
     },
     {
-      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-      "name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "id": "Sao10K/L3-8B-Lunaris-v1-Turbo",
+      "name": "Sao10K/L3-8B-Lunaris-v1-Turbo",
       "provider": "deepinfra",
-      "context_length": 1048576,
+      "context_length": 8192,
       "pricing": {
-        "input": 0.15,
-        "output": 0.6,
+        "input": 0.04,
+        "output": 0.05,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "sao10k"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3.1-Terminus",
+      "name": "deepseek-ai/DeepSeek-V3.1-Terminus",
+      "provider": "deepinfra",
+      "context_length": 163840,
+      "pricing": {
+        "input": 0.27,
+        "output": 0.95,
+        "cache_read": 0.12999999960000003,
+        "cache_write": null
+      },
+      "org": "deepseek"
+    },
+    {
+      "id": "Qwen/Qwen3.5-122B-A10B",
+      "name": "Qwen/Qwen3.5-122B-A10B",
+      "provider": "deepinfra",
+      "context_length": 16384,
+      "pricing": {
+        "input": 0.29,
+        "output": 2.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "name": "meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.345,
+        "output": 0.345,
         "cache_read": null,
         "cache_write": null
       },
       "org": "meta"
     },
     {
-      "id": "Qwen/Qwen2.5-72B-Instruct",
-      "name": "Qwen/Qwen2.5-72B-Instruct",
+      "id": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      "name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
       "provider": "deepinfra",
-      "context_length": 32768,
+      "context_length": 131072,
       "pricing": {
-        "input": 0.36,
-        "output": 0.4,
+        "input": 0.02,
+        "output": 0.030000000000000002,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta"
+    },
+    {
+      "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+      "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.3,
+        "output": 1,
+        "cache_read": 0.09999999899999999,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "zai-org/GLM-5",
+      "name": "zai-org/GLM-5",
+      "provider": "deepinfra",
+      "context_length": 202752,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.08,
+        "cache_read": 0.12,
+        "cache_write": null
+      },
+      "org": "z-ai"
+    },
+    {
+      "id": "google/gemini-2.5-flash",
+      "name": "google/gemini-2.5-flash",
+      "provider": "deepinfra",
+      "context_length": 1000000,
+      "pricing": {
+        "input": 0.3,
+        "output": 2.5,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning",
+      "name": "nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nvidia"
+    },
+    {
+      "id": "mistralai/Mistral-Nemo-Instruct-2407",
+      "name": "mistralai/Mistral-Nemo-Instruct-2407",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.02,
+        "output": 0.04,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "mistral"
+    },
+    {
+      "id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "name": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6,
         "cache_read": null,
         "cache_write": null
       },
@@ -4805,242 +4909,60 @@
       "org": "deepseek"
     },
     {
-      "id": "sentence-transformers/paraphrase-MiniLM-L6-v2",
-      "name": "sentence-transformers/paraphrase-MiniLM-L6-v2",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.005,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "sentence-transformers"
-    },
-    {
-      "id": "Qwen/Qwen3.5-9B",
-      "name": "Qwen/Qwen3.5-9B",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.15,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "thenlper/gte-base",
-      "name": "thenlper/gte-base",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.005,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "thenlper"
-    },
-    {
-      "id": "google/gemma-4-26B-A4B-it",
-      "name": "google/gemma-4-26B-A4B-it",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.07,
-        "output": 0.33999999999999997,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V3.1-Terminus",
-      "name": "deepseek-ai/DeepSeek-V3.1-Terminus",
-      "provider": "deepinfra",
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.27,
-        "output": 0.95,
-        "cache_read": 0.12999999960000003,
-        "cache_write": null
-      },
-      "org": "deepseek"
-    },
-    {
-      "id": "mistralai/Mistral-Small-24B-Instruct-2501",
-      "name": "mistralai/Mistral-Small-24B-Instruct-2501",
-      "provider": "deepinfra",
-      "context_length": 32768,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.08,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "mistral"
-    },
-    {
-      "id": "zai-org/GLM-4.7",
-      "name": "zai-org/GLM-4.7",
-      "provider": "deepinfra",
-      "context_length": 202752,
-      "pricing": {
-        "input": 0.4,
-        "output": 1.75,
-        "cache_read": 0.08000000000000002,
-        "cache_write": null
-      },
-      "org": "z-ai"
-    },
-    {
-      "id": "Qwen/Qwen3-Next-80B-A3B-Instruct",
-      "name": "Qwen/Qwen3-Next-80B-A3B-Instruct",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.09,
-        "output": 1.1,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
-      "name": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
-      "provider": "deepinfra",
-      "context_length": 128000,
-      "pricing": {
-        "input": 0.075,
-        "output": 0.2,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "mistral"
-    },
-    {
-      "id": "google/gemini-2.5-flash",
-      "name": "google/gemini-2.5-flash",
+      "id": "google/gemini-3.1-flash-lite",
+      "name": "google/gemini-3.1-flash-lite",
       "provider": "deepinfra",
       "context_length": 1000000,
       "pricing": {
-        "input": 0.3,
-        "output": 2.5,
+        "input": 0.25,
+        "output": 1.4999999999999998,
         "cache_read": null,
         "cache_write": null
       },
       "org": "google"
     },
     {
-      "id": "zai-org/GLM-5.2",
-      "name": "zai-org/GLM-5.2",
-      "provider": "deepinfra",
-      "context_length": 1048576,
-      "pricing": {
-        "input": 0.9299999999999999,
-        "output": 2.9999999999999996,
-        "cache_read": 0.18000000269999997,
-        "cache_write": null
-      },
-      "org": "z-ai"
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V4-Flash",
-      "name": "deepseek-ai/DeepSeek-V4-Flash",
-      "provider": "deepinfra",
-      "context_length": 1048576,
-      "pricing": {
-        "input": 0.09,
-        "output": 0.18,
-        "cache_read": 0.018,
-        "cache_write": null
-      },
-      "org": "deepseek"
-    },
-    {
-      "id": "Qwen/Qwen3.5-122B-A10B",
-      "name": "Qwen/Qwen3.5-122B-A10B",
-      "provider": "deepinfra",
-      "context_length": 16384,
-      "pricing": {
-        "input": 0.29,
-        "output": 2.4,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "intfloat/multilingual-e5-large",
-      "name": "intfloat/multilingual-e5-large",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "intfloat"
-    },
-    {
-      "id": "moonshotai/Kimi-K2.7-Code",
-      "name": "moonshotai/Kimi-K2.7-Code",
+      "id": "Qwen/Qwen3-235B-A22B-Thinking-2507",
+      "name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
       "provider": "deepinfra",
       "context_length": 262144,
       "pricing": {
-        "input": 0.74,
-        "output": 3.5,
-        "cache_read": 0.149999998,
-        "cache_write": null
-      },
-      "org": "moonshot"
-    },
-    {
-      "id": "Qwen/Qwen3-Embedding-0.6B",
-      "name": "Qwen/Qwen3-Embedding-0.6B",
-      "provider": "deepinfra",
-      "context_length": 32768,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
+        "input": 0.22999999999999998,
+        "output": 2.3,
+        "cache_read": 0.20000000059999998,
         "cache_write": null
       },
       "org": "qwen"
     },
     {
-      "id": "google/gemma-3-4b-it",
-      "name": "google/gemma-3-4b-it",
+      "id": "deepseek-ai/DeepSeek-V3.2",
+      "name": "deepseek-ai/DeepSeek-V3.2",
       "provider": "deepinfra",
-      "context_length": 131072,
+      "context_length": 163840,
       "pricing": {
-        "input": 0.05,
-        "output": 0.1,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V4-Pro",
-      "name": "deepseek-ai/DeepSeek-V4-Pro",
-      "provider": "deepinfra",
-      "context_length": 1048576,
-      "pricing": {
-        "input": 1.2999999999999998,
-        "output": 2.5999999999999996,
-        "cache_read": 0.10000000399999999,
+        "input": 0.26,
+        "output": 0.38,
+        "cache_read": 0.13,
         "cache_write": null
       },
       "org": "deepseek"
     },
     {
-      "id": "sentence-transformers/all-MiniLM-L12-v2",
-      "name": "sentence-transformers/all-MiniLM-L12-v2",
+      "id": "ByteDance/Seed-2.0-pro",
+      "name": "ByteDance/Seed-2.0-pro",
+      "provider": "deepinfra",
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.9999999999999996,
+        "cache_read": 0.1,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
+      "id": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+      "name": "sentence-transformers/multi-qa-mpnet-base-dot-v1",
       "provider": "deepinfra",
       "context_length": 512,
       "pricing": {
@@ -5050,32 +4972,6 @@
         "cache_write": null
       },
       "org": "sentence-transformers"
-    },
-    {
-      "id": "Qwen/Qwen3-32B",
-      "name": "Qwen/Qwen3-32B",
-      "provider": "deepinfra",
-      "context_length": 40960,
-      "pricing": {
-        "input": 0.08,
-        "output": 0.28,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "shibing624/text2vec-base-chinese",
-      "name": "shibing624/text2vec-base-chinese",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.005,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "shibing624"
     },
     {
       "id": "Qwen/Qwen3-Embedding-4B",
@@ -5091,82 +4987,30 @@
       "org": "qwen"
     },
     {
-      "id": "sentence-transformers/clip-ViT-B-32",
-      "name": "sentence-transformers/clip-ViT-B-32",
+      "id": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+      "name": "Qwen/Qwen3-VL-235B-A22B-Instruct",
       "provider": "deepinfra",
-      "context_length": 77,
+      "context_length": 262144,
       "pricing": {
-        "input": 0.005,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "sentence-transformers"
-    },
-    {
-      "id": "ByteDance/Seed-2.0-code",
-      "name": "ByteDance/Seed-2.0-code",
-      "provider": "deepinfra",
-      "context_length": 256000,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.9999999999999996,
-        "cache_read": 0.1,
-        "cache_write": null
-      },
-      "org": "bytedance"
-    },
-    {
-      "id": "sentence-transformers/all-MiniLM-L6-v2",
-      "name": "sentence-transformers/all-MiniLM-L6-v2",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.005,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "sentence-transformers"
-    },
-    {
-      "id": "meta-llama/Llama-3.2-11B-Vision-Instruct",
-      "name": "meta-llama/Llama-3.2-11B-Vision-Instruct",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.345,
-        "output": 0.345,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta"
-    },
-    {
-      "id": "Qwen/Qwen3-Max-Thinking",
-      "name": "Qwen/Qwen3-Max-Thinking",
-      "provider": "deepinfra",
-      "context_length": 256000,
-      "pricing": {
-        "input": 1.2,
-        "output": 5.999999999999999,
-        "cache_read": 0.24,
+        "input": 0.2,
+        "output": 0.8799999999999999,
+        "cache_read": 0.11000000000000001,
         "cache_write": null
       },
       "org": "qwen"
     },
     {
-      "id": "google/gemini-3.1-flash-lite",
-      "name": "google/gemini-3.1-flash-lite",
+      "id": "Qwen/Qwen3-Embedding-8B",
+      "name": "Qwen/Qwen3-Embedding-8B",
       "provider": "deepinfra",
-      "context_length": 1000000,
+      "context_length": 32768,
       "pricing": {
-        "input": 0.25,
-        "output": 1.4999999999999998,
+        "input": 0.01,
+        "output": null,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "google"
+      "org": "qwen"
     },
     {
       "id": "sentence-transformers/clip-ViT-B-32-multilingual-v1",
@@ -5182,40 +5026,27 @@
       "org": "sentence-transformers"
     },
     {
-      "id": "intfloat/e5-base-v2",
-      "name": "intfloat/e5-base-v2",
+      "id": "nvidia/llama-nemotron-embed-vl-1b-v2",
+      "name": "nvidia/llama-nemotron-embed-vl-1b-v2",
       "provider": "deepinfra",
-      "context_length": 512,
+      "context_length": 10240,
       "pricing": {
-        "input": 0.005,
+        "input": 0.01,
         "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "intfloat"
-    },
-    {
-      "id": "nvidia/Nemotron-3-Nano-30B-A3B",
-      "name": "nvidia/Nemotron-3-Nano-30B-A3B",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.2,
         "cache_read": null,
         "cache_write": null
       },
       "org": "nvidia"
     },
     {
-      "id": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
-      "name": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+      "id": "nvidia/Llama-3.3-Nemotron-Super-49B-v1.5",
+      "name": "nvidia/Llama-3.3-Nemotron-Super-49B-v1.5",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 131072,
       "pricing": {
-        "input": 0.5,
-        "output": 2.2,
-        "cache_read": 0.1,
+        "input": 0.4,
+        "output": 0.4,
+        "cache_read": null,
         "cache_write": null
       },
       "org": "nvidia"
@@ -5234,30 +5065,121 @@
       "org": "qwen"
     },
     {
-      "id": "google/gemma-3-27b-it",
-      "name": "google/gemma-3-27b-it",
+      "id": "ByteDance/Seed-2.0-code",
+      "name": "ByteDance/Seed-2.0-code",
       "provider": "deepinfra",
-      "context_length": 131072,
+      "context_length": 256000,
       "pricing": {
-        "input": 0.08,
-        "output": 0.16,
-        "cache_read": null,
+        "input": 0.5,
+        "output": 2.9999999999999996,
+        "cache_read": 0.1,
         "cache_write": null
       },
-      "org": "google"
+      "org": "bytedance"
     },
     {
-      "id": "microsoft/phi-4",
-      "name": "microsoft/phi-4",
+      "id": "zai-org/GLM-4.6",
+      "name": "zai-org/GLM-4.6",
       "provider": "deepinfra",
-      "context_length": 16384,
+      "context_length": 202752,
       "pricing": {
-        "input": 0.07,
-        "output": 0.14,
+        "input": 0.43,
+        "output": 1.74,
+        "cache_read": 0.0799999993,
+        "cache_write": null
+      },
+      "org": "z-ai"
+    },
+    {
+      "id": "shibing624/text2vec-base-chinese",
+      "name": "shibing624/text2vec-base-chinese",
+      "provider": "deepinfra",
+      "context_length": 512,
+      "pricing": {
+        "input": 0.005,
+        "output": null,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "microsoft"
+      "org": "shibing624"
+    },
+    {
+      "id": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "name": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "provider": "deepinfra",
+      "context_length": 32768,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.08,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "mistral"
+    },
+    {
+      "id": "Qwen/Qwen3.5-27B",
+      "name": "Qwen/Qwen3.5-27B",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.26,
+        "output": 2.5999999999999996,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.6",
+      "name": "moonshotai/Kimi-K2.6",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.7499999999999999,
+        "output": 3.5,
+        "cache_read": 0.15,
+        "cache_write": null
+      },
+      "org": "moonshot"
+    },
+    {
+      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "provider": "deepinfra",
+      "context_length": 1048576,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta"
+    },
+    {
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "name": "Qwen/Qwen3.5-397B-A17B",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.45,
+        "output": 2.9999999999999996,
+        "cache_read": 0.22000000050000001,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Pro",
+      "name": "deepseek-ai/DeepSeek-V4-Pro",
+      "provider": "deepinfra",
+      "context_length": 1048576,
+      "pricing": {
+        "input": 1.2999999999999998,
+        "output": 2.5999999999999996,
+        "cache_read": 0.10000000399999999,
+        "cache_write": null
+      },
+      "org": "deepseek"
     },
     {
       "id": "deepseek-ai/DeepSeek-V3",
@@ -5273,91 +5195,26 @@
       "org": "deepseek"
     },
     {
-      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-      "name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "id": "zai-org/GLM-4.7",
+      "name": "zai-org/GLM-4.7",
       "provider": "deepinfra",
-      "context_length": 327680,
+      "context_length": 202752,
       "pricing": {
-        "input": 0.1,
-        "output": 0.3,
-        "cache_read": null,
+        "input": 0.4,
+        "output": 1.75,
+        "cache_read": 0.08000000000000002,
         "cache_write": null
       },
-      "org": "meta"
+      "org": "z-ai"
     },
     {
-      "id": "google/gemini-2.5-pro",
-      "name": "google/gemini-2.5-pro",
-      "provider": "deepinfra",
-      "context_length": 1000000,
-      "pricing": {
-        "input": 1.25,
-        "output": 10,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "nvidia/llama-nemotron-embed-vl-1b-v2",
-      "name": "nvidia/llama-nemotron-embed-vl-1b-v2",
-      "provider": "deepinfra",
-      "context_length": 10240,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia"
-    },
-    {
-      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
-      "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+      "id": "Qwen/Qwen3.6-35B-A3B",
+      "name": "Qwen/Qwen3.6-35B-A3B",
       "provider": "deepinfra",
       "context_length": 262144,
       "pricing": {
-        "input": 0.08499999999999999,
-        "output": 0.4,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia"
-    },
-    {
-      "id": "google/gemma-4-31B-it-turbo",
-      "name": "google/gemma-4-31B-it-turbo",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.12000000000000001,
-        "output": 0.37,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "NousResearch/Hermes-3-Llama-3.1-405B",
-      "name": "NousResearch/Hermes-3-Llama-3.1-405B",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 1,
-        "output": 1,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nous"
-    },
-    {
-      "id": "Qwen/Qwen3-14B",
-      "name": "Qwen/Qwen3-14B",
-      "provider": "deepinfra",
-      "context_length": 40960,
-      "pricing": {
-        "input": 0.12000000000000001,
-        "output": 0.24000000000000002,
+        "input": 0.15,
+        "output": 0.95,
         "cache_read": null,
         "cache_write": null
       },
@@ -5377,6 +5234,201 @@
       "org": "nous"
     },
     {
+      "id": "BAAI/bge-m3",
+      "name": "BAAI/bge-m3",
+      "provider": "deepinfra",
+      "context_length": 8192,
+      "pricing": {
+        "input": 0.01,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "baai"
+    },
+    {
+      "id": "intfloat/e5-base-v2",
+      "name": "intfloat/e5-base-v2",
+      "provider": "deepinfra",
+      "context_length": 512,
+      "pricing": {
+        "input": 0.005,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "intfloat"
+    },
+    {
+      "id": "ByteDance/Seed-2.0-mini",
+      "name": "ByteDance/Seed-2.0-mini",
+      "provider": "deepinfra",
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.4,
+        "cache_read": 0.020000000000000004,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
+      "id": "sentence-transformers/clip-ViT-B-32",
+      "name": "sentence-transformers/clip-ViT-B-32",
+      "provider": "deepinfra",
+      "context_length": 77,
+      "pricing": {
+        "input": 0.005,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "sentence-transformers"
+    },
+    {
+      "id": "google/gemma-3-12b-it",
+      "name": "google/gemma-3-12b-it",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.15,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.32,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta"
+    },
+    {
+      "id": "BAAI/bge-m3-multi",
+      "name": "BAAI/bge-m3-multi",
+      "provider": "deepinfra",
+      "context_length": 8192,
+      "pricing": {
+        "input": 0.01,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "baai"
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.7-Turbo",
+      "name": "MiniMaxAI/MiniMax-M2.7-Turbo",
+      "provider": "deepinfra",
+      "context_length": 196608,
+      "pricing": {
+        "input": 0.4,
+        "output": 2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "minimax"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.5",
+      "name": "moonshotai/Kimi-K2.5",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.45,
+        "output": 2.25,
+        "cache_read": 0.070000002,
+        "cache_write": null
+      },
+      "org": "moonshot"
+    },
+    {
+      "id": "google/gemma-3-27b-it",
+      "name": "google/gemma-3-27b-it",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.08,
+        "output": 0.16,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.5",
+      "name": "MiniMaxAI/MiniMax-M2.5",
+      "provider": "deepinfra",
+      "context_length": 196608,
+      "pricing": {
+        "input": 0.15,
+        "output": 1.15,
+        "cache_read": 0.03,
+        "cache_write": null
+      },
+      "org": "minimax"
+    },
+    {
+      "id": "NousResearch/Hermes-3-Llama-3.1-405B",
+      "name": "NousResearch/Hermes-3-Llama-3.1-405B",
+      "provider": "deepinfra",
+      "context_length": 131072,
+      "pricing": {
+        "input": 1,
+        "output": 1,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nous"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.7-Code",
+      "name": "moonshotai/Kimi-K2.7-Code",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.74,
+        "output": 3.5,
+        "cache_read": 0.149999998,
+        "cache_write": null
+      },
+      "org": "moonshot"
+    },
+    {
+      "id": "XiaomiMiMo/MiMo-V2.5-Pro",
+      "name": "XiaomiMiMo/MiMo-V2.5-Pro",
+      "provider": "deepinfra",
+      "context_length": 1048576,
+      "pricing": {
+        "input": 1,
+        "output": 2.9999999999999996,
+        "cache_read": 0.2,
+        "cache_write": null
+      },
+      "org": "xiaomi"
+    },
+    {
+      "id": "microsoft/phi-4",
+      "name": "microsoft/phi-4",
+      "provider": "deepinfra",
+      "context_length": 16384,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.14,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "microsoft"
+    },
+    {
       "id": "google/gemini-1.5-flash-8b",
       "name": "google/gemini-1.5-flash-8b",
       "provider": "deepinfra",
@@ -5390,30 +5442,43 @@
       "org": "google"
     },
     {
-      "id": "Qwen/Qwen3-VL-235B-A22B-Instruct",
-      "name": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+      "id": "google/gemini-3.5-flash",
+      "name": "google/gemini-3.5-flash",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 1000000,
       "pricing": {
-        "input": 0.2,
-        "output": 0.8799999999999999,
-        "cache_read": 0.11000000000000001,
-        "cache_write": null
-      },
-      "org": "qwen"
-    },
-    {
-      "id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
-      "name": "Qwen/Qwen3-VL-30B-A3B-Instruct",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6,
+        "input": 1.4999999999999998,
+        "output": 9,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "qwen"
+      "org": "google"
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+      "name": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+      "provider": "deepinfra",
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.2,
+        "cache_read": 0.1,
+        "cache_write": null
+      },
+      "org": "nvidia"
+    },
+    {
+      "id": "sentence-transformers/all-MiniLM-L6-v2",
+      "name": "sentence-transformers/all-MiniLM-L6-v2",
+      "provider": "deepinfra",
+      "context_length": 512,
+      "pricing": {
+        "input": 0.005,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "sentence-transformers"
     },
     {
       "id": "google/gemma-4-31B-it",
@@ -5429,6 +5494,45 @@
       "org": "google"
     },
     {
+      "id": "thenlper/gte-base",
+      "name": "thenlper/gte-base",
+      "provider": "deepinfra",
+      "context_length": 512,
+      "pricing": {
+        "input": 0.005,
+        "output": null,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "thenlper"
+    },
+    {
+      "id": "anthropic/claude-haiku-4-5",
+      "name": "anthropic/claude-haiku-4-5",
+      "provider": "deepinfra",
+      "context_length": 200000,
+      "pricing": {
+        "input": 1,
+        "output": 5,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic"
+    },
+    {
+      "id": "ByteDance/Seed-1.8",
+      "name": "ByteDance/Seed-1.8",
+      "provider": "deepinfra",
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.25,
+        "output": 2,
+        "cache_read": 0.05,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
       "id": "deepseek-ai/DeepSeek-R1-0528",
       "name": "deepseek-ai/DeepSeek-R1-0528",
       "provider": "deepinfra",
@@ -5442,147 +5546,43 @@
       "org": "deepseek"
     },
     {
-      "id": "Sao10K/L3-8B-Lunaris-v1-Turbo",
-      "name": "Sao10K/L3-8B-Lunaris-v1-Turbo",
+      "id": "Qwen/Qwen3-14B",
+      "name": "Qwen/Qwen3-14B",
       "provider": "deepinfra",
-      "context_length": 8192,
+      "context_length": 40960,
       "pricing": {
-        "input": 0.04,
-        "output": 0.05,
+        "input": 0.12000000000000001,
+        "output": 0.24000000000000002,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "sao10k"
+      "org": "qwen"
     },
     {
-      "id": "moonshotai/Kimi-K2.6",
-      "name": "moonshotai/Kimi-K2.6",
+      "id": "zai-org/GLM-5.2",
+      "name": "zai-org/GLM-5.2",
       "provider": "deepinfra",
-      "context_length": 262144,
+      "context_length": 1048576,
       "pricing": {
-        "input": 0.7499999999999999,
-        "output": 3.5,
-        "cache_read": 0.15,
+        "input": 0.9299999999999999,
+        "output": 2.9999999999999996,
+        "cache_read": 0.18000000269999997,
         "cache_write": null
       },
-      "org": "moonshot"
+      "org": "z-ai"
     },
     {
-      "id": "google/gemini-1.5-flash",
-      "name": "google/gemini-1.5-flash",
+      "id": "Qwen/Qwen3-32B",
+      "name": "Qwen/Qwen3-32B",
       "provider": "deepinfra",
-      "context_length": 1000000,
+      "context_length": 40960,
       "pricing": {
-        "input": 0.075,
-        "output": 0.3,
+        "input": 0.08,
+        "output": 0.28,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "google"
-    },
-    {
-      "id": "nvidia/Llama-3.3-Nemotron-Super-49B-v1.5",
-      "name": "nvidia/Llama-3.3-Nemotron-Super-49B-v1.5",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.4,
-        "output": 0.4,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia"
-    },
-    {
-      "id": "meta-llama/Llama-Guard-4-12B",
-      "name": "meta-llama/Llama-Guard-4-12B",
-      "provider": "deepinfra",
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.18,
-        "output": 0.18,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta"
-    },
-    {
-      "id": "XiaomiMiMo/MiMo-V2.5",
-      "name": "XiaomiMiMo/MiMo-V2.5",
-      "provider": "deepinfra",
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.4,
-        "output": 2,
-        "cache_read": 0.08000000000000002,
-        "cache_write": null
-      },
-      "org": "xiaomi"
-    },
-    {
-      "id": "openai/gpt-oss-120b-Turbo",
-      "name": "openai/gpt-oss-120b-Turbo",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "openai"
-    },
-    {
-      "id": "BAAI/bge-en-icl",
-      "name": "BAAI/bge-en-icl",
-      "provider": "deepinfra",
-      "context_length": 8192,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "baai"
-    },
-    {
-      "id": "mistralai/Mistral-Nemo-Instruct-2407",
-      "name": "mistralai/Mistral-Nemo-Instruct-2407",
-      "provider": "deepinfra",
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.02,
-        "output": 0.04,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "mistral"
-    },
-    {
-      "id": "BAAI/bge-large-en-v1.5",
-      "name": "BAAI/bge-large-en-v1.5",
-      "provider": "deepinfra",
-      "context_length": 512,
-      "pricing": {
-        "input": 0.01,
-        "output": null,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "baai"
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V3.2",
-      "name": "deepseek-ai/DeepSeek-V3.2",
-      "provider": "deepinfra",
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.26,
-        "output": 0.38,
-        "cache_read": 0.13,
-        "cache_write": null
-      },
-      "org": "deepseek"
+      "org": "qwen"
     },
     {
       "id": "deepseek-v4-pro",
