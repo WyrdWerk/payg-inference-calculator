@@ -1,0 +1,15 @@
+{
+  "name": "payg-inference-calculator",
+  "version": "1.0.0",
+  "description": "PAYG inference price comparison calculator — compare LLM API costs across providers",
+  "type": "module",
+  "scripts": {
+    "fetch": "node scripts/fetch-pricing.mjs",
+    "serve": "npx --yes serve public -l 3000",
+    "build:prod": "node scripts/fetch-pricing.mjs && echo 'Static site in ./public — deploy to GitHub Pages or any static host'"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

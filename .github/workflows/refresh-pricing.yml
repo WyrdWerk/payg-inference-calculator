@@ -1,0 +1,35 @@
+name: Refresh Pricing
+
+on:
+  schedule:
+    # every hour at :00 UTC
+    - cron: '0 * * * *'
+  workflow_dispatch: {} # manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fetch & normalize pricing
+        run: node scripts/fetch-pricing.mjs
+
+      - name: Commit pricing.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/pricing.json
+          if git diff --cached --quiet; then
+            echo "No pricing changes — skipping commit."
+          else
+            git commit -m "chore: refresh pricing.json ($(date -u +%Y-%m-%dT%H:%M) UTC)"
+            git push
+          fi
