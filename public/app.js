@@ -9,6 +9,8 @@ const state = {
   modelSearch: '',        // canonical model name filter text
   providerDisplayName: {},// provider display name lowercase → pretty (e.g. "deepinfra" → "DeepInfra")
   modelDisplayName: {},   // canonical → display name
+  sortBy: 'cost',         // current sort column key
+  sortDir: 'asc',         // 'asc' or 'desc'
 };
 
 // ── DOM ───────────────────────────────────────────────────────────────────────
@@ -27,7 +29,9 @@ const els = {
   resultsBody: $('resultsBody'),
   resultsTitle: $('resultsTitle'),
   lastUpdated: $('lastUpdated'),
+  promoOnly: $('promoOnly'),
 };
+
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 async function init() {
@@ -35,7 +39,7 @@ async function init() {
     const res = await fetch('pricing.json');
     state.data = await res.json();
   } catch (err) {
-    els.resultsBody.innerHTML = `<tr><td colspan="8" class="empty">Could not load pricing.json. Run <code>node scripts/fetch-pricing.mjs</code> first.</td></tr>`;
+    els.resultsBody.innerHTML = `<tr><td colspan="9" class="empty">Could not load pricing.json. Run <code>node scripts/fetch-pricing.mjs</code> first.</td></tr>`;
     return;
   }
 
@@ -46,17 +50,22 @@ async function init() {
 }
 
 /** Build a canonical model key for cross-provider matching.
- *  Strips provider prefix, suffixes (:free, dates like -2024-08-06,
- *  -preview, -preview-05-06, :thinking), and lowercases.
+ *  Strips provider prefix, suffixes (:free, dates, -preview, :thinking), lowercases.
+ *  Date formats stripped: YYYY-MM-DD, YYYYMMDD, YYYYMM.
+ *  Preview formats stripped: -preview, -preview-MM-YY, -preview-MM-YYYY, -preview-YYYY-MM-DD.
  *  Used for MATCHING only — display ID stays as-is.
  *  Turbo variants kept separate (different SKUs). */
 function canonicalModelId(id) {
   let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
   k = k.replace(/:free$/, '')
        .replace(/:thinking$/, '')
-       .replace(/-(\d{4})-\d{2}-\d{2}$/, '')
-       .replace(/-preview-\d{2}-\d{2}$/, '')
+       .replace(/-(\d{4})-(\d{2})-(\d{2})$/, '')
+       .replace(/-preview-(\d{2})-(\d{4})$/, '')
+       .replace(/-preview-(\d{4})-(\d{2})-(\d{2})$/, '')
+       .replace(/-preview-(\d{2})-(\d{2})$/, '')
        .replace(/-preview$/, '')
+       .replace(/-(\d{8})$/, '')
+       .replace(/-(\d{6})$/, '')
        .toLowerCase().trim();
   return k;
 }
@@ -75,7 +84,7 @@ function populateDatalists() {
     .sort((a, b) => provCounts[b] - provCounts[a])  // most models first
     .map((name) => {
       state.providerDisplayName[name.toLowerCase()] = name;
-      return `<option value="${name}">`;
+      return `<option value="${name}">${name} (${provCounts[name]})</option>`;
     })
     .join('');
 
@@ -99,6 +108,7 @@ function populateDatalists() {
 function attachListeners() {
   els.providerSearch.addEventListener('input', () => computeAndRender());
   els.modelSearch.addEventListener('input', () => computeAndRender());
+  els.promoOnly.addEventListener('change', () => computeAndRender());
 
   for (const id of ['totalTokens', 'inputPct', 'cacheReadPct', 'outputPct']) {
     els[id].addEventListener('input', () => computeAndRender());
@@ -106,6 +116,20 @@ function attachListeners() {
 
   document.querySelectorAll('.presets button').forEach((btn) => {
     btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+  });
+
+  // Sortable column headers
+  document.querySelectorAll('th.sortable').forEach((th) => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.sort;
+      if (state.sortBy === col) {
+        state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        state.sortBy = col;
+        state.sortDir = col === 'cost' || col === 'input' || col === 'output' || col === 'cache_read' || col === 'context' ? 'asc' : 'asc';
+      }
+      computeAndRender();
+    });
   });
 }
 
@@ -180,9 +204,10 @@ function computeAndRender() {
     els.pctSum.className = 'pct-warn';
   }
 
-  // Filter offerings: AND of provider search + model search
+  // Filter offerings: AND of provider search + model search + promo filter
   // Provider search matches against inference provider (display name or raw key)
   // Model search matches against canonical model display name
+  const promoOnly = els.promoOnly.checked;
   let offerings = state.data.models.filter((m) => {
     if (provSearch) {
       const provName = providerName(m.provider, m.provider_display).toLowerCase();
@@ -198,6 +223,7 @@ function computeAndRender() {
       const rawId = norm(m.id.split('/').slice(-1)[0]);
       if (!modDisplay.includes(q) && !rawId.includes(q)) return false;
     }
+    if (promoOnly && !(m.discount > 0)) return false;
     return true;
   });
 
@@ -210,6 +236,7 @@ function computeAndRender() {
   } else if (provSearch) {
     title = `All models from '${provSearch}'`;
   }
+  if (promoOnly) title += ' (promos only)';
   els.resultsTitle.textContent = title;
 
   // Compute costs
@@ -217,8 +244,16 @@ function computeAndRender() {
     .map((m) => ({ model: m, cost: costFor(m.pricing, tokens) }))
     .filter((r) => r.cost !== null);
 
-  // Sort cheapest first
-  rows.sort((a, b) => a.cost - b.cost);
+  // Sort by current sort column
+  sortRows(rows);
+
+  // Update sort indicator on headers
+  document.querySelectorAll('th.sortable').forEach((th) => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.dataset.sort === state.sortBy) {
+      th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
 
   renderTable(rows, tokens);
 }
@@ -272,27 +307,64 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+
+/** Sort rows by the current sort column/direction. Null values always sort to END. */
+function sortRows(rows) {
+  const { sortBy, sortDir } = state;
+  const dir = sortDir === 'asc' ? 1 : -1;
+  rows.sort((a, b) => {
+    let va, vb;
+    switch (sortBy) {
+      case 'org':       va = orgDisplay(a.model.org).toLowerCase(); vb = orgDisplay(b.model.org).toLowerCase(); break;
+      case 'provider':  va = providerName(a.model.provider, a.model.provider_display).toLowerCase(); vb = providerName(b.model.provider, b.model.provider_display).toLowerCase(); break;
+      case 'model':     va = a.model.name?.toLowerCase() || a.model.id.toLowerCase(); vb = b.model.name?.toLowerCase() || b.model.id.toLowerCase(); break;
+      case 'input':     va = a.model.pricing.input; vb = b.model.pricing.input; break;
+      case 'output':    va = a.model.pricing.output; vb = b.model.pricing.output; break;
+      case 'cache_read':va = a.model.pricing.cache_read; vb = b.model.pricing.cache_read; break;
+      case 'context':   va = a.model.context_length; vb = b.model.context_length; break;
+      case 'cost':
+      default:          va = a.cost; vb = b.cost; break;
+    }
+    // Null/undefined values always sort to the END, regardless of direction
+    if (va === null || va === undefined) return 1;
+    if (vb === null || vb === undefined) return -1;
+    if (va < vb) return -1 * dir;
+    if (va > vb) return 1 * dir;
+    return 0;
+  });
+}
+
+/** Format context length for display: 1000000 → "1M", 262000 → "262K", null → "—" */
+function fmtContext(ctx) {
+  if (!ctx || ctx <= 0) return `<span class="missing">—</span>`;
+  if (ctx >= 1e6) return `${(ctx / 1e6).toFixed(ctx % 1e6 === 0 ? 0 : 1)}M`;
+  if (ctx >= 1e3) return `${Math.round(ctx / 1e3)}K`;
+  return String(ctx);
+}
 function renderTable(rows, tokens) {
   if (rows.length === 0) {
-    els.resultsBody.innerHTML = `<tr><td colspan="8" class="empty">No offerings match your criteria. Some providers may not support the token types you entered.</td></tr>`;
+    els.resultsBody.innerHTML = `<tr><td colspan="9" class="empty">No offerings match your criteria. Some providers may not support the token types you entered.</td></tr>`;
     return;
   }
 
   els.resultsBody.innerHTML = rows
     .map((r, i) => {
       const p = r.model.pricing;
-      const cheapest = i === 0 && r.cost > 0;
+      const cheapest = i === 0 && r.cost > 0 && state.sortBy === 'cost' && state.sortDir === 'asc';
       const promo = r.model.discount > 0
         ? ` <span class="promo-badge" title="${(r.model.discount * 100).toFixed(0)}% off">promo</span>`
         : '';
+      // Use name if it's more readable than the raw ID, otherwise use ID
+      const modelDisplay = (r.model.name && r.model.name !== r.model.id) ? r.model.name : r.model.id;
       return `<tr>
         <td class="rank">${i + 1}${cheapest ? ' 🏆' : ''}</td>
         <td><span class="org-badge">${esc(orgDisplay(r.model.org))}</span></td>
         <td><span class="provider-badge">${esc(providerName(r.model.provider, r.model.provider_display))}</span></td>
-        <td>${esc(r.model.id)}${promo}</td>
+        <td>${esc(modelDisplay)}${promo}</td>
         <td class="num">${fmtPrice(p.input)}</td>
         <td class="num">${fmtPrice(p.output)}</td>
         <td class="num">${fmtPrice(p.cache_read)}</td>
+        <td class="num">${fmtContext(r.model.context_length)}</td>
         <td class="num cost">${fmtCost(r.cost)}</td>
       </tr>`;
     })

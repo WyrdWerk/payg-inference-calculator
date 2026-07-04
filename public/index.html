@@ -31,6 +31,14 @@
         <input type="text" id="modelSearch" placeholder="Type a model name…" list="modelList" autocomplete="off" />
         <datalist id="modelList"></datalist>
       </div>
+
+      <div class="control-group promo-control">
+        <label for="promoOnly">Filter</label>
+        <div class="promo-toggle">
+          <input type="checkbox" id="promoOnly" />
+          <label for="promoOnly">Promos only</label>
+        </div>
+      </div>
     </section>
 
     <!-- ── Token inputs ─────────────────────────────────────────────────── -->
@@ -82,16 +90,17 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Org</th>
-              <th>Provider</th>
-              <th>Model</th>
-              <th class="num">Input $/M</th>
-              <th class="num">Output $/M</th>
-              <th class="num">Cache Read $/M</th>
-              <th class="num">Total Cost</th>
+              <th class="sortable" data-sort="org">Org</th>
+              <th class="sortable" data-sort="provider">Provider</th>
+              <th class="sortable" data-sort="model">Model</th>
+              <th class="sortable num" data-sort="input">Input $/M</th>
+              <th class="sortable num" data-sort="output">Output $/M</th>
+              <th class="sortable num" data-sort="cache_read">Cache Read $/M</th>
+              <th class="sortable num" data-sort="context">Context</th>
+              <th class="sortable num" data-sort="cost">Total Cost</th>
           </thead>
           <tbody id="resultsBody">
-            <tr><td colspan="8" class="empty">Select a model or provider to see pricing.</td></tr>
+            <tr><td colspan="9" class="empty">Select a model or provider to see pricing.</td></tr>
         </table>
       </div>
     </section>

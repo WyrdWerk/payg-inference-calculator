@@ -140,6 +140,8 @@ function orgFromName(name) {
 
 /** Build canonical model ID for cross-referencing and dedup.
  *  Strips provider prefix, suffixes (:free, dates, -preview, :thinking), lowercases.
+ *  Date formats stripped: YYYY-MM-DD, YYYYMMDD, YYYYMM.
+ *  Preview formats stripped: -preview, -preview-MM-YY, -preview-MM-YYYY, -preview-YYYY-MM-DD.
  *  Turbo variants kept separate (different SKUs).
  *  Quantization suffixes baked into the ID (e.g. glm-5.2-fp8) are left as-is —
  *  they are distinct model entries, not collapsed. */
@@ -147,9 +149,13 @@ function canonicalId(id) {
   let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
   k = k.replace(/:free$/, '')
        .replace(/:thinking$/, '')
-       .replace(/-(\d{4})-\d{2}-\d{2}$/, '')
-       .replace(/-preview-\d{2}-\d{2}$/, '')
+       .replace(/-(\d{4})-(\d{2})-(\d{2})$/, '')   // -2024-08-06
+       .replace(/-preview-(\d{2})-(\d{4})$/, '')  // -preview-09-2025
+       .replace(/-preview-(\d{4})-(\d{2})-(\d{2})$/, '') // -preview-2024-08-06
+       .replace(/-preview-(\d{2})-(\d{2})$/, '')  // -preview-05-06
        .replace(/-preview$/, '')
+       .replace(/-(\d{8})$/, '')                  // -20260420
+       .replace(/-(\d{6})$/, '')                  // -250712
        .toLowerCase().trim();
   return k;
 }
@@ -476,6 +482,50 @@ const CSV_PROVIDER_NAMES = {
   xiaomimimo: 'Xiaomimimo',
 };
 
+// Context lengths for CSV-sourced providers (manually maintained — update when providers add models)
+const HYPER_CONTEXT_LENGTHS = {
+  'deepseek-v4-flash': 1000000,
+  'deepseek-v4-pro': 1000000,
+  'gemma-4-26b-a4b': 262144,
+  'glm-5': 202000,
+  'glm-5.1': 202000,
+  'glm-5.2': 1048576,
+  'gpt-oss-120b': 131072,
+  'kimi-k2.5': 262000,
+  'kimi-k2.6': 262000,
+  'kimi-k2.7-code': 262000,
+  'llama-3.3-70b-instruct': 128000,
+  'llama-4-maverick-17b-128e-instruct-fp8': 430000,
+  'minimax-m2.7': 204000,
+  'qwen3.6-flash': 1000000,
+  'qwen3.6-max': 256000,
+  'qwen3.6-plus': 1000000,
+  'qwen3.7-max': 1000000,
+  'qwen3.7-plus': 1000000,
+  'qwen3-coder-480b-a35b-instruct-int4-mixed-ar': 106000,
+  'qwen3-next-80b-a3b-instruct': 262000,
+};
+
+const XIAOMIMIMO_CONTEXT_LENGTHS = {
+  'mimo-v2.5': 1000000,
+  'mimo-v2.5-pro': 1000000,
+  'mimo-v2.5-pro-ultraspeed': 1000000,
+};
+
+// Makora context lengths (fetched from authenticated API on 2026-07-04, hardcoded to avoid
+// embedding API keys — manually update if Makora adds models)
+const MAKORA_CONTEXT_LENGTHS = {
+  'deepseek-v4-flash': 1000000,
+  'deepseek-v4-pro': 1000000,
+  'gemma-4-26b-a4b': 262144,
+  'glm-5.2-fp8': 980000,
+  'glm-5.2-nvfp4': 980000,
+  'kimi-k2.7-code': 262144,
+  'llama-3.3-70b-instruct-fp8': 128000,
+  'qwen3.6-27b-nvfp4': 260000,
+  'qwen3.6-35b-a3b-nvfp4': 260000,
+};
+
 function parseCsvProviders(csvText) {
   const lines = csvText.split('\n');
   const providers = [];
@@ -504,13 +554,18 @@ function parseCsvProviders(csvText) {
           const output = parts[2] ? parseFloat(parts[2]) : null;
           const cacheRead = parts[3] ? parseFloat(parts[3]) : null;
           if (input !== null || output !== null) {
+            const id = name.toLowerCase().replace(/\s+/g, '-');
+            const ctxMap = currentProvider === 'hyper' ? HYPER_CONTEXT_LENGTHS
+              : currentProvider === 'xiaomimimo' ? XIAOMIMIMO_CONTEXT_LENGTHS
+              : MAKORA_CONTEXT_LENGTHS;
+            const ctxLen = ctxMap[id] || null;
             providers[providers.length - 1].models.push({
-              id: name.toLowerCase().replace(/\s+/g, '-'),
+              id,
               name,
               provider: currentProvider,
               quantization: null,
               discount: 0,
-              context_length: null,
+              context_length: ctxLen,
               pricing: { input, output, cache_read: cacheRead, cache_write: null },
             });
           }
@@ -524,23 +579,24 @@ function parseCsvProviders(csvText) {
 
 // ── OpenCode Go (hardcoded pricing) ───────────────────────────────────────────
 
+// Context lengths manually maintained — update when OpenCode Go adds/changes models
 const OPENCODE_GO_MODELS = [
-  { id: 'glm-5.2', name: 'GLM-5.2', input: 1.40, output: 4.40, cache_read: 0.26 },
-  { id: 'glm-5.1', name: 'GLM-5.1', input: 1.40, output: 4.40, cache_read: 0.26 },
-  { id: 'kimi-k2.7-code', name: 'Kimi K2.7 Code', input: 0.95, output: 4.00, cache_read: 0.19 },
-  { id: 'kimi-k2.6', name: 'Kimi K2.6', input: 0.95, output: 4.00, cache_read: 0.16 },
-  { id: 'mimo-v2.5', name: 'MiMo V2.5', input: 0.14, output: 0.28, cache_read: 0.0028 },
-  { id: 'mimo-v2.5-pro', name: 'MiMo V2.5 Pro', input: 1.74, output: 3.48, cache_read: 0.0145 },
-  { id: 'minimax-m3', name: 'MiniMax M3', input: 0.30, output: 1.20, cache_read: 0.06 },
-  { id: 'minimax-m2.7', name: 'MiniMax M2.7', input: 0.30, output: 1.20, cache_read: 0.06 },
-  { id: 'minimax-m2.5', name: 'MiniMax M2.5', input: 0.30, output: 1.20, cache_read: 0.06 },
-  { id: 'qwen3.7-max', name: 'Qwen3.7 Max', input: 2.50, output: 7.50, cache_read: 0.50 },
-  { id: 'qwen3.7-plus', name: 'Qwen3.7 Plus (≤256K)', input: 0.40, output: 1.60, cache_read: 0.04 },
-  { id: 'qwen3.7-plus-long', name: 'Qwen3.7 Plus (>256K)', input: 1.20, output: 4.80, cache_read: 0.12 },
-  { id: 'qwen3.6-plus', name: 'Qwen3.6 Plus (≤256K)', input: 0.50, output: 3.00, cache_read: 0.05 },
-  { id: 'qwen3.6-plus-long', name: 'Qwen3.6 Plus (>256K)', input: 2.00, output: 6.00, cache_read: 0.20 },
-  { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', input: 1.74, output: 3.48, cache_read: 0.0145 },
-  { id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash', input: 0.14, output: 0.28, cache_read: 0.0028 },
+  { id: 'glm-5.2', name: 'GLM-5.2', input: 1.40, output: 4.40, cache_read: 0.26, context_length: 1048576 },
+  { id: 'glm-5.1', name: 'GLM-5.1', input: 1.40, output: 4.40, cache_read: 0.26, context_length: 202000 },
+  { id: 'kimi-k2.7-code', name: 'Kimi K2.7 Code', input: 0.95, output: 4.00, cache_read: 0.19, context_length: 262000 },
+  { id: 'kimi-k2.6', name: 'Kimi K2.6', input: 0.95, output: 4.00, cache_read: 0.16, context_length: 262000 },
+  { id: 'mimo-v2.5', name: 'MiMo V2.5', input: 0.14, output: 0.28, cache_read: 0.0028, context_length: 1000000 },
+  { id: 'mimo-v2.5-pro', name: 'MiMo V2.5 Pro', input: 1.74, output: 3.48, cache_read: 0.0145, context_length: 1000000 },
+  { id: 'minimax-m3', name: 'MiniMax M3', input: 0.30, output: 1.20, cache_read: 0.06, context_length: null },
+  { id: 'minimax-m2.7', name: 'MiniMax M2.7', input: 0.30, output: 1.20, cache_read: 0.06, context_length: 204000 },
+  { id: 'minimax-m2.5', name: 'MiniMax M2.5', input: 0.30, output: 1.20, cache_read: 0.06, context_length: null },
+  { id: 'qwen3.7-max', name: 'Qwen3.7 Max', input: 2.50, output: 7.50, cache_read: 0.50, context_length: 1000000 },
+  { id: 'qwen3.7-plus', name: 'Qwen3.7 Plus (≤256K)', input: 0.40, output: 1.60, cache_read: 0.04, context_length: 256000 },
+  { id: 'qwen3.7-plus-long', name: 'Qwen3.7 Plus (>256K)', input: 1.20, output: 4.80, cache_read: 0.12, context_length: 1000000 },
+  { id: 'qwen3.6-plus', name: 'Qwen3.6 Plus (≤256K)', input: 0.50, output: 3.00, cache_read: 0.05, context_length: 256000 },
+  { id: 'qwen3.6-plus-long', name: 'Qwen3.6 Plus (>256K)', input: 2.00, output: 6.00, cache_read: 0.20, context_length: 1000000 },
+  { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', input: 1.74, output: 3.48, cache_read: 0.0145, context_length: 1000000 },
+  { id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash', input: 0.14, output: 0.28, cache_read: 0.0028, context_length: 1000000 },
 ];
 
 function parseOpenCodeGo() {
@@ -550,7 +606,7 @@ function parseOpenCodeGo() {
     provider: 'opencode',
     quantization: null,
     discount: 0,
-    context_length: null,
+    context_length: m.context_length || null,
     pricing: { input: m.input, output: m.output, cache_read: m.cache_read, cache_write: null },
   }));
 }

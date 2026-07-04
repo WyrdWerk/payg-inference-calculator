@@ -159,6 +159,12 @@ select:focus, input:focus { border-color: var(--accent); }
 }
 .presets button:hover { border-color: var(--accent); color: var(--accent); }
 
+/* ── Promo filter ───────────────────────────────────────── */
+.promo-control { flex: 0 0 auto; min-width: auto; }
+.promo-toggle { display: flex; align-items: center; gap: 0.4rem; padding-top: 0.55rem; }
+.promo-toggle input { width: 1rem; height: 1rem; cursor: pointer; accent-color: var(--accent); }
+.promo-toggle label { font-size: 0.85rem; font-weight: 500; cursor: pointer; text-transform: none; letter-spacing: 0; }
+
 /* ── Results ───────────────────────────────────────────── */
 .results {
   background: var(--surface);
@@ -174,6 +180,10 @@ select:focus, input:focus { border-color: var(--accent); }
 table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 th, td { padding: 0.55rem 0.55rem; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
 th { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 600; }
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text); }
+th.sort-asc::after { content: ' ▲'; font-size: 0.65rem; color: var(--accent); }
+th.sort-desc::after { content: ' ▼'; font-size: 0.65rem; color: var(--accent); }
 th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
 tbody tr:hover { background: var(--surface-2); }
 .empty { text-align: center; color: var(--text-dim); padding: 2rem; }
