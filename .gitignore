@@ -7,3 +7,18 @@ node_modules/
 
 # IDE / tool metadata
 .reasonix/
+.vscode/
+.idea/
+
+# secrets — never commit credentials to a public repo
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Cloudflare wrangler local state
+.wrangler/
+.dev.vars
