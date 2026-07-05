@@ -63,8 +63,6 @@ function applyTheme(theme) {
 const savedTheme = localStorage.getItem('tw-theme');
 if (savedTheme) {
   applyTheme(savedTheme);
-} else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  applyTheme('dark');
 } else {
   applyTheme('light');
 }
