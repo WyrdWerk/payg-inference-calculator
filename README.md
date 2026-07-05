@@ -2,7 +2,7 @@
 
 Compare pay-as-you-go LLM inference pricing across inference providers. Enter your token volumes and find the cheapest option.
 
-**Live site:** https://payg-inference-calculator.pages.dev
+**Live site:** https://tokenwatch.wyrdwerk.com (also at https://payg-inference-calculator.pages.dev)
 
 ## How it works
 

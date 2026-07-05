@@ -108,11 +108,12 @@ npm run serve     # Serve public/ on localhost:3000
 ## Deployment
 
 Cloudflare Pages project: `payg-inference-calculator`
+- Custom domain: https://tokenwatch.wyrdwerk.com (also at https://payg-inference-calculator.pages.dev)
 - Production branch: `main`
 - Build output: `public/`
 - GitHub secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
 
-Manual deploy: `npx wrangler pages deploy public --branch main --commit-dirty true`
+Manual deploy: `npx wrangler pages deploy public --project-name payg-inference-calculator --branch main --commit-dirty true`
 
 ## Next steps
 
