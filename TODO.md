@@ -3,16 +3,7 @@
 ## Critical bugs
 
 ### STALE CACHE — column misalignment on returning visitors
-**Status**: Code is correct in production. The deployed index.html has 10 `<th>` headers and app.js renderModelRow outputs 10 matching `<td>` cells in the correct order. Verified against live site.
-
-**Real cause**: `<script src="app.js">` and `<link rel="stylesheet" href="styles.css">` have no cache-busting. Returning visitors get the OLD cached 9-cell app.js rendered against the NEW 10-column HTML header — causing data to appear in wrong columns (context in cache/write, total cost in context, total cost empty). This is a stale-browser/CDN cache issue, not a code bug.
-
-**Fix**: Add cache-busting query strings to app.js and styles.css in index.html:
-```html
-<link rel="stylesheet" href="styles.css?v=20260705" />
-<script src="app.js?v=20260705"></script>
-```
-Or use a content hash. Update the version string on each deploy. A hard-refresh (Ctrl+Shift+R) confirms the fix immediately.
+**Status**: ✅ FIXED. Cache-busting query strings added to `app.js` and `styles.css` in `index.html` (currently `?v=20260705c`). Update the version string on each deploy that changes CSS/JS.
 
 ### MOBILE RESPONSIVE LAYOUT
 The 10-column table is too wide for mobile screens. Needs work:
@@ -24,31 +15,21 @@ The 10-column table is too wide for mobile screens. Needs work:
 
 ## Planned features
 
-### ZDR (Zero Data Retention) enhancements
-**Status**: Not implemented. No API source available — needs manual data.
+### ZDR (Zero Data Retention) — ✅ IMPLEMENTED
+**Status**: Implemented. 634 of 891 models (71%) tagged ZDR.
 
-The OpenRouter `/api/v1/providers` endpoint provides privacy_policy_url, terms_of_service_url, status_page_url, headquarters, and datacenters — but NO structured ZDR/data-retention field. There is no way to filter or badge providers by ZDR status from any API we're using.
+**What's done**:
+- Pipeline: two-stage ZDR tagging via OpenRouter `/api/v1/endpoints/zdr` (endpoint-level) + `/api/frontend/all-providers` (provider-level fallback)
+- Manual providers: privacy policies reviewed for Crof (ZDR), Lilac (ZDR), Synthetic (ZDR), Makora (ZDR on PAYG), Hyper (not ZDR, 30d retention), OpenCode (not ZDR), Xiaomi (not ZDR)
+- `MANUAL_PROVIDER_META` enriched with `retains_prompts`, `may_train`, `retention_days`, `headquarters`, `datacenters`
+- Frontend: green ZDR badge on provider cells, "ZDR only" filter checkbox, ZDR row in compare modal, URL hash `#zdr=1`
+- API: `?zdr=true` filter on `/api/v1/models`, `zdr` field on `/api/v1/models/:id/providers` response
+- `providers_meta` includes `retains_prompts`, `may_train`, `retention_days` for 85 providers
 
-**Implementation plan**:
-1. Create `MANUAL_PROVIDER_ZDR` map in `fetch-pricing.mjs` (similar to `MANUAL_PROVIDER_META`) where each provider is flagged with:
-   - `zdr_supported`: boolean — does the provider offer Zero Data Retention?
-   - `no_training`: boolean — does the provider commit to not training on customer data?
-   - `retention_days`: number or null — data retention period (0 = ZDR, 7/30/90 = limited retention)
-   - `source`: link to where this info was verified (privacy policy section, ToS clause, etc.)
-2. User needs to provide ZDR data for providers — this is manual research, not API-fetchable
-3. Add `zdr` field to `providers_meta` in pricing.json (merge with existing metadata)
-4. Frontend enhancements:
-   - ZDR badge in provider cell (like HQ flag badges) — e.g. 🔒 icon or "ZDR" pill
-   - "ZDR only" filter toggle (like "Promos only")
-   - Data retention info in comparison modal
-   - Tooltip showing retention policy details on hover
-5. API support: add `?zdr=true` filter to `/api/v1/models`
-
-**Providers known to offer ZDR** (from user input — verify before committing):
-- OpenCode Go: mentions ZDR at https://opencode.ai/go
-- Others need research
-
-**Dependencies**: User must provide ZDR status per provider before implementation.
+**Remaining**:
+- EmberCloud ZDR status not yet determined (no policy URLs reviewed)
+- Tooltip showing retention policy details on hover (currently badge only)
+- Data retention info in comparison modal (ZDR badge shown, retention days not displayed)
 
 ### Auth-gated direct providers (A1 — postponed)
 Cerebras, Groq, Together, SiliconFlow, Fireworks, Baseten, Hyperbolic, Replicate, Mistral all have auth-gated `/v1/models` endpoints. All are already covered as OpenRouter backends (Tier 2). Direct fetch would give Tier-1 precedence + fresher data, not new model coverage. Postponed until user has API keys.

@@ -112,6 +112,7 @@ export async function onRequestGet(context) {
           provider_display: m.provider_display,
           quantization: m.quantization,
           discount: m.discount,
+          zdr: m.zdr || false,
           context_length: m.context_length,
           max_completion_tokens: m.max_completion_tokens,
           uptime_30m: m.uptime_30m,
@@ -135,6 +136,8 @@ export async function onRequestGet(context) {
 
     const promo = params.get('promo');
     if (promo === 'true') models = models.filter(m => m.discount > 0);
+    const zdr = params.get('zdr');
+    if (zdr === 'true') models = models.filter(m => m.zdr === true);
 
     const search = params.get('search');
     if (search) {

@@ -6,7 +6,7 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 
 ## How it works
 
-1. **`scripts/fetch-pricing.mjs`** fetches pricing from 3 tiers: direct providers (DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova), OpenRouter's de-aggregated `/endpoints` API (per-backend pricing for Fireworks, Together, Novita, SiliconFlow, etc.), and CSV-sourced static providers (Hyper, Makora, Xiaomimimo, OpenCode Go). Also fetches provider metadata (privacy policies, ToS, HQ, datacenters) from OpenRouter's `/api/v1/providers`. Normalizes all pricing to $/M tokens and writes `public/pricing.json`.
+1. **`scripts/fetch-pricing.mjs`** fetches pricing from 3 tiers: direct providers (DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova), OpenRouter's de-aggregated `/endpoints` API (per-backend pricing for Fireworks, Together, Novita, SiliconFlow, etc.), and CSV-sourced static providers (Hyper, Makora, Xiaomimimo, OpenCode Go). Also fetches provider metadata (privacy policies, ToS, HQ, datacenters, data retention policies) from OpenRouter's `/api/v1/providers` and `/api/frontend/all-providers`, and ZDR (Zero Data Retention) endpoint data from `/api/v1/endpoints/zdr`. Normalizes all pricing to $/M tokens and writes `public/pricing.json`.
 2. **`public/`** is a zero-dependency static site (HTML/CSS/JS) that loads `pricing.json` client-side and computes costs in-browser.
 3. **`functions/api/v1/`** provides a queryable API via Cloudflare Pages Functions (filtering, sorting, model lookup).
 4. **`public/widget/`** contains an embeddable widget for external sites.
@@ -18,10 +18,11 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 - **Search by model**: Type a model name (e.g. "glm", "kimi", "gpt-4o") to filter results to matching models across all providers.
 - **Both together**: Use both search fields simultaneously (AND filter).
 - **Token input**: Enter total tokens (in millions) and set the percentage breakdown across input, cached input, and output. The calculator computes costs per offering and sorts cheapest-first.
-- **Cost mode**: Toggle between "Per Request" and "Monthly Volume" — same computation, different labels.
+- **Cost mode**: Toggle between "Per Request" (enter total tokens, see per-request cost) and "Monthly Volume" (enter daily tokens, see monthly cost × 30 days).
 - **Group by**: Group results by Organization, Provider, or keep flat.
 - **Compare**: Checkboxes on each row let you select up to 4 models for side-by-side comparison in a modal.
-- **Provider metadata**: HQ flag badges (🇺🇸🇸🇬🇨🇳) and links to privacy policy, ToS, and status pages appear next to provider names.
+- **Provider metadata**: HQ flag badges (🇺🇸🇸🇬🇨🇳) and links to privacy policy, ToS, and status pages appear next to provider names. Data policy fields (retains prompts, may train, retention days) are sourced from OpenRouter and provider policy review.
+- **ZDR badges**: Models from providers with Zero Data Retention show a green "ZDR" badge. Use the "ZDR only" filter to restrict results to ZDR-compliant offerings.
 - **Promo badges**: Discounted offerings show a "promo" badge with the discount percentage.
 - **Shareable URLs**: All state (search, tokens, mix, sort, mode, group) is encoded in the URL hash for sharing.
 - **Cache Write column**: Display-only — shows cache write pricing when available, not included in cost computation.
@@ -51,8 +52,7 @@ Presets: Agentic (2.5/97/0.5), Balanced (30/50/20), Heavy output (10/0/90), No c
 | Hardcoded | Tier 3 | OpenCode Go (16 models with user-provided pricing) |
 
 **3-tier precedence**: when the same (model, provider) appears in multiple tiers, the higher-authority tier wins — direct > OpenRouter > CSV/hardcoded. Quantization is not part of the dedup key — same model+provider at different quants collapses to one row.
-
-**Total: ~891 text-generation models across ~75 inference providers and 60+ underlying orgs** (Anthropic, OpenAI, Google, DeepSeek, Z.ai, Qwen, Meta, Mistral, etc.)
+**Total: ~891 text-generation models across ~75 inference providers and 60+ underlying orgs** (Anthropic, OpenAI, Google, DeepSeek, Z.ai, Qwen, Meta, Mistral, etc.). **634 models (71%) are ZDR-compliant** — the provider does not store prompts or outputs after processing.
 
 Only text-generation models are included. TTS, image generation, video generation, and embeddings are filtered out. Multimodal input (text+image→text) is allowed.
 
@@ -61,9 +61,9 @@ Only text-generation models are included. TTS, image generation, video generatio
 Cloudflare Pages Functions serve a queryable API at `/api/v1/`:
 
 - `GET /api/v1/stats` — summary statistics
-- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters)
-- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`
-- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost
+- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`)
+- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` when the provider has Zero Data Retention.
+- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` field per provider)
 
 All responses include CORS headers for cross-origin use.
 

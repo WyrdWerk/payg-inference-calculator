@@ -25,9 +25,13 @@ Static site comparing pay-as-you-go LLM API pricing across inference providers. 
   - **Tier 2 — OpenRouter de-aggregated**: `/v1/models` lists models, then `/endpoints` per model returns per-backend pricing. Each backend (Fireworks, Together, Novita, SiliconFlow, etc.) becomes its own row — NOT "OpenRouter"
   - **Tier 3 — CSV/hardcoded**: Hyper, Makora, Xiaomimimo (CSV), OpenCode Go (hardcoded)
   - **3-tier precedence**: `(canonical_model, normalized_provider)` — direct wins over OpenRouter, which wins over CSV/hardcoded. Quantization is NOT part of the dedup key — same model+provider at different quants collapses to one row (first-seen/highest-tier wins).
-  - Writes `public/pricing.json` with ~891 text-generation models across ~75 inference providers
-- **Provider metadata**: `fetchProviderMeta()` fetches OpenRouter `/api/v1/providers` for policy URLs, HQ, datacenters. Merges with `MANUAL_PROVIDER_META` for providers not in OR (crof, ember, hyper, lilac, makora, synthetic, opencode). Alias resolution via `PROVIDER_NAME_MAP` (e.g. `xiaomimimo` inherits `xiaomi` metadata).
-- **Frontend**: `public/` static site loads `pricing.json` client-side. Dual typeahead search (by inference provider and by model). Cost computation entirely in-browser. Features: group-by toggle (None/Org/Provider), comparison mode (side-by-side modal), monthly cost estimator mode, URL hash state persistence, provider HQ flag badges, privacy/ToS/status links, promo badges, Cache Write column (display-only).
+  - Writes `public/pricing.json` with ~891 text-generation models across ~75 inference providers. **634 models (71%) are ZDR-tagged.**
+- **ZDR (Zero Data Retention)**: Two-stage tagging in `main()`:
+  1. **Endpoint-level**: `fetchZdrEndpoints()` fetches `/api/v1/endpoints/zdr` (documented, no auth) and builds a Set of `dedupKey()` strings. Models matching the set get `zdr: true`.
+  2. **Provider-level fallback**: models not tagged at endpoint level are checked against `providers_meta[provider].retains_prompts === false`.
+  - `MANUAL_PROVIDER_META` includes `retains_prompts`, `may_train`, `retention_days` for 8 manual providers (crof, ember, hyper, lilac, makora, synthetic, opencode, xiaomimimo) based on privacy policy review.
+- **Provider metadata**: `fetchProviderMeta()` fetches 3 sources: (1) `MANUAL_PROVIDER_META` (manual, includes ZDR fields), (2) OpenRouter `/api/v1/providers` (policy URLs, HQ, datacenters — guarded to not overwrite manual entries), (3) `/api/frontend/all-providers` (undocumented, non-fatal enrichment for `dataPolicy.retainsPrompts`, `training`, `retentionDays`). Alias resolution via `PROVIDER_NAME_MAP` (e.g. `xiaomimimo` inherits `xiaomi` metadata).
+- **Frontend**: `public/` static site loads `pricing.json` client-side. Dual typeahead search (by inference provider and by model). Cost computation entirely in-browser. Features: group-by toggle (None/Org/Provider), comparison mode (side-by-side modal), cost mode toggle (Per Request / Monthly Volume with ×30 multiplier), URL hash state persistence, provider HQ flag badges, ZDR badges + "ZDR only" filter, privacy/ToS/status links, promo badges, Cache Write column (display-only).
 - **API**: Cloudflare Pages Functions at `functions/api/v1/` serve queryable endpoints: `/api/v1/models` (with filters), `/api/v1/models/:id/providers`, `/api/v1/stats`, `/api/v1/providers`.
 - **Widget**: `public/widget/embed.js` — embeddable JS snippet using Shadow DOM, auto-detects `[data-tw-model]` elements, fetches the API, renders compact pricing cards.
 - **CI/CD**: `.github/workflows/refresh-pricing.yml` — daily cron at 00:00 UTC (fetch → commit → deploy) + push-to-main trigger (deploy-only, no fetch).
@@ -74,7 +78,7 @@ Only text-generation models are included (output must be text). Filtering by sou
 - `datacenters` — array of region codes
 - `source` — `openrouter` or `manual`
 
-Manual entries (`MANUAL_PROVIDER_META` in fetch-pricing.mjs) cover providers not in OR: crof, ember, hyper, lilac, makora, synthetic, opencode. OR data takes precedence over manual for the same slug.
+Manual entries (`MANUAL_PROVIDER_META` in fetch-pricing.mjs) cover providers not in OR: crof, ember, hyper, lilac, makora, synthetic, opencode, xiaomimimo. **Manual entries take precedence** — OR data only fills missing URL fields when the slug matches a manual entry; manual ZDR/policy fields are never overwritten.
 
 ### Org extraction
 
@@ -102,7 +106,7 @@ Percentage-based: user enters total tokens (in millions) + percentage breakdown 
 
 Cache write pricing is **display-only** — shown in the table column and comparison modal but NOT included in cost computation. Cache write is a one-time cost (writing to cache on first request), not a recurring per-request throughput slice. The percentage model represents per-request throughput where cache_read replaces input on subsequent requests.
 
-Two cost modes: **Per Request** (default) and **Monthly Volume** — same computation, different labels.
+Two cost modes: **Per Request** (default — enter total tokens, see per-call cost) and **Monthly Volume** (enter daily tokens, see monthly cost × 30). The `modeMultiplier` is applied at the `costFor()` call site in `computeAndRender()` and `showCompareModal()`, not inside `costFor()` itself.
 
 ### Resilience
 
@@ -116,12 +120,12 @@ The pipeline includes unattended-operation safeguards:
 
 | File | Purpose |
 |---|---|
-| `scripts/fetch-pricing.mjs` | 3-tier fetch, OpenRouter de-aggregation, provider metadata, org extraction, dedup, pricing normalization, dry-run mode |
-| `public/app.js` | Frontend state, URL hash persistence, search, cost computation, group-by, comparison mode, monthly mode, HQ badges, meta links, rendering |
-| `public/index.html` | UI layout: controls, usage-grid with mode toggle, 10-column results table, group-by, comparison tray + modal |
-| `public/styles.css` | Dark/light theme, all badges (org, provider, promo, HQ, meta-link), group headers, comparison modal/tray, mode toggle, responsive |
-| `public/pricing.json` | Generated data — models (with pricing, cache_write, uptime_30m, max_completion_tokens), providers, providers_meta (do not hand-edit — CI refreshes daily) |
-| `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — /models, /models/:id/providers, /stats, /providers with filtering, sorting, pagination, CORS |
+| `scripts/fetch-pricing.mjs` | 3-tier fetch, OpenRouter de-aggregation, ZDR tagging (endpoint + provider level), provider metadata + data policy enrichment, org extraction, dedup, pricing normalization, dry-run mode |
+| `public/app.js` | Frontend state, URL hash persistence, search, cost computation (per-request + monthly ×30), group-by, comparison mode, ZDR filter/badge, HQ badges, meta links, rendering |
+| `public/index.html` | UI layout: controls, usage-grid with mode toggle, 10-column results table, ZDR + promo filters, group-by, comparison tray + modal |
+| `public/styles.css` | Dark/light theme, all badges (org, provider, promo, ZDR, HQ, meta-link), group headers, comparison modal/tray, mode toggle, responsive |
+| `public/pricing.json` | Generated data — models (with pricing, cache_write, uptime_30m, max_completion_tokens, zdr), providers, providers_meta (with retains_prompts, may_train, retention_days) — do not hand-edit, CI refreshes daily |
+| `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — /models (with ?zdr=true filter), /models/:id/providers (with zdr field), /stats, /providers, CORS |
 | `public/widget/embed.js` | Embeddable widget — Shadow DOM, auto-detects [data-tw-model], fetches API, renders pricing card |
 | `public/widget/demo.html` | Widget demo page |
 | `.github/workflows/refresh-pricing.yml` | Daily cron (fetch+commit+deploy) + push-to-main (deploy-only) |
@@ -150,9 +154,9 @@ Manual deploy: `npx wrangler pages deploy public --project-name payg-inference-c
 
 - `GET /api/v1/` — API info and available endpoints
 - `GET /api/v1/stats` — summary: model count, provider count, per-provider counts
-- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters)
-- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`
-- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost
+- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`)
+- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` when ZDR-compliant.
+- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` field per provider)
 
 ## Next steps
 
