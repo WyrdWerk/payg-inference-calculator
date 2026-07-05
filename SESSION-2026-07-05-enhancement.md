@@ -66,7 +66,7 @@ Probed 14 LLM inference providers for public (no-auth) /v1/models endpoints:
 
 6. **Widget in public/widget/** — must be inside public/ to deploy via `wrangler pages deploy public`. Root-level widget/ dir was orphaned and removed.
 
-7. **Mobile UI is broken** — adding the Cache Write column (9→10 columns) caused column misalignment. Data is rendering in wrong columns. Documented as critical bug in TODO.md.
+7. **Stale cache column misalignment** — adding the Cache Write column (9→10 columns) caused returning visitors to see misaligned data (stale 9-cell cached app.js against new 10-column HTML). Root cause was NO cache-busting on script/style tags, NOT a code bug — verified live: 10 th headers match 10 td cells in correct order. Fixed by adding ?v=20260705a query strings. Mobile responsive layout is a separate legitimate TODO.
 
 ## Action Items
 
@@ -135,11 +135,10 @@ Probed 14 LLM inference providers for public (no-auth) /v1/models endpoints:
 
 ## Next Steps
 
-1. **Fix mobile UI / column misalignment** — critical bug, data rendering in wrong columns
-2. **Implement ZDR enhancements** — needs user to provide ZDR status per provider
+1. **Mobile responsive layout** — 10-column table too wide for mobile, needs card layout for ≤640px
+2. **Implement ZDR enhancements** — needs user to provide ZDR status per provider (no API source)
 3. **Start a fresh session** — context window is very large, rate limits were hit
-4. **Verify column alignment** — renderModelRow td order must match index.html th order exactly
-5. **Mobile responsive layout** — card layout for ≤640px
+4. **Cache-busting maintenance** — update ?v= query string in index.html on each deploy that changes app.js/styles.css
 
 ## Lessons Learned (this session)
 
@@ -150,3 +149,5 @@ Probed 14 LLM inference providers for public (no-auth) /v1/models endpoints:
 5. **Widget deployment**: `wrangler pages deploy public` only deploys the public/ directory. Widget files must be inside public/ to deploy.
 6. **PROVIDER_NAME_MAP changes affect dedup**: Adding 'xiaomimimo'→'xiaomi' changed normalizeProvider() behavior, causing CSV Xiaomi rows to dedup against OR xiaomi rows (correct but dropped 2 models).
 7. **Rate limits**: Very long sessions with many tool calls and large accumulated context will hit inference gateway rate limits. Start fresh sessions for new work.
+
+8. **Stale browser cache masquerading as code bug**: User reported "column misalignment, data in wrong columns" after adding a 10th column. The deployed code was correct (10 th = 10 td, matching order). Root cause: `<script src="app.js">` with no cache-busting → returning visitors got old 9-cell JS against new 10-col HTML. Fix: add `?v=` query strings to script/style tags. Always cache-bust when changing table column counts.
