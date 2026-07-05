@@ -34,6 +34,7 @@ const els = {
   resultsTitle: $('resultsTitle'),
   lastUpdated: $('lastUpdated'),
   promoOnly: $('promoOnly'),
+  zdrOnly: $('zdrOnly'),
   modePerRequest: $('modePerRequest'),
   modeMonthly: $('modeMonthly'),
   totalTokensLabel: $('totalTokensLabel'),
@@ -59,6 +60,7 @@ const DEFAULTS = {
   providerSearch: '',
   modelSearch: '',
   promoOnly: false,
+  zdrOnly: false,
   sortBy: 'cost',
   sortDir: 'asc',
   groupBy: 'none',
@@ -89,6 +91,7 @@ function serializeState() {
 
   const model = els.modelSearch.value.trim();
   if (model) params.set('model', model);
+  if (els.zdrOnly?.checked) params.set('zdr', '1');
 
   if (els.promoOnly.checked) params.set('promo', '1');
 
@@ -110,6 +113,7 @@ function deserializeState(hash) {
   els.cacheReadPct.value = DEFAULTS.cacheReadPct;
   els.outputPct.value = DEFAULTS.outputPct;
   els.providerSearch.value = DEFAULTS.providerSearch;
+  if (els.zdrOnly) els.zdrOnly.checked = DEFAULTS.zdrOnly;
   els.modelSearch.value = DEFAULTS.modelSearch;
   els.promoOnly.checked = DEFAULTS.promoOnly;
   state.sortBy = DEFAULTS.sortBy;
@@ -137,6 +141,7 @@ function deserializeState(hash) {
   if (params.has('provider')) els.providerSearch.value = params.get('provider');
   if (params.has('model')) els.modelSearch.value = params.get('model');
   if (params.has('promo')) els.promoOnly.checked = params.get('promo') === '1';
+  if (params.has('zdr') && els.zdrOnly) els.zdrOnly.checked = params.get('zdr') === '1';
   if (params.has('sort')) {
     const [by, dir] = params.get('sort').split(':');
     if (by) state.sortBy = by;
@@ -258,6 +263,7 @@ function attachListeners() {
   els.providerSearch.addEventListener('input', () => computeAndRender());
   els.modelSearch.addEventListener('input', () => computeAndRender());
   els.promoOnly.addEventListener('change', () => computeAndRender());
+  if (els.zdrOnly) els.zdrOnly.addEventListener('change', () => computeAndRender());
   els.groupBy.addEventListener('change', () => computeAndRender());
 
   els.resultsBody.addEventListener('click', (e) => {
@@ -359,6 +365,7 @@ function showCompareModal() {
     { label: 'Input $/M', getValue: m => fmtPrice(m.pricing.input), getRaw: m => m.pricing.input, isCost: true },
     { label: 'Output $/M', getValue: m => fmtPrice(m.pricing.output), getRaw: m => m.pricing.output, isCost: true },
     { label: 'Cache Read $/M', getValue: m => fmtPrice(m.pricing.cache_read), getRaw: m => m.pricing.cache_read, isCost: true },
+    { label: 'ZDR', getValue: m => m.zdr ? '<span class="zdr-badge">ZDR</span>' : '—' },
     { label: 'Cache Write $/M', getValue: m => fmtPrice(m.pricing.cache_write), getRaw: m => m.pricing.cache_write, isCost: true },
     { label: 'Context', getValue: m => fmtContext(m.context_length) },
     { label: 'Max Output Tokens', getValue: m => m.max_completion_tokens ? m.max_completion_tokens.toLocaleString() : '<span class="missing">—</span>' },
@@ -471,6 +478,7 @@ function computeAndRender() {
   // Provider search matches against inference provider (display name or raw key)
   // Model search matches against canonical model display name
   const promoOnly = els.promoOnly.checked;
+  const zdrOnly = els.zdrOnly?.checked;
   let offerings = state.data.models.filter((m) => {
     if (provSearch) {
       const provName = providerName(m.provider, m.provider_display).toLowerCase();
@@ -487,6 +495,7 @@ function computeAndRender() {
       if (!modDisplay.includes(q) && !rawId.includes(q)) return false;
     }
     if (promoOnly && !(m.discount > 0)) return false;
+    if (zdrOnly && !m.zdr) return false;
     return true;
   });
 
@@ -499,6 +508,7 @@ function computeAndRender() {
   } else if (provSearch) {
     title = `All models from '${provSearch}'`;
   }
+  if (zdrOnly) title += ' (ZDR only)';
   if (promoOnly) title += ' (promos only)';
   els.resultsTitle.textContent = title;
 
@@ -637,7 +647,8 @@ function providerMetaHtml(providerKey) {
 
 function renderProviderCell(r) {
   const name = providerName(r.model.provider, r.model.provider_display);
-  return `<span class="provider-badge">${esc(name)}</span>${providerMetaHtml(r.model.provider)}`;
+  const zdrBadge = r.model.zdr ? ' <span class="zdr-badge" title="Zero Data Retention — provider does not store prompts">ZDR</span>' : '';
+  return `<span class="provider-badge">${esc(name)}</span>${zdrBadge}${providerMetaHtml(r.model.provider)}`;
 }
 
 function globalCheapestCost(rows) {

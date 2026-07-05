@@ -569,6 +569,30 @@ async function fetchOpenRouter() {
   return { models: priced, modelCount: textModels.length, failed };
 }
 
+/**
+ * Fetch ZDR (Zero Data Retention) endpoints from OpenRouter's documented API.
+ * Returns a Set of "canonicalId|normalizedProvider" keys for ZDR-compliant endpoints.
+ * Non-fatal: returns empty Set on failure (ZDR flags simply won't be set).
+ */
+async function fetchZdrEndpoints() {
+  try {
+    const data = await fetchJsonWithRetry('https://openrouter.ai/api/v1/endpoints/zdr');
+    const endpoints = data.data || [];
+    const zdrKeys = new Set();
+    for (const ep of endpoints) {
+      // Build key matching dedupKey(): canonicalId(model_id)|normalizeProvider(provider_name)
+      const key = dedupKey({ id: ep.model_id, provider: normalizeProvider(ep.provider_name) });
+      zdrKeys.add(key);
+    }
+    const provCount = new Set(endpoints.map(e => e.provider_name)).size;
+    console.log(`  ZDR endpoints: ${endpoints.length} across ${provCount} providers`);
+    return zdrKeys;
+  } catch (err) {
+    console.error(`⚠ ZDR endpoint fetch failed: ${err.message} — continuing without ZDR flags`);
+    return new Set();
+  }
+}
+
 async function fetchProviderMeta() {
   const meta = {};
   for (const [slug, info] of Object.entries(MANUAL_PROVIDER_META)) {
@@ -590,6 +614,33 @@ async function fetchProviderMeta() {
     console.log(`  Provider metadata: ${providers.length} from OpenRouter + ${Object.keys(MANUAL_PROVIDER_META).length} manual`);
   } catch (err) {
     console.error(`⚠ Provider metadata fetch failed: ${err.message} — continuing with manual only`);
+  }
+
+  // Enrich with data policy (ZDR, training, retention) from frontend endpoint.
+  // Undocumented endpoint — non-fatal optional enrichment. Only updates fields
+  // that are present; never overwrites manual entries' existing values.
+  try {
+    const resp = await fetchJsonWithRetry('https://openrouter.ai/api/frontend/all-providers');
+    const fpProviders = resp.data || [];
+    let enriched = 0;
+    for (const p of fpProviders) {
+      const slug = p.slug || normalizeProvider(p.displayName || p.name);
+      if (!meta[slug]) meta[slug] = { source: 'frontend' };
+      const dp = p.dataPolicy || {};
+      // Only set data policy fields from frontend (don't clobber manual URLs)
+      if (dp.retainsPrompts !== undefined) meta[slug].retains_prompts = dp.retainsPrompts;
+      if (dp.training !== undefined) meta[slug].may_train = dp.training;
+      if (dp.retentionDays !== undefined) meta[slug].retention_days = dp.retentionDays;
+      // Fill HQ/datacenters if not already set
+      if (!meta[slug].headquarters && p.headquarters) meta[slug].headquarters = p.headquarters;
+      if (!meta[slug].datacenters && p.datacenters) meta[slug].datacenters = p.datacenters;
+      if (!meta[slug].status_page_url && p.statusPageUrl) meta[slug].status_page_url = p.statusPageUrl;
+      enriched++;
+    }
+    const zdrCount = fpProviders.filter(p => p.dataPolicy?.retainsPrompts === false).length;
+    console.log(`  Data policy enrichment: ${enriched} providers (${zdrCount} ZDR) from frontend`);
+  } catch (err) {
+    console.error(`⚠ Data policy enrichment failed: ${err.message} — continuing without ZDR/training metadata`);
   }
   // Resolve alias keys: if PROVIDER_NAME_MAP maps a raw key → canonical key
   // that exists in meta, copy the canonical's metadata to the raw key.
@@ -888,8 +939,34 @@ async function main() {
   }
   if (unresolved) console.warn(`⚠ ${unresolved} models could not resolve org — using provider name as fallback`);
 
+  // ── ZDR (Zero Data Retention) tagging ──
+  // Per-endpoint ZDR from documented /api/v1/endpoints/zdr.
+  // Falls back to provider-level dataPolicy from providers_meta (retains_prompts=false).
+  const zdrEndpoints = await fetchZdrEndpoints();
+  let zdrCount = 0;
+  for (const m of out.models) {
+    const key = dedupKey(m);
+    if (zdrEndpoints.has(key)) {
+      m.zdr = true;
+      zdrCount++;
+    }
+  }
+  if (zdrCount > 0) console.log(`  ZDR-tagged ${zdrCount} of ${out.models.length} models from endpoint-level data`);
   // ── Provider metadata ──
   out.providers_meta = await fetchProviderMeta();
+  // Provider-level ZDR fallback: if endpoint-level didn't tag a model,
+  // check if its provider's dataPolicy says retains_prompts=false.
+  let provZdrCount = 0;
+  for (const m of out.models) {
+    if (m.zdr) continue;
+    const pm = out.providers_meta?.[m.provider];
+    if (pm?.retains_prompts === false) {
+      m.zdr = true;
+      provZdrCount++;
+    }
+  }
+  if (provZdrCount > 0) console.log(`  ZDR-tagged ${provZdrCount} more from provider-level dataPolicy`);
+  if (zdrCount + provZdrCount > 0) console.log(`  Total ZDR: ${zdrCount + provZdrCount} of ${out.models.length} models`);
 
   if (dryRun) {
     console.log('\n── Summary ──');
