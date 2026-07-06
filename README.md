@@ -26,6 +26,7 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 - **Subscription badges**: Providers with coding plan subscriptions show a blue "Sub" badge. Use the "Sub only" filter to restrict results to subscription providers (13 providers, 141 models).
 - **Promo badges**: Discounted offerings show a "promo" badge with the discount percentage.
 - **Cache write**: An adjustable one-time cache-population cost with amortization over N requests, included in the Total Cost column.
+- **Shareable URLs**: All state (search, tokens, mix, sort, mode, group, filters, ZDR, subscription) is encoded in the URL hash for sharing.
 
 ### Token calculation
 
