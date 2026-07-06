@@ -1,0 +1,471 @@
+{
+  "generated_at": "2026-07-06T11:51:21.325Z",
+  "models": [
+    {
+      "id": "alibaba/happyhorse-1.1",
+      "name": "Alibaba: HappyHorse 1.1",
+      "org": "alibaba",
+      "provider": "alibaba",
+      "supported_durations": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.0988
+        },
+        {
+          "resolution": "1080p",
+          "audio": null,
+          "cost_per_second": 0.1278
+        }
+      ]
+    },
+    {
+      "id": "alibaba/happyhorse-1.0",
+      "name": "Alibaba: HappyHorse 1.0",
+      "org": "alibaba",
+      "provider": "alibaba",
+      "supported_durations": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.0988
+        },
+        {
+          "resolution": "1080p",
+          "audio": null,
+          "cost_per_second": 0.1694
+        }
+      ]
+    },
+    {
+      "id": "x-ai/grok-imagine-video",
+      "name": "xAI: Grok Imagine Video",
+      "org": "xai",
+      "provider": "xai",
+      "supported_durations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "supported_resolutions": [
+        "480p",
+        "720p"
+      ],
+      "pricing": [
+        {
+          "resolution": "480p",
+          "audio": null,
+          "cost_per_second": 0.05
+        },
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.07
+        }
+      ]
+    },
+    {
+      "id": "kwaivgi/kling-v3.0-pro",
+      "name": "Kling: Video v3.0 Pro",
+      "org": "kling",
+      "provider": "kling",
+      "supported_durations": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "supported_resolutions": [
+        "720p"
+      ],
+      "pricing": [
+        {
+          "resolution": "480p",
+          "audio": null,
+          "cost_per_second": 0.112
+        },
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.112
+        },
+        {
+          "resolution": "1080p",
+          "audio": null,
+          "cost_per_second": 0.112
+        },
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.112
+        },
+        {
+          "resolution": null,
+          "audio": true,
+          "cost_per_second": 0.168
+        }
+      ]
+    },
+    {
+      "id": "kwaivgi/kling-v3.0-std",
+      "name": "Kling: Video v3.0 Standard",
+      "org": "kling",
+      "provider": "kling",
+      "supported_durations": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "supported_resolutions": [
+        "720p"
+      ],
+      "pricing": [
+        {
+          "resolution": "480p",
+          "audio": null,
+          "cost_per_second": 0.084
+        },
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.084
+        },
+        {
+          "resolution": "1080p",
+          "audio": null,
+          "cost_per_second": 0.084
+        },
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.084
+        },
+        {
+          "resolution": null,
+          "audio": true,
+          "cost_per_second": 0.126
+        }
+      ]
+    },
+    {
+      "id": "google/veo-3.1-fast",
+      "name": "Google: Veo 3.1 Fast",
+      "org": "google",
+      "provider": "google",
+      "supported_durations": [
+        4,
+        6,
+        8
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p",
+        "4K"
+      ],
+      "pricing": [
+        {
+          "resolution": "720p",
+          "audio": false,
+          "cost_per_second": 0.08
+        },
+        {
+          "resolution": "720p",
+          "audio": true,
+          "cost_per_second": 0.1
+        },
+        {
+          "resolution": "4k",
+          "audio": false,
+          "cost_per_second": 0.25
+        },
+        {
+          "resolution": "4k",
+          "audio": true,
+          "cost_per_second": 0.3
+        },
+        {
+          "resolution": null,
+          "audio": false,
+          "cost_per_second": 0.1
+        },
+        {
+          "resolution": null,
+          "audio": true,
+          "cost_per_second": 0.12
+        }
+      ]
+    },
+    {
+      "id": "google/veo-3.1-lite",
+      "name": "Google: Veo 3.1 Lite",
+      "org": "google",
+      "provider": "google",
+      "supported_durations": [
+        8,
+        4,
+        6
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": "720p",
+          "audio": false,
+          "cost_per_second": 0.03
+        },
+        {
+          "resolution": "720p",
+          "audio": true,
+          "cost_per_second": 0.05
+        },
+        {
+          "resolution": null,
+          "audio": false,
+          "cost_per_second": 0.05
+        },
+        {
+          "resolution": null,
+          "audio": true,
+          "cost_per_second": 0.08
+        }
+      ]
+    },
+    {
+      "id": "kwaivgi/kling-video-o1",
+      "name": "Kling: Video O1",
+      "org": "kling",
+      "provider": "kling",
+      "supported_durations": [
+        5,
+        10
+      ],
+      "supported_resolutions": [
+        "720p"
+      ],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.112
+        }
+      ]
+    },
+    {
+      "id": "minimax/hailuo-2.3",
+      "name": "MiniMax: Hailuo 2.3",
+      "org": "minimax",
+      "provider": "minimax",
+      "supported_durations": [
+        6,
+        10
+      ],
+      "supported_resolutions": [
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.0817
+        }
+      ]
+    },
+    {
+      "id": "alibaba/wan-2.7",
+      "name": "Alibaba: Wan 2.7",
+      "org": "alibaba",
+      "provider": "alibaba",
+      "supported_durations": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.1
+        }
+      ]
+    },
+    {
+      "id": "alibaba/wan-2.6",
+      "name": "Alibaba: Wan 2.6",
+      "org": "alibaba",
+      "provider": "alibaba",
+      "supported_durations": [
+        5,
+        10
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": "480p",
+          "audio": null,
+          "cost_per_second": 0.04
+        },
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.08
+        },
+        {
+          "resolution": "1080p",
+          "audio": null,
+          "cost_per_second": 0.12
+        }
+      ]
+    },
+    {
+      "id": "openai/sora-2-pro",
+      "name": "OpenAI: Sora 2 Pro",
+      "org": "openai",
+      "provider": "openai",
+      "supported_durations": [
+        4,
+        8,
+        12,
+        16,
+        20
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p"
+      ],
+      "pricing": [
+        {
+          "resolution": "720p",
+          "audio": null,
+          "cost_per_second": 0.3
+        },
+        {
+          "resolution": "1080p",
+          "audio": null,
+          "cost_per_second": 0.5
+        }
+      ]
+    },
+    {
+      "id": "google/veo-3.1",
+      "name": "Google: Veo 3.1",
+      "org": "google",
+      "provider": "google",
+      "supported_durations": [
+        4,
+        6,
+        8
+      ],
+      "supported_resolutions": [
+        "720p",
+        "1080p",
+        "4K"
+      ],
+      "pricing": [
+        {
+          "resolution": "4k",
+          "audio": false,
+          "cost_per_second": 0.4
+        },
+        {
+          "resolution": "4k",
+          "audio": true,
+          "cost_per_second": 0.6
+        },
+        {
+          "resolution": null,
+          "audio": false,
+          "cost_per_second": 0.2
+        },
+        {
+          "resolution": null,
+          "audio": true,
+          "cost_per_second": 0.4
+        }
+      ]
+    }
+  ]
+}

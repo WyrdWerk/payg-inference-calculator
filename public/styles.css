@@ -86,6 +86,35 @@ header {
 
 header h1 { font-size: 1.8rem; font-weight: 700; }
 .subtitle { color: var(--text-dim); margin-top: 0.3rem; font-size: 0.95rem; }
+
+/* ── Tab navigation ─────────────────────────────────────────────────── */
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 1rem;
+}
+.tab-link {
+  display: inline-block;
+  padding: 0.4rem 1.2rem;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+.tab-link:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+.tab-link.active {
+  color: var(--accent);
+  background: var(--accent-faint);
+  border-color: var(--accent);
+}
 .repo-link {
   font-size: 0.85rem;
   color: var(--accent);

@@ -1,0 +1,1488 @@
+{
+  "generated_at": "2026-07-06T11:49:10.878Z",
+  "models": [
+    {
+      "id": "google/gemini-3.1-flash-lite-image",
+      "name": "Google: Nano Banana 2 Lite (Gemini 3.1 Flash Lite Image)",
+      "org": "google",
+      "provider": "google",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 14
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00003,
+          "cost_per_million": 30
+        }
+      ]
+    },
+    {
+      "id": "openai/gpt-image-2",
+      "name": "OpenAI: GPT Image 2",
+      "org": "openai",
+      "provider": "openai",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00003,
+          "cost_per_million": 30
+        }
+      ]
+    },
+    {
+      "id": "openai/gpt-image-1-mini",
+      "name": "OpenAI: GPT Image 1 Mini",
+      "org": "openai",
+      "provider": "openai",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.000008,
+          "cost_per_million": 8
+        }
+      ]
+    },
+    {
+      "id": "openai/gpt-image-1",
+      "name": "OpenAI: GPT Image 1",
+      "org": "openai",
+      "provider": "openai",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00004,
+          "cost_per_million": 40
+        }
+      ]
+    },
+    {
+      "id": "google/gemini-3.1-flash-image",
+      "name": "Google: Nano Banana 2 (Gemini 3.1 Flash Image)",
+      "org": "google",
+      "provider": "google",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "512",
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 14
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00006,
+          "cost_per_million": 60
+        }
+      ]
+    },
+    {
+      "id": "google/gemini-3-pro-image",
+      "name": "Google: Nano Banana Pro (Gemini 3 Pro Image)",
+      "org": "google",
+      "provider": "google",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "4:5",
+            "5:4",
+            "9:16",
+            "16:9",
+            "21:9"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 14
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00012,
+          "cost_per_million": 120
+        }
+      ]
+    },
+    {
+      "id": "sourceful/riverflow-v2.5-pro",
+      "name": "Sourceful: Riverflow V2.5 Pro",
+      "org": "sourceful",
+      "provider": "sourceful",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "output_format": {
+          "type": "enum",
+          "values": [
+            "png",
+            "jpeg",
+            "webp"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 10
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.13,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "2k",
+          "cost_per_unit": 0.15,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "4k",
+          "cost_per_unit": 0.17,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "sourceful/riverflow-v2.5-fast",
+      "name": "Sourceful: Riverflow V2.5 Fast",
+      "org": "sourceful",
+      "provider": "sourceful",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K"
+          ]
+        },
+        "output_format": {
+          "type": "enum",
+          "values": [
+            "jpeg"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 4
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.019,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "2k",
+          "cost_per_unit": 0.021,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "microsoft/mai-image-2.5",
+      "name": "Microsoft: MAI-Image-2.5",
+      "org": "microsoft",
+      "provider": "microsoft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "4:3",
+            "3:4",
+            "16:9",
+            "9:16",
+            "3:2",
+            "2:3",
+            "auto"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.000047,
+          "cost_per_million": 47
+        }
+      ]
+    },
+    {
+      "id": "x-ai/grok-imagine-image-quality",
+      "name": "xAI: Grok Imagine Image Quality",
+      "org": "xai",
+      "provider": "xai",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "3:4",
+            "4:3",
+            "9:16",
+            "16:9",
+            "2:3",
+            "3:2",
+            "9:19.5",
+            "19.5:9",
+            "9:20",
+            "20:9",
+            "1:2",
+            "2:1",
+            "auto"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 3
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": "1k",
+          "cost_per_unit": 0.05,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "2k",
+          "cost_per_unit": 0.07,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4.1-pro-vector",
+      "name": "Recraft: Recraft V4.1 Pro Vector",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.3,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4.1-vector",
+      "name": "Recraft: Recraft V4.1 Vector",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.08,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4.1-utility-pro",
+      "name": "Recraft: Recraft V4.1 Utility Pro",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.21,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4.1-utility",
+      "name": "Recraft: Recraft V4.1 Utility",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.035,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4.1-pro",
+      "name": "Recraft: Recraft V4.1 Pro",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.21,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4.1",
+      "name": "Recraft: Recraft V4.1",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.035,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4-pro-vector",
+      "name": "Recraft: Recraft V4 Pro Vector",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.3,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4-vector",
+      "name": "Recraft: Recraft V4 Vector",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.08,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4-pro",
+      "name": "Recraft: Recraft V4 Pro",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.25,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v4",
+      "name": "Recraft: Recraft V4",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.04,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "recraft/recraft-v3",
+      "name": "Recraft: Recraft V3",
+      "org": "recraft",
+      "provider": "recraft",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 6
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 1
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.04,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "openai/gpt-5.4-image-2",
+      "name": "OpenAI: GPT-5.4 Image 2",
+      "org": "openai",
+      "provider": "openai",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00003,
+          "cost_per_million": 30
+        }
+      ]
+    },
+    {
+      "id": "google/gemini-3.1-flash-image-preview",
+      "name": "Google: Nano Banana 2 (Gemini 3.1 Flash Image Preview)",
+      "org": "google",
+      "provider": "google",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "512",
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "1:4",
+            "1:8",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:1",
+            "4:3",
+            "4:5",
+            "5:4",
+            "8:1",
+            "9:16",
+            "16:9",
+            "21:9"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 14
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00006,
+          "cost_per_million": 60
+        }
+      ]
+    },
+    {
+      "id": "sourceful/riverflow-v2-pro",
+      "name": "Sourceful: Riverflow V2 Pro",
+      "org": "sourceful",
+      "provider": "sourceful",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 10
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.15,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "2k",
+          "cost_per_unit": 0.15,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "4k",
+          "cost_per_unit": 0.33,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "sourceful/riverflow-v2-fast",
+      "name": "Sourceful: Riverflow V2 Fast",
+      "org": "sourceful",
+      "provider": "sourceful",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 4
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.02,
+          "cost_per_million": null
+        },
+        {
+          "unit": "image",
+          "variant": "2k",
+          "cost_per_unit": 0.04,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "black-forest-labs/flux.2-klein-4b",
+      "name": "Black Forest Labs: FLUX.2 Klein 4B",
+      "org": "black-forest-labs",
+      "provider": "black-forest-labs",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "output_format": {
+          "type": "enum",
+          "values": [
+            "png",
+            "jpeg"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 4
+        },
+        "seed": {
+          "type": "boolean"
+        }
+      },
+      "pricing": [
+        {
+          "unit": "megapixel",
+          "variant": null,
+          "cost_per_unit": 0.014,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "bytedance-seed/seedream-4.5",
+      "name": "ByteDance Seed: Seedream 4.5",
+      "org": "bytedance",
+      "provider": "bytedance",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "1:2",
+            "2:1",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "4:5",
+            "5:4",
+            "9:16",
+            "16:9",
+            "9:19.5",
+            "19.5:9",
+            "9:20",
+            "20:9",
+            "9:21",
+            "21:9",
+            "auto"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 14
+        },
+        "seed": {
+          "type": "boolean"
+        }
+      },
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.04,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "black-forest-labs/flux.2-max",
+      "name": "Black Forest Labs: FLUX.2 Max",
+      "org": "black-forest-labs",
+      "provider": "black-forest-labs",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "output_format": {
+          "type": "enum",
+          "values": [
+            "png",
+            "jpeg"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 8
+        },
+        "seed": {
+          "type": "boolean"
+        }
+      },
+      "pricing": [
+        {
+          "unit": "megapixel",
+          "variant": null,
+          "cost_per_unit": 0.07,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "black-forest-labs/flux.2-flex",
+      "name": "Black Forest Labs: FLUX.2 Flex",
+      "org": "black-forest-labs",
+      "provider": "black-forest-labs",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "output_format": {
+          "type": "enum",
+          "values": [
+            "png",
+            "jpeg"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 8
+        },
+        "seed": {
+          "type": "boolean"
+        }
+      },
+      "pricing": [
+        {
+          "unit": "megapixel",
+          "variant": null,
+          "cost_per_unit": 0.06,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "black-forest-labs/flux.2-pro",
+      "name": "Black Forest Labs: FLUX.2 Pro",
+      "org": "black-forest-labs",
+      "provider": "black-forest-labs",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": {
+        "output_format": {
+          "type": "enum",
+          "values": [
+            "png",
+            "jpeg"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 8
+        },
+        "seed": {
+          "type": "boolean"
+        }
+      },
+      "pricing": [
+        {
+          "unit": "megapixel",
+          "variant": null,
+          "cost_per_unit": 0.03,
+          "cost_per_million": null
+        }
+      ]
+    },
+    {
+      "id": "google/gemini-3-pro-image-preview",
+      "name": "Google: Nano Banana Pro (Gemini 3 Pro Image Preview)",
+      "org": "google",
+      "provider": "google",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "resolution": {
+          "type": "enum",
+          "values": [
+            "1K",
+            "2K",
+            "4K"
+          ]
+        },
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "4:5",
+            "5:4",
+            "9:16",
+            "16:9",
+            "21:9"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 14
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00012,
+          "cost_per_million": 120
+        }
+      ]
+    },
+    {
+      "id": "openai/gpt-5-image-mini",
+      "name": "OpenAI: GPT-5 Image Mini",
+      "org": "openai",
+      "provider": "openai",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.000008,
+          "cost_per_million": 8
+        }
+      ]
+    },
+    {
+      "id": "openai/gpt-5-image",
+      "name": "OpenAI: GPT-5 Image",
+      "org": "openai",
+      "provider": "openai",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "quality": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "background": {
+          "type": "enum",
+          "values": [
+            "auto",
+            "transparent",
+            "opaque"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 10
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 16
+        },
+        "output_compression": {
+          "type": "range",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00004,
+          "cost_per_million": 40
+        }
+      ]
+    },
+    {
+      "id": "google/gemini-2.5-flash-image",
+      "name": "Google: Nano Banana (Gemini 2.5 Flash Image)",
+      "org": "google",
+      "provider": "google",
+      "output_modalities": [
+        "image",
+        "text"
+      ],
+      "supported_parameters": {
+        "aspect_ratio": {
+          "type": "enum",
+          "values": [
+            "1:1",
+            "2:3",
+            "3:2",
+            "3:4",
+            "4:3",
+            "4:5",
+            "5:4",
+            "9:16",
+            "16:9",
+            "21:9"
+          ]
+        },
+        "n": {
+          "type": "range",
+          "min": 1,
+          "max": 1
+        },
+        "input_references": {
+          "type": "range",
+          "min": 0,
+          "max": 3
+        }
+      },
+      "pricing": [
+        {
+          "unit": "token",
+          "variant": null,
+          "cost_per_unit": 0.00003,
+          "cost_per_million": 30
+        }
+      ]
+    }
+  ]
+}

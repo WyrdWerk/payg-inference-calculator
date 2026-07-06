@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TokenWatch — Video Generation Pricing</title>
+  <meta name="description" content="Compare video generation API pricing across providers. Per-second pricing with resolution and audio variants." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260706c" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>" />
+</head>
+<body>
+  <header>
+    <div class="header-row">
+      <h1>💰 TokenWatch</h1>
+      <a class="repo-link" href="https://wyrdwerk.com" target="_blank" rel="noopener">WyrdWerk</a>
+      <a class="repo-link" href="https://github.com/WyrdWerk/tokenwatch" target="_blank" rel="noopener">GitHub</a>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle dark/light mode"></button>
+    </div>
+    <nav class="tab-nav">
+      <a href="index.html" class="tab-link">Text</a>
+      <a href="image.html" class="tab-link">Image</a>
+      <a href="video.html" class="tab-link active">Video</a>
+    </nav>
+    <p class="subtitle">Compare video generation API pricing — per-second with resolution and audio options</p>
+  </header>
+
+  <main>
+    <section class="controls" id="controls">
+      <span class="section-label">VIDEO GENERATION</span>
+      <div class="control-group">
+        <label for="videoSeconds">Video duration (seconds)</label>
+        <input type="number" id="videoSeconds" value="60" min="1" step="1" />
+        <span class="hint">e.g. 60 = 1 minute of video</span>
+      </div>
+      <div class="control-group">
+        <label for="resolutionFilter">Resolution</label>
+        <select id="resolutionFilter">
+          <option value="">All resolutions</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="audioFilter">Audio</label>
+        <select id="audioFilter">
+          <option value="">Any</option>
+          <option value="true">With audio</option>
+          <option value="false">Without audio</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="results">
+      <h2 id="resultsTitle">All video generation models</h2>
+      <div class="table-wrap">
+        <table id="resultsTable">
+          <thead>
+            <tr>
+              <th class="sortable" data-sort="cost">Rank</th>
+              <th class="sortable" data-sort="org">Org</th>
+              <th class="sortable" data-sort="model">Model</th>
+              <th class="sortable" data-sort="resolution">Resolution</th>
+              <th class="sortable" data-sort="audio">Audio</th>
+              <th class="sortable" data-sort="cost_per_second">$/Sec</th>
+              <th class="sortable sort-asc" data-sort="cost">Total Cost</th>
+            </tr>
+          </thead>
+          <tbody id="resultsBody">
+            <tr><td colspan="7" class="empty">Loading pricing data…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Video pricing data from OpenRouter's dedicated Videos API. Per-second pricing normalized to dollars.
+      Resolutions and durations vary by model. Always check the provider's official pricing page.
+    </p>
+    <p class="footer-links">
+      <a href="https://github.com/WyrdWerk/tokenwatch" target="_blank" rel="noopener">Source</a>
+    </p>
+  </footer>
+
+  <script src="video-app.js?v=20260706c"></script>
+</body>
+</html>
