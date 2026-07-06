@@ -130,13 +130,22 @@ The pipeline includes unattended-operation safeguards:
 | `public/widget/demo.html` | Widget demo page |
 | `.github/workflows/refresh-pricing.yml` | Daily cron (fetch+commit+deploy) + push-to-main (deploy-only) |
 | `data/manual-pricing.csv` | Static pricing for CSV-sourced providers (Hyper, Makora, Xiaomimimo) |
+| `scripts/lib.mjs` | Shared utilities: org extraction, dedup, HTTP retry, coverage guard, dry-run — imported by all three fetchers |
+| `scripts/fetch-images.mjs` | Image pipeline: fetch `/images/models` + `/endpoints`, normalize flat/megapixel/token pricing → `public/image-pricing.json` |
+| `scripts/fetch-videos.mjs` | Video pipeline: fetch `/videos/models`, normalize cents→dollars, filter per-second → `public/video-pricing.json` |
+| `public/image.html` + `public/image-app.js` | Image pricing tab: calculator (count × $/unit), unit-adaptive table, variant filter |
+| `public/video.html` + `public/video-app.js` | Video pricing tab: calculator (seconds × $/sec), resolution + audio filters |
+| `public/image-pricing.json` | Generated data — 34 image models with pricing arrays (image/megapixel/token units) |
+| `public/video-pricing.json` | Generated data — 13 video models with per-second pricing (resolution + audio variants) |
 
 ## Development
 
 ```bash
-npm run fetch          # Fetch and regenerate pricing.json (~317 API calls, ~15-20s)
-npm run fetch -- --dry-run  # Dry run — process but don't write pricing.json
-npm run serve          # Serve public/ on localhost:3000
+npm run fetch           # Fetch text pricing (~317 API calls, ~15-20s)
+npm run fetch:images    # Fetch image pricing (~40 API calls, ~12s)
+npm run fetch:videos    # Fetch video pricing (1 API call, ~2s)
+npm run fetch:all       # Run all three fetchers
+npm run serve           # Serve public/ on localhost:3000
 ```
 
 ## Deployment
@@ -157,6 +166,33 @@ Manual deploy: `npx wrangler pages deploy public --project-name payg-inference-c
 - `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`)
 - `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?sub=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` and `subscription: true` when applicable.
 - `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` and `subscription` fields per provider)
+
+## Image & Video Generation (separate catalogs)
+
+OpenRouter has dedicated APIs for image and video generation — separate from the chat `/v1/models` endpoint. These are fetched by `fetch-images.mjs` and `fetch-videos.mjs`.
+
+### Image pipeline (`scripts/fetch-images.mjs`)
+- Source: `GET /api/v1/images/models` → `GET /api/v1/images/models/:id/endpoints` per model
+- 34 models, pricing from endpoint `pricing[]` array with `billable: "output_image"`
+- 3 unit types: `image` (flat per-image, computable), `megapixel` (per-MP, varies), `token` (per-image-token, varies)
+- Model creator = provider (no de-aggregation; each model has one endpoint)
+- Shared lib (`scripts/lib.mjs`) for org extraction, dedup, HTTP retry, coverage guard, `--dry-run`
+- Writes `public/image-pricing.json` — model records with `pricing[]` array
+
+### Video pipeline (`scripts/fetch-videos.mjs`)
+- Source: `GET /api/v1/videos/models` — pricing_skus on model level (no endpoint fetch)
+- 16 models listed, 13 with per-second pricing (3 Seedance models excluded — per-token only)
+- Normalization: cent-denominated keys (`cents_*`) → dollars; non-per-second keys (`video_tokens`) filtered out
+- Writes `public/video-pricing.json` — per-second pricing with resolution + audio variants
+
+### Frontend tabs
+- `public/image.html` + `public/image-app.js`: image calculator (count × $/image for flat-priced; varies for others), variant/resolution filter, sortable table with unit-adaptive columns
+- `public/video.html` + `public/video-app.js`: video calculator (seconds × $/sec), resolution + audio filters
+- Tab navigation bar (Text/Image/Video) on all three pages, shared `styles.css`
+
+### CI/CD
+- Daily cron runs all three: `fetch-pricing.mjs` → `fetch-images.mjs` → `fetch-videos.mjs`
+- All three JSON files committed and deployed together
 
 ## Next steps
 

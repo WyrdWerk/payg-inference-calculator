@@ -53,6 +53,22 @@ Store daily pricing.json snapshots to enable price-drop alerts, trend charts, an
 ### EmberCloud provider metadata
 `MANUAL_PROVIDER_META` for ember has privacy/ToS URLs filled but no HQ/datacenters — update if available.
 
+### Image & Video Generation Tabs — ✅ IMPLEMENTED
+**Status**: Implemented. 34 image models, 13 video models across separate tabs.
+
+**What's done**:
+- `scripts/lib.mjs`: shared utilities extracted from fetch-pricing.mjs (org extraction, dedup, HTTP retry, coverage guard, --dry-run)
+- `scripts/fetch-images.mjs`: fetches 34 image models from OpenRouter `/api/v1/images/models` + `/endpoints`, handles 3 unit types (image/megapixel/token), writes `public/image-pricing.json`
+- `scripts/fetch-videos.mjs`: fetches 13 video models from `/api/v1/videos/models`, normalizes cents→dollars, filters per-second only, writes `public/video-pricing.json`
+- `public/image.html` + `image-app.js`: image calculator (count × $/unit), unit-adaptive table, variant filter
+- `public/video.html` + `video-app.js`: video calculator (seconds × $/sec), resolution + audio filters
+- Tab navigation (Text/Image/Video) on all pages, shared from `styles.css`
+- CI: daily cron runs all three fetch scripts
+
+**Remaining**:
+- Video: Seedance models (3) excluded — only have per-token pricing, no per-second SKUs yet
+- Image: token-priced models show $/M image-tokens but can't compute per-image cost without tokens-per-image ratio from provider
+
 ### Turbo/preview model grouping
 Currently turbo and preview variants are kept separate. Could add UI to group them with their base model.
 

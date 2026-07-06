@@ -6,11 +6,12 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 
 ## How it works
 
-1. **`scripts/fetch-pricing.mjs`** fetches pricing from 3 tiers: direct providers (DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova), OpenRouter's de-aggregated `/endpoints` API (per-backend pricing for Fireworks, Together, Novita, SiliconFlow, etc.), and CSV-sourced static providers (Hyper, Makora, Xiaomimimo, OpenCode Go). Also fetches provider metadata (privacy policies, ToS, HQ, datacenters, data retention policies) from OpenRouter's `/api/v1/providers` and `/api/frontend/all-providers`, and ZDR (Zero Data Retention) endpoint data from `/api/v1/endpoints/zdr`. Normalizes all pricing to $/M tokens and writes `public/pricing.json`.
-2. **`public/`** is a zero-dependency static site (HTML/CSS/JS) that loads `pricing.json` client-side and computes costs in-browser.
-3. **`functions/api/v1/`** provides a queryable API via Cloudflare Pages Functions (filtering, sorting, model lookup).
-4. **`public/widget/`** contains an embeddable widget for external sites.
-5. **GitHub Actions** runs the fetch script daily (`0 0 * * *` UTC), commits updated pricing, and deploys to Cloudflare Pages. Pushes to `main` also trigger a deploy.
+1. **`scripts/fetch-pricing.mjs`** fetches text-generation pricing from 3 tiers: direct providers (DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova), OpenRouter's de-aggregated `/endpoints` API (per-backend pricing for Fireworks, Together, Novita, SiliconFlow, etc.), and CSV-sourced static providers (Hyper, Makora, Xiaomimimo, OpenCode Go). Also fetches provider metadata and ZDR data. Normalizes all pricing to $/M tokens and writes `public/pricing.json`.
+2. **`scripts/fetch-images.mjs`** fetches image generation models from OpenRouter's dedicated `/api/v1/images/models` + `/endpoints`. Handles flat per-image, per-megapixel, and per-token pricing. Writes `public/image-pricing.json` (34 models).
+3. **`scripts/fetch-videos.mjs`** fetches video generation models from OpenRouter's `/api/v1/videos/models`. Normalizes per-second pricing with resolution and audio variants (cents→dollars). Writes `public/video-pricing.json` (13 models).
+4. **`public/`** is a zero-dependency static site (HTML/CSS/JS) with three tabs (Text/Image/Video), each loading its own pricing JSON and computing costs in-browser.
+5. **`functions/api/v1/`** provides a queryable API via Cloudflare Pages Functions for text models.
+6. **GitHub Actions** runs all three fetch scripts daily, commits updated pricing, and deploys to Cloudflare Pages.
 
 ## Usage
 
@@ -26,6 +27,10 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 - **Subscription badges**: Providers with coding plan subscriptions show a blue "Sub" badge. Use the "Sub only" filter to restrict results to subscription providers (13 providers, 141 models).
 - **Promo badges**: Discounted offerings show a "promo" badge with the discount percentage.
 - **Cache write**: An adjustable one-time cache-population cost with amortization over N requests, included in the Total Cost column.
+
+- **Image tab**: Enter number of images, optionally filter by resolution variant. Flat per-image models show total cost; token-priced and megapixel-priced models show per-unit rates (cost varies by generation complexity).
+- **Video tab**: Enter video duration in seconds, filter by resolution and audio. All models show per-second pricing with computed total cost.
+- **Tab navigation**: Use the Text/Image/Video tabs at the top to switch between modalities.
 - **Shareable URLs**: All state (search, tokens, mix, sort, mode, group, filters, ZDR, subscription) is encoded in the URL hash for sharing.
 
 ### Token calculation
@@ -53,9 +58,20 @@ Presets: Agentic (2.5/97/0.5), Balanced (30/50/20), Heavy output (10/0/90), No c
 | Hardcoded | Tier 3 | OpenCode Go (16 models with user-provided pricing) |
 
 **3-tier precedence**: when the same (model, provider) appears in multiple tiers, the higher-authority tier wins — direct > OpenRouter > CSV/hardcoded. Quantization is not part of the dedup key — same model+provider at different quants collapses to one row.
-**Total: ~891 text-generation models across ~75 inference providers and 60+ underlying orgs** (Anthropic, OpenAI, Google, DeepSeek, Z.ai, Qwen, Meta, Mistral, etc.). **634 models (71%) are ZDR-compliant** — the provider does not store prompts or outputs after processing.
+**Text models**: ~891 text-generation models across ~75 inference providers and 60+ underlying orgs. **634 models (71%) are ZDR-compliant**.
 
-Only text-generation models are included. TTS, image generation, video generation, and embeddings are filtered out. Multimodal input (text+image→text) is allowed.
+## Image & Video Generation
+
+TokenWatch now also tracks dedicated image and video generation models from OpenRouter's separate catalogs:
+
+| Modality | Source | Models | Pricing |
+|---|---|---|---|
+| **Image** | `/api/v1/images/models` + `/endpoints` | 34 | Flat per-image ($0.019–$0.17/image), per-megapixel ($0.014–$0.07/MP), or per-token ($8–$120/M image-tokens) |
+| **Video** | `/api/v1/videos/models` | 13 | Per-second with resolution/audio variants ($0.03–$0.60/sec) |
+
+Image and video models have their own tabs (see navigation bar). Pricing units vary by model — flat per-image costs are directly computable; token-priced and megapixel-priced models show per-unit rates since total cost depends on generation complexity.
+
+Only text-generation models are filtered from the text catalog. Image and video catalogs are separate and do not include text-generation models.
 
 ## API
 
