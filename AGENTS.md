@@ -155,14 +155,14 @@ Manual deploy: `npx wrangler pages deploy public --project-name payg-inference-c
 - `GET /api/v1/` — API info and available endpoints
 - `GET /api/v1/stats` — summary: model count, provider count, per-provider counts
 - `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`)
-- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` when ZDR-compliant.
-- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` field per provider)
+- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?sub=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` and `subscription: true` when applicable.
+- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` and `subscription` fields per provider)
 
 ## Next steps
 
-1. **Auth-gated providers**: Cerebras, Groq, Together, SiliconFlow, Fireworks, Baseten, Hyperbolic, Replicate, Mistral have auth-gated `/v1/models` endpoints. Would need API keys as GitHub Actions secrets. All are already covered via OpenRouter `/endpoints` backends — direct fetch would give Tier-1 precedence + fresher data, not new coverage.
-2. **CSV maintenance**: `data/manual-pricing.csv` needs periodic manual updates for Hyper/Makora/Xiaomimimo pricing. If these models appear in OpenRouter backends, the CSV could be dropped.
-3. **Turbo/preview grouping**: Currently turbo and preview variants are kept separate. Could add UI to group them with their base model.
-4. **Historical price tracking**: Store daily snapshots to surface price-drop alerts or trend charts.
-5. ~~Cache write in cost computation~~ ✅ Implemented. The **Advanced: cache write** collapsible section allows one-time cache-population tokens with amortization over N requests.
+1. **Subscription pricing details**: Show subscription plan pricing (monthly cost, token quotas) for the 13 subscription providers. Would need integration with codingplans.cc or manual CSV maintenance.
+2. **Auth-gated providers**: Cerebras, Groq, Together, SiliconFlow, Fireworks, Baseten, Hyperbolic, Replicate, Mistral have auth-gated `/v1/models` endpoints. Would need API keys as GitHub Actions secrets. All are already covered via OpenRouter `/endpoints` backends — direct fetch would give Tier-1 precedence + fresher data, not new coverage.
+3. **CSV maintenance**: `data/manual-pricing.csv` needs periodic manual updates for Hyper/Makora/Xiaomimimo pricing. If these models appear in OpenRouter backends, the CSV could be dropped.
+4. **Turbo/preview grouping**: Currently turbo and preview variants are kept separate. Could add UI to group them with their base model.
+5. **Historical price tracking**: Store daily snapshots to surface price-drop alerts or trend charts.
 6. **EmberCloud provider metadata**: `MANUAL_PROVIDER_META` for ember has URLs filled but no HQ/datacenters — update if available.

@@ -23,8 +23,8 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 - **Compare**: Checkboxes on each row let you select up to 4 models for side-by-side comparison in a modal.
 - **Provider metadata**: HQ flag badges (🇺🇸🇸🇬🇨🇳) and links to privacy policy, ToS, and status pages appear next to provider names. Data policy fields (retains prompts, may train, retention days) are sourced from OpenRouter and provider policy review.
 - **ZDR badges**: Models from providers with Zero Data Retention show a green "ZDR" badge. Use the "ZDR only" filter to restrict results to ZDR-compliant offerings.
+- **Subscription badges**: Providers with coding plan subscriptions show a blue "Sub" badge. Use the "Sub only" filter to restrict results to subscription providers (13 providers, 141 models).
 - **Promo badges**: Discounted offerings show a "promo" badge with the discount percentage.
-- **Shareable URLs**: All state (search, tokens, mix, sort, mode, group) is encoded in the URL hash for sharing.
 - **Cache write**: An adjustable one-time cache-population cost with amortization over N requests, included in the Total Cost column.
 
 ### Token calculation

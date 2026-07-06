@@ -31,6 +31,19 @@ The 10-column table is too wide for mobile screens. Needs work:
 - Tooltip showing retention policy details on hover (currently badge only)
 - Data retention info in comparison modal (ZDR badge shown, retention days not displayed)
 
+### Subscription badges — ✅ IMPLEMENTED
+**Status**: Implemented. 141 models across 13 providers tagged.
+
+**What's done**:
+- Provider-level subscription tagging for coding plan providers: Hyper, Synthetic, Lilac, Makora, Opencode Go, Z.AI, Minimax, Xiaomi, Alibaba, Chutes, Moonshot, X AI, Xiaomimimo
+- `SUBSCRIPTION_PROVIDERS` Set in fetch-pricing.mjs for manual provider-level tagging
+- Frontend: blue "Sub" badge stacked with ZDR badge on provider cells, "Sub only" filter checkbox, Sub badge in compare modal ZDR row, URL hash `#sub=1`
+- API: `?sub=true` filter on `/api/v1/models`, `subscription` field on `/api/v1/models/:id/providers` response
+- Cache-bust version bumped to `?v=20260706b`
+
+**Remaining**:
+- Subscription pricing details (monthly cost, token quotas) — would need data source like codingplans.cc or manual CSV maintenance
+
 ### Auth-gated direct providers (A1 — postponed)
 Cerebras, Groq, Together, SiliconFlow, Fireworks, Baseten, Hyperbolic, Replicate, Mistral all have auth-gated `/v1/models` endpoints. All are already covered as OpenRouter backends (Tier 2). Direct fetch would give Tier-1 precedence + fresher data, not new model coverage. Postponed until user has API keys.
 
