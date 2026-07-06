@@ -43,5 +43,5 @@ Store daily pricing.json snapshots to enable price-drop alerts, trend charts, an
 ### Turbo/preview model grouping
 Currently turbo and preview variants are kept separate. Could add UI to group them with their base model.
 
-### Cache write in cost computation
-Currently display-only. Could add a separate "cache write tokens (one-time)" input with amortization over N requests.
+### ~~Cache write in cost computation~~ ✅ IMPLEMENTED
+The **Advanced: cache write** collapsible section allows cache-population tokens (one-time) with amortization over N requests, included in Total Cost.

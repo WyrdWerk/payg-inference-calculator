@@ -317,6 +317,23 @@ const MANUAL_PROVIDER_META = {
   },
 };
 
+// ── Subscription providers (coding plans) — provider-level badge ──
+const SUBSCRIPTION_PROVIDERS = new Set([
+  'hyper',
+  'synthetic',
+  'lilac',
+  'makora',
+  'opencode',
+  'z-ai',
+  'minimax',
+  'xiaomimimo',
+  'xiaomi',
+  'alibaba',
+  'chutes',
+  'moonshot',
+  'xai',
+]);
+
 /** Normalize a provider display name to a lowercase key. */
 function normalizeProvider(displayName) {
   const key = displayName.toLowerCase().trim();
@@ -1003,6 +1020,15 @@ async function main() {
   }
   if (provZdrCount > 0) console.log(`  ZDR-tagged ${provZdrCount} more from provider-level dataPolicy`);
   if (zdrCount + provZdrCount > 0) console.log(`  Total ZDR: ${zdrCount + provZdrCount} of ${out.models.length} models`);
+  // ── Subscription (coding plans) tagging — provider-level only ──
+  let subCount = 0;
+  for (const m of out.models) {
+    if (SUBSCRIPTION_PROVIDERS.has(m.provider)) {
+      m.subscription = true;
+      subCount++;
+    }
+  }
+  if (subCount > 0) console.log(`  Subscription-tagged ${subCount} of ${out.models.length} models (${SUBSCRIPTION_PROVIDERS.size} providers)`);
 
   if (dryRun) {
     console.log('\n── Summary ──');

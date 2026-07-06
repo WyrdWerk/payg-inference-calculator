@@ -31,7 +31,7 @@ Static site comparing pay-as-you-go LLM API pricing across inference providers. 
   2. **Provider-level fallback**: models not tagged at endpoint level are checked against `providers_meta[provider].retains_prompts === false`.
   - `MANUAL_PROVIDER_META` includes `retains_prompts`, `may_train`, `retention_days` for 8 manual providers (crof, ember, hyper, lilac, makora, synthetic, opencode, xiaomimimo) based on privacy policy review.
 - **Provider metadata**: `fetchProviderMeta()` fetches 3 sources: (1) `MANUAL_PROVIDER_META` (manual, includes ZDR fields), (2) OpenRouter `/api/v1/providers` (policy URLs, HQ, datacenters — guarded to not overwrite manual entries), (3) `/api/frontend/all-providers` (undocumented, non-fatal enrichment for `dataPolicy.retainsPrompts`, `training`, `retentionDays`). Alias resolution via `PROVIDER_NAME_MAP` (e.g. `xiaomimimo` inherits `xiaomi` metadata).
-- **Frontend**: `public/` static site loads `pricing.json` client-side. Dual typeahead search (by inference provider and by model). Cost computation entirely in-browser. Features: group-by toggle (None/Org/Provider), comparison mode (side-by-side modal), cost mode toggle (Per Request / Monthly Volume with ×30 multiplier), URL hash state persistence, provider HQ flag badges, ZDR badges + "ZDR only" filter, privacy/ToS/status links, promo badges, Cache Write column (display-only).
+- **Frontend**: `public/` static site loads `pricing.json` client-side. Dual typeahead search (by inference provider and by model). Cost computation entirely in-browser. Features: group-by toggle (None/Org/Provider), comparison mode (side-by-side modal), cost mode toggle (Per Session / Monthly Volume with ×30 multiplier), URL hash state persistence, provider HQ flag badges, ZDR badges + "ZDR only" filter, privacy/ToS/status links, promo badges, cache-write cost amortization input.
 - **API**: Cloudflare Pages Functions at `functions/api/v1/` serve queryable endpoints: `/api/v1/models` (with filters), `/api/v1/models/:id/providers`, `/api/v1/stats`, `/api/v1/providers`.
 - **Widget**: `public/widget/embed.js` — embeddable JS snippet using Shadow DOM, auto-detects `[data-tw-model]` elements, fetches the API, renders compact pricing cards.
 - **CI/CD**: `.github/workflows/refresh-pricing.yml` — daily cron at 00:00 UTC (fetch → commit → deploy) + push-to-main trigger (deploy-only, no fetch).
@@ -104,9 +104,9 @@ Used for cross-provider matching and dedup: strips provider prefix, removes suff
 
 Percentage-based: user enters total tokens (in millions) + percentage breakdown (input %, cached input %, output %). Cost = `(tokens × $/M) / 1e6` per component, summed. If a provider doesn't support a requested token type (>0 tokens), that offering is excluded.
 
-Cache write pricing is **display-only** — shown in the table column and comparison modal but NOT included in cost computation. Cache write is a one-time cost (writing to cache on first request), not a recurring per-request throughput slice. The percentage model represents per-request throughput where cache_read replaces input on subsequent requests.
+Cache-write cost is a one-time charge (writing to cache on first request), amortized over N requests via the **Advanced: cache write** input. It IS included in the Total Cost computation: `cacheWriteTokens_M × cache_write_$/M ÷ N`. The percentage model represents per-request throughput where cache_read replaces input on subsequent requests.
 
-Two cost modes: **Per Request** (default — enter total tokens, see per-call cost) and **Monthly Volume** (enter daily tokens, see monthly cost × 30). The `modeMultiplier` is applied at the `costFor()` call site in `computeAndRender()` and `showCompareModal()`, not inside `costFor()` itself.
+Two cost modes: **Per Session** (default — enter total tokens, see per-session cost) and **Monthly Volume** (enter daily tokens, see monthly cost × 30). The `modeMultiplier` is applied at the `costFor()` call site in `computeAndRender()` and `showCompareModal()`, not inside `costFor()` itself.
 
 ### Resilience
 
@@ -164,5 +164,5 @@ Manual deploy: `npx wrangler pages deploy public --project-name payg-inference-c
 2. **CSV maintenance**: `data/manual-pricing.csv` needs periodic manual updates for Hyper/Makora/Xiaomimimo pricing. If these models appear in OpenRouter backends, the CSV could be dropped.
 3. **Turbo/preview grouping**: Currently turbo and preview variants are kept separate. Could add UI to group them with their base model.
 4. **Historical price tracking**: Store daily snapshots to surface price-drop alerts or trend charts.
-5. **Cache write in cost computation**: Currently display-only. Could add a separate "cache write tokens (one-time)" input with amortization.
+5. ~~Cache write in cost computation~~ ✅ Implemented. The **Advanced: cache write** collapsible section allows one-time cache-population tokens with amortization over N requests.
 6. **EmberCloud provider metadata**: `MANUAL_PROVIDER_META` for ember has URLs filled but no HQ/datacenters — update if available.

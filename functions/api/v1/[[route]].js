@@ -134,6 +134,7 @@ export async function onRequestGet(context) {
           quantization: m.quantization,
           discount: m.discount,
           zdr: m.zdr || false,
+          subscription: m.subscription || false,
           context_length: m.context_length,
           max_completion_tokens: m.max_completion_tokens,
           uptime_30m: m.uptime_30m,
@@ -159,6 +160,8 @@ export async function onRequestGet(context) {
     if (promo === 'true') models = models.filter(m => m.discount > 0);
     const zdr = params.get('zdr');
     if (zdr === 'true') models = models.filter(m => m.zdr === true);
+    const sub = params.get('sub');
+    if (sub === 'true') models = models.filter(m => m.subscription === true);
 
     const search = params.get('search');
     if (search) {

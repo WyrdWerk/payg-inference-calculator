@@ -18,14 +18,14 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 - **Search by model**: Type a model name (e.g. "glm", "kimi", "gpt-4o") to filter results to matching models across all providers.
 - **Both together**: Use both search fields simultaneously (AND filter).
 - **Token input**: Enter total tokens (in millions) and set the percentage breakdown across input, cached input, and output. The calculator computes costs per offering and sorts cheapest-first.
-- **Cost mode**: Toggle between "Per Request" (enter total tokens, see per-request cost) and "Monthly Volume" (enter daily tokens, see monthly cost × 30 days).
+- **Cost mode**: Toggle between **"Per Session"** (enter total tokens, see per-session cost) and **"Monthly Volume"** (enter daily tokens, see monthly cost × 30 days).
 - **Group by**: Group results by Organization, Provider, or keep flat.
 - **Compare**: Checkboxes on each row let you select up to 4 models for side-by-side comparison in a modal.
 - **Provider metadata**: HQ flag badges (🇺🇸🇸🇬🇨🇳) and links to privacy policy, ToS, and status pages appear next to provider names. Data policy fields (retains prompts, may train, retention days) are sourced from OpenRouter and provider policy review.
 - **ZDR badges**: Models from providers with Zero Data Retention show a green "ZDR" badge. Use the "ZDR only" filter to restrict results to ZDR-compliant offerings.
 - **Promo badges**: Discounted offerings show a "promo" badge with the discount percentage.
 - **Shareable URLs**: All state (search, tokens, mix, sort, mode, group) is encoded in the URL hash for sharing.
-- **Cache Write column**: Display-only — shows cache write pricing when available, not included in cost computation.
+- **Cache write**: An adjustable one-time cache-population cost with amortization over N requests, included in the Total Cost column.
 
 ### Token calculation
 
