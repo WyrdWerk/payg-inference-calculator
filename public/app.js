@@ -14,7 +14,7 @@ const state = {
   costMode: 'perRequest', // 'perRequest' or 'monthly'
   computeBy: 'tokens',   // 'tokens' (forward) or 'budget' (inverse)
   groupBy: 'none',
-  compareSelection: [], // array of model objects (max 4)
+  compareSelection: [], // array of model objects (max 6)
   currentRows: null,
 };
 
