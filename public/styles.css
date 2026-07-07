@@ -610,7 +610,8 @@ footer {
   #resultsTable td[data-label="Model"] { font-weight: 600; font-size: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 4px; }
   #resultsTable td[data-label="Org"], #resultsTable td[data-label="Provider"] { display: inline-block; width: auto; padding: 2px 6px; }
   #resultsTable td[data-label="Unit"], #resultsTable td[data-label="Resolution"], #resultsTable td[data-label="Audio"] { display: inline-block; width: auto; padding: 2px 6px; font-size: 0.78rem; }
-  #resultsTable td[data-label="#"] { display: none; }
+  #resultsTable td[data-label="#"] { display: flex; align-items: center; padding: 4px 8px; }
+  #resultsTable td[data-label="#"]::before { display: none; }
   #resultsTable td[data-label="$/Unit"], #resultsTable td[data-label="$/Sec"], #resultsTable td[data-label="Total Cost"] { font-size: 1.1rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
   #resultsTable td[data-label="Total Cost"] { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 8px; }
   #resultsTable tr.group-header { display: block; }

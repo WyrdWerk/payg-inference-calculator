@@ -437,7 +437,7 @@ function toggleCompare(model) {
   if (idx >= 0) {
     state.compareSelection.splice(idx, 1);
   } else {
-    if (state.compareSelection.length >= 4) return; // max 4
+    if (state.compareSelection.length >= 6) return; // max 6
     state.compareSelection.push(model);
   }
   updateCompareTray();
@@ -874,7 +874,7 @@ function renderModelRow(r, rank, groupKey, cheapest) {
   const rowIdx = state.currentRows
     ? state.currentRows.findIndex((x) => x.model.id === r.model.id && x.model.provider === r.model.provider)
     : rank - 1;
-  const checkbox = `<input type="checkbox" class="compare-check" data-idx="${rowIdx}" ${isSelected ? 'checked' : ''}${state.compareSelection.length >= 4 && !isSelected ? ' disabled' : ''}>`;
+  const checkbox = `<input type="checkbox" class="compare-check" data-idx="${rowIdx}" ${isSelected ? 'checked' : ''}${state.compareSelection.length >= 6 && !isSelected ? ' disabled' : ''}>`;
   return `<tr${groupAttr}>
     <td class="rank" data-label="#">${checkbox} ${rank}${cheapest ? ' 🏆' : ''}</td>
     <td data-label="Org"><span class="org-badge">${esc(orgDisplay(r.model.org))}</span></td>
