@@ -10,7 +10,7 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 2. **`scripts/fetch-images.mjs`** fetches image generation models from OpenRouter's dedicated `/api/v1/images/models` + `/endpoints`. Handles flat per-image, per-megapixel, and per-token pricing. Writes `public/image-pricing.json` (34 models).
 3. **`scripts/fetch-videos.mjs`** fetches video generation models from OpenRouter's `/api/v1/videos/models`. Normalizes per-second pricing with resolution and audio variants (cents→dollars). Writes `public/video-pricing.json` (13 models).
 4. **`public/`** is a zero-dependency static site (HTML/CSS/JS) with three tabs (Text/Image/Video), each loading its own pricing JSON and computing costs in-browser.
-5. **`functions/api/v1/`** provides a queryable API via Cloudflare Pages Functions for text models.
+5. **`functions/api/v1/`** provides a queryable API via Cloudflare Pages Functions for all three catalogs (text, image, video).
 6. **GitHub Actions** runs all three fetch scripts daily, commits updated pricing, and deploys to Cloudflare Pages.
 
 ## Usage
@@ -79,10 +79,16 @@ Only text-generation models are filtered from the text catalog. Image and video 
 
 Cloudflare Pages Functions serve a queryable API at `/api/v1/`:
 
-- `GET /api/v1/stats` — summary statistics
-- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`)
-- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` when the provider has Zero Data Retention.
-- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` field per provider)
+- `GET /api/v1/` — API info and endpoint directory
+- `GET /api/v1/stats` — summary statistics: model count, provider count, org count, ZDR count, subscription count, cache support counts, quantization breakdown, per-provider and per-org counts
+- `GET /api/v1/orgs` — all orgs with model counts, sorted by count descending
+- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`). Optional `?zdr=true` filters to ZDR-compliant providers only.
+- `GET /api/v1/models` — list text models with filters: `?org=`, `?provider=`, `?min_context=`, `?min_output=`, `?quantization=`, `?cache_read=true`, `?cache_write=true`, `?promo=true`, `?zdr=true`, `?sub=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Sort keys: `id`, `input`, `output`, `cache_read`, `cache_write`, `context`, `max_output`, `uptime`, `discount`. Model objects include `zdr: true` and `subscription: true` when applicable.
+- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` and `subscription` fields per provider). Optional `?tokens=N&mix=inputPct,cachePct,outputPct` for mix-aware cost sorting.
+- `GET /api/v1/images` — list image models with filters: `?org=`, `?provider=`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Sort keys: `id`, `org`, `provider`.
+- `GET /api/v1/images/:id` — single image model with pricing variants (accepts bare canonical ID or full `org/model` ID)
+- `GET /api/v1/videos` — list video models with filters: `?org=`, `?provider=`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Sort keys: `id`, `org`, `provider`.
+- `GET /api/v1/videos/:id` — single video model with pricing variants (accepts bare canonical ID or full `org/model` ID)
 
 All responses include CORS headers for cross-origin use.
 

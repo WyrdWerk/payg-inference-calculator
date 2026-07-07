@@ -80,3 +80,29 @@ Currently turbo and preview variants are kept separate. Could add UI to group th
 
 ### ~~Cache write in cost computation~~ ✅ IMPLEMENTED
 The **Advanced: cache write** collapsible section allows cache-population tokens (one-time) with amortization over N requests, included in Total Cost.
+
+### API enhancements — ✅ IMPLEMENTED
+**Status**: Implemented. Extended the Cloudflare Pages Functions API to serve all three catalogs (text/image/video) with new filters, sort keys, and endpoints — all backed by existing data.
+
+**New endpoints**:
+- `GET /api/v1/orgs` — all orgs with model counts (53 orgs)
+- `GET /api/v1/images` — list image models (34 models) with org/provider/search/sort filters
+- `GET /api/v1/images/:id` — single image model with pricing variants (accepts bare canonical or full `org/model` ID)
+- `GET /api/v1/videos` — list video models (13 models) with org/provider/search/sort filters
+- `GET /api/v1/videos/:id` — single video model with pricing variants
+
+**New filters on `/api/v1/models`**:
+- `?quantization=` — filter by quantization type (fp8, fp4, fp16, bf16, int4, unknown)
+- `?cache_read=true` — only models that support cache read (565 models)
+- `?cache_write=true` — only models that support cache write (61 models)
+- `?min_output=N` — filter by max_completion_tokens ≥ N
+
+**New sort keys**: `cache_write`, `max_output`, `uptime` (in addition to existing `id`, `input`, `output`, `cache_read`, `context`, `discount`)
+
+**Enhanced stats** (`/api/v1/stats`): now includes org_count, zdr_count, subscription_count, cache_read_count, cache_write_count, quantization breakdown, and per-org counts
+
+**Enhanced providers** (`/api/v1/providers`): optional `?zdr=true` filter to list only ZDR-compliant providers
+
+**E2E tested**: all 9 endpoints verified locally via `wrangler pages dev` — 34 test cases covering list/detail/filter/sort/404/CORS for text, image, and video catalogs.
+
+**Docs updated**: README.md, AGENTS.md, TODO.md all reflect the new API surface.

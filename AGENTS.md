@@ -32,7 +32,7 @@ Static site comparing pay-as-you-go LLM API pricing across inference providers. 
   - `MANUAL_PROVIDER_META` includes `retains_prompts`, `may_train`, `retention_days` for 8 manual providers (crof, ember, hyper, lilac, makora, synthetic, opencode, xiaomimimo) based on privacy policy review.
 - **Provider metadata**: `fetchProviderMeta()` fetches 3 sources: (1) `MANUAL_PROVIDER_META` (manual, includes ZDR fields), (2) OpenRouter `/api/v1/providers` (policy URLs, HQ, datacenters — guarded to not overwrite manual entries), (3) `/api/frontend/all-providers` (undocumented, non-fatal enrichment for `dataPolicy.retainsPrompts`, `training`, `retentionDays`). Alias resolution via `PROVIDER_NAME_MAP` (e.g. `xiaomimimo` inherits `xiaomi` metadata).
 - **Frontend**: `public/` static site loads `pricing.json` client-side. Typeahead search (by inference provider and by model) on all three pages (text, image, video) via native HTML5 datalist. Cost computation entirely in-browser. Features: group-by toggle (None/Org/Provider), comparison mode (up to 6, side-by-side modal), cost mode toggle (Per Session / Monthly Volume with ×30 multiplier), budget mode (Budget → Tokens/Count/Seconds inverse affordability calculator on all 3 tabs), URL hash state persistence, provider HQ flag badges, ZDR badges + "ZDR only" filter, privacy/ToS/status links, promo badges + "Promos only" filter, cache-write cost amortization input. Mobile: table→card layout at ≤640px via `td[data-label]` attributes on all pages; mobile sort dropdown (`<select class="mobile-sort">`) visible only at ≤640px with bidirectional sync to desktop column header clicks.
-- **API**: Cloudflare Pages Functions at `functions/api/v1/` serve queryable endpoints: `/api/v1/models` (with filters), `/api/v1/models/:id/providers`, `/api/v1/stats`, `/api/v1/providers`.
+- **API**: Cloudflare Pages Functions at `functions/api/v1/` serve queryable endpoints: `/api/v1/models` (with filters: org, provider, min_context, min_output, quantization, cache_read, cache_write, promo, zdr, sub, search, sort), `/api/v1/models/:id/providers` (mix-aware cost sort), `/api/v1/stats` (org/zdr/sub/quantization breakdowns), `/api/v1/orgs`, `/api/v1/providers` (?zdr=true), `/api/v1/images`, `/api/v1/images/:id`, `/api/v1/videos`, `/api/v1/videos/:id`. CORS enabled.
 - **Widget**: `public/widget/embed.js` — embeddable JS snippet using Shadow DOM, auto-detects `[data-tw-model]` elements, fetches the API, renders compact pricing cards.
 - **CI/CD**: `.github/workflows/refresh-pricing.yml` — daily cron at 00:00 UTC (fetch → commit → deploy) + push-to-main trigger (deploy-only, no fetch).
 
@@ -125,7 +125,7 @@ The pipeline includes unattended-operation safeguards:
 | `public/index.html` | UI layout: controls, usage-grid with mode toggle, 10-column results table, ZDR + promo filters, group-by, comparison tray + modal |
 | `public/styles.css` | Dark/light theme, all badges (org, provider, promo, ZDR, HQ, meta-link), group headers, comparison modal/tray, mode toggle, responsive |
 | `public/pricing.json` | Generated data — models (with pricing, cache_write, uptime_30m, max_completion_tokens, zdr), providers, providers_meta (with retains_prompts, may_train, retention_days) — do not hand-edit, CI refreshes daily |
-| `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — /models (with ?zdr=true filter), /models/:id/providers (with zdr field), /stats, /providers, CORS |
+| `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — /models (with filters: org, provider, min_context, min_output, quantization, cache_read, cache_write, promo, zdr, sub, search, sort), /models/:id/providers (mix-aware cost sort), /stats (org/zdr/sub/quantization breakdowns), /orgs, /providers (?zdr=true), /images, /images/:id, /videos, /videos/:id, CORS |
 | `public/widget/embed.js` | Embeddable widget — Shadow DOM, auto-detects [data-tw-model], fetches API, renders pricing card |
 | `public/widget/demo.html` | Widget demo page |
 | `.github/workflows/refresh-pricing.yml` | Daily cron (fetch+commit+deploy) + push-to-main (deploy-only) |
@@ -161,11 +161,16 @@ Manual deploy: `npx wrangler pages deploy public --project-name payg-inference-c
 
 ## API endpoints
 
-- `GET /api/v1/` — API info and available endpoints
-- `GET /api/v1/stats` — summary: model count, provider count, per-provider counts
-- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`)
-- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?promo=true`, `?zdr=true`, `?sub=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Model objects include `zdr: true` and `subscription: true` when applicable.
-- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` and `subscription` fields per provider)
+- `GET /api/v1/` — API info and endpoint directory
+- `GET /api/v1/stats` — summary: model count, provider count, org count, ZDR count, subscription count, cache_read/cache_write counts, quantization breakdown, per-provider and per-org counts, source_providers
+- `GET /api/v1/orgs` — all orgs with model counts, sorted by count descending
+- `GET /api/v1/providers` — provider metadata (privacy/ToS/status URLs, HQ, datacenters, `retains_prompts`, `may_train`, `retention_days`). Optional `?zdr=true` filters to ZDR-compliant providers only.
+- `GET /api/v1/models` — list models with filters: `?org=`, `?provider=`, `?min_context=`, `?min_output=`, `?quantization=`, `?cache_read=true`, `?cache_write=true`, `?promo=true`, `?zdr=true`, `?sub=true`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Sort keys: `id`, `input`, `output`, `cache_read`, `cache_write`, `context`, `max_output`, `uptime`, `discount`. Model objects include `zdr: true` and `subscription: true` when applicable.
+- `GET /api/v1/models/:canonicalId/providers` — all providers hosting a model, sorted by cost (includes `zdr` and `subscription` fields per provider). Optional `?tokens=N&mix=inputPct,cachePct,outputPct` for mix-aware cost sorting.
+- `GET /api/v1/images` — list image models with filters: `?org=`, `?provider=`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Sort keys: `id`, `org`, `provider`.
+- `GET /api/v1/images/:id` — single image model with pricing variants (accepts bare canonical ID or full `org/model` ID)
+- `GET /api/v1/videos` — list video models with filters: `?org=`, `?provider=`, `?search=`, `?sort=`, `?order=`, `?limit=`, `?offset=`. Sort keys: `id`, `org`, `provider`.
+- `GET /api/v1/videos/:id` — single video model with pricing variants (accepts bare canonical ID or full `org/model` ID)
 
 ## Image & Video Generation (separate catalogs)
 
