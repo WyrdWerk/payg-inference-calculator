@@ -100,6 +100,8 @@ Org aliases: `deepseek-ai`→`deepseek`, `zai-org`→`z-ai`, `meta-llama`→`met
 
 Used for cross-provider matching and dedup: strips provider prefix, removes suffixes (`:free`, date suffixes, `-preview`, `:thinking`), lowercases. Turbo variants kept separate. Quantization suffixes baked into the model ID (e.g. `glm-5.2-fp8`, `glm-5.2-nvfp4`) are left as-is — they are distinct entries, not collapsed. Example: `z-ai/glm-5.2`, `zai-org/GLM-5.2`, `GLM-5.2` (Wafer) all canonicalize to `glm-5.2`.
 
+**Single source of truth:** `canonicalId` and `orgLookupKey` live in `shared/normalize.mjs` — a pure (no `node:` imports) module imported by both the Node pipeline (via `scripts/lib.mjs` re-export) and the Cloudflare Pages Function (`functions/api/v1/[[route]].js`). The API's former local `normalizeId` was retired — it had a greedy `-preview-.*$` catch-all that over-stripped `-preview-customtools` and caused distinct models to collide in `/models/:id/providers`. Unknown `-preview-<foo>` suffixes are now preserved as distinct entries.
+
 ### Cost computation
 
 Percentage-based: user enters total tokens (in millions) + percentage breakdown (input %, cached input %, output %). Cost = `(tokens × $/M) / 1e6` per component, summed. If a provider doesn't support a requested token type (>0 tokens), that offering is excluded.
@@ -120,23 +122,26 @@ The pipeline includes unattended-operation safeguards:
 
 | File | Purpose |
 |---|---|
-| `scripts/fetch-pricing.mjs` | 3-tier fetch, OpenRouter de-aggregation, ZDR tagging (endpoint + provider level), provider metadata + data policy enrichment, org extraction, dedup, pricing normalization, dry-run mode |
+| `shared/normalize.mjs` | Pure canonicalization helpers (`canonicalId`, `orgLookupKey`) — imported by both the Node pipeline and the Cloudflare Pages Function. No `node:` imports so it bundles cleanly into the Worker. |
+| `scripts/fetch-pricing.mjs` | 3-tier fetch, OpenRouter de-aggregation, ZDR tagging (endpoint + provider level), provider metadata + data policy enrichment, org extraction, dedup, pricing normalization, dry-run mode — imports shared utils from `scripts/lib.mjs` |
 | `public/app.js` | Frontend state, URL hash persistence, search, cost computation (per-request + monthly ×30), group-by, comparison mode, ZDR filter/badge, HQ badges, meta links, rendering |
 | `public/index.html` | UI layout: controls, usage-grid with mode toggle, 10-column results table, ZDR + promo filters, group-by, comparison tray + modal |
 | `public/styles.css` | Dark/light theme, all badges (org, provider, promo, ZDR, HQ, meta-link), group headers, comparison modal/tray, mode toggle, responsive |
 | `public/pricing.json` | Generated data — models (with pricing, cache_write, uptime_30m, max_completion_tokens, zdr), providers, providers_meta (with retains_prompts, may_train, retention_days) — do not hand-edit, CI refreshes daily |
-| `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — /models (with filters: org, provider, min_context, min_output, quantization, cache_read, cache_write, promo, zdr, sub, search, sort), /models/:id/providers (mix-aware cost sort), /stats (org/zdr/sub/quantization breakdowns), /orgs, /providers (?zdr=true), /images, /images/:id, /videos, /videos/:id, CORS |
+| `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — imports `canonicalId` from `shared/normalize.mjs`. /models (with filters: org, provider, min_context, min_output, quantization, cache_read, cache_write, promo, zdr, sub, search, sort), /models/:id/providers (mix-aware cost sort), /stats (org/zdr/sub/quantization breakdowns), /orgs, /providers (?zdr=true), /images, /images/:id, /videos, /videos/:id, CORS |
 | `public/widget/embed.js` | Embeddable widget — Shadow DOM, auto-detects [data-tw-model], fetches API, renders pricing card |
 | `public/widget/demo.html` | Widget demo page |
-| `.github/workflows/refresh-pricing.yml` | Daily cron (fetch+commit+deploy) + push-to-main (deploy-only) |
+| `.github/workflows/refresh-pricing.yml` | Three jobs: `test` (push/PR, runs `node --test`), `refresh` (daily cron: test→fetch→commit JSON→bust-cache→deploy), `deploy` (push: test→bust-cache→deploy). Cache-busting rewrites `?v=` tokens to content hashes before deploy (not committed). |
 | `data/manual-pricing.csv` | Static pricing for CSV-sourced providers (Hyper, Makora, Xiaomimimo) |
-| `scripts/lib.mjs` | Shared utilities: org extraction, dedup, HTTP retry, coverage guard, dry-run — imported by all three fetchers |
+| `scripts/lib.mjs` | Shared utilities: org extraction, dedup, HTTP retry, coverage guard, dry-run — imported by all three fetchers. Re-exports `canonicalId`/`orgLookupKey` from `shared/normalize.mjs`. |
+| `scripts/bust-cache.mjs` | Rewrites `?v=` cache-bust tokens in `public/*.html` to 8-char SHA-1 content hashes of the referenced assets. Run before deploy in CI (deploy + refresh jobs) and locally via `npm run bust:cache`. |
 | `scripts/fetch-images.mjs` | Image pipeline: fetch `/images/models` + `/endpoints`, normalize flat/megapixel/token pricing → `public/image-pricing.json` |
 | `scripts/fetch-videos.mjs` | Video pipeline: fetch `/videos/models`, normalize cents→dollars, filter per-second → `public/video-pricing.json` |
 | `public/image.html` + `public/image-app.js` | Image pricing tab: calculator (count × $/unit), provider + model typeahead search, unit-adaptive table, variant filter, mobile card layout, mobile sort dropdown |
 | `public/video.html` + `public/video-app.js` | Video pricing tab: calculator (seconds × $/sec), provider + model typeahead search, resolution + audio filters, mobile card layout, mobile sort dropdown |
 | `public/image-pricing.json` | Generated data — 34 image models with pricing arrays (image/megapixel/token units) |
 | `public/video-pricing.json` | Generated data — 13 video models with per-second pricing (resolution + audio variants) |
+| `test/` | Automated test suite (`node --test`): `canonicalization.test.mjs` (canonicalId/orgLookupKey behavior), `parity.test.mjs` (regression guard against real pricing.json), `api.test.mjs` (API routing/filters/sort with mocked env.ASSETS), `video-audio.test.mjs` (audio filter regression). Fixtures in `test/fixtures/`. |
 
 ## Development
 
@@ -146,6 +151,8 @@ npm run fetch:images    # Fetch image pricing (~40 API calls, ~12s)
 npm run fetch:videos    # Fetch video pricing (1 API call, ~2s)
 npm run fetch:all       # Run all three fetchers
 npm run serve           # Serve public/ on localhost:3000
+npm test                # Run the test suite (node --test, zero-dep)
+npm run bust:cache      # Rewrite ?v= tokens in public/*.html to content hashes
 ```
 
 ## Deployment
@@ -196,8 +203,12 @@ OpenRouter has dedicated APIs for image and video generation — separate from t
 - Tab navigation bar (Text/Image/Video) on all three pages, shared `styles.css` (including responsive: 768px control stacking, 640px table→card transform, mobile-sort visibility)
 
 ### CI/CD
-- Daily cron runs all three: `fetch-pricing.mjs` → `fetch-images.mjs` → `fetch-videos.mjs`
-- All three JSON files committed and deployed together
+Three jobs in `.github/workflows/refresh-pricing.yml`:
+- **`test`** (push/PR): runs `node --test test/*.test.mjs` — gates the `deploy` job via `needs: test`.
+- **`refresh`** (daily cron + manual): test → fetch all three pipelines → commit JSON only (`git add public/*.json`) → bust-cache → deploy. The cache-bust rewrites `?v=` tokens to content hashes in the checked-out HTML; the rewritten HTML is deployed but NOT committed.
+- **`deploy`** (push to main): test (via `needs: test`) → bust-cache → deploy. No fetch, no commit — just re-publishes `public/` with fresh cache hashes.
+
+All three JSON files (`pricing.json`, `image-pricing.json`, `video-pricing.json`) committed and deployed together by the `refresh` job.
 
 ## Next steps
 

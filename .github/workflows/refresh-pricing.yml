@@ -13,6 +13,19 @@ permissions:
   contents: write
 
 jobs:
+  test:
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run tests
+        run: node --test test/*.test.mjs
+
   refresh:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -22,6 +35,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Run tests
+        run: node --test test/*.test.mjs
 
       - name: Fetch & normalize text pricing
         run: node scripts/fetch-pricing.mjs
@@ -44,6 +60,9 @@ jobs:
             git push
           fi
 
+      - name: Bust cache (content-hash ?v= tokens)
+        run: node scripts/bust-cache.mjs
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
@@ -53,9 +72,17 @@ jobs:
 
   deploy:
     if: github.event_name == 'push'
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Bust cache (content-hash ?v= tokens)
+        run: node scripts/bust-cache.mjs
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3

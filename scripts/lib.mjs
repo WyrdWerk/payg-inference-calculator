@@ -68,33 +68,11 @@ export function orgFromName(name) {
   return ORG_ALIASES[org] || org;
 }
 
-/** Build canonical model ID for cross-referencing and dedup.
- *  Strips provider prefix, suffixes (:free, dates, -preview, :thinking), lowercases.
- *  Turbo variants kept separate (different SKUs).
- *  Quantization suffixes baked into the ID are left as-is. */
-export function canonicalId(id) {
-  let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
-  k = k.replace(/:free$/, '')
-       .replace(/:thinking$/, '')
-       .replace(/-(\d{4})-(\d{2})-(\d{2})$/, '')   // -2024-08-06
-       .replace(/-preview-(\d{2})-(\d{4})$/, '')    // -preview-09-2025
-       .replace(/-preview-(\d{4})-(\d{2})-(\d{2})$/, '') // -preview-2024-08-06
-       .replace(/-preview-(\d{2})-(\d{2})$/, '')    // -preview-05-06
-       .replace(/-preview$/, '')
-       .replace(/-(\d{8})$/, '')                    // -20260420
-       .replace(/-(\d{6})$/, '')                    // -250712
-       .toLowerCase().trim();
-  return k;
-}
-
-/** Build a key for org cross-referencing.
- *  Like canonicalId but also strips quantization and tier suffixes.
- *  Used ONLY for org resolution — not for dedup or model display. */
-export function orgLookupKey(id) {
-  return canonicalId(id)
-    .replace(/-(fp8|nvfp4|int4-mixed-ar|int4|bf16|fp16|fp6|mxfp4)$/, '')
-    .replace(/-long$/, '');
-}
+// canonicalId and orgLookupKey live in shared/normalize.mjs so the Cloudflare
+// Pages Function can import the same source of truth without pulling in
+// node:fs (which this file imports below for checkCoverageDrop).
+export { canonicalId, orgLookupKey } from '../shared/normalize.mjs';
+import { canonicalId, orgLookupKey } from '../shared/normalize.mjs';
 
 // ── provider-name normalization ───────────────────────────────────────────────
 

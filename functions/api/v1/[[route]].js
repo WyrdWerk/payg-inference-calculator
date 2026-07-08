@@ -14,6 +14,8 @@
 //   GET /api/v1/videos/:id                     — single video model with pricing variants
 //   OPTIONS *                                  — CORS preflight
 
+import { canonicalId } from '../../../shared/normalize.mjs';
+
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -28,21 +30,12 @@ function json(data, status = 200) {
   });
 }
 
-// ── Canonical ID normalization (shared by models + providers routes) ──────────
-
-/** Strip org prefix, suffixes (:free, dates, -preview, :thinking), lowercase. */
-function normalizeId(id) {
-  let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
-  k = k.replace(/:free$/, '')
-       .replace(/:thinking$/, '')
-       .replace(/-(\d{4})-(\d{2})-(\d{2})$/, '')
-       .replace(/-preview-.*$/, '')
-       .replace(/-preview$/, '')
-       .replace(/-(\d{8})$/, '')
-       .replace(/-(\d{6})$/, '')
-       .toLowerCase().trim();
-  return k;
-}
+// ── Canonical ID normalization ────────────────────────────────────────────────
+// canonicalId is imported from shared/normalize.mjs — the same source of truth
+// the Node pipeline uses. This replaces the former local normalizeId, which had
+// a greedy -preview-.*$ catch-all that over-stripped -preview-customtools and
+// caused distinct models (e.g. gemini-3.1-pro vs gemini-3.1-pro-preview-customtools)
+// to collide in /models/:id/providers.
 
 // ── Pagination helper ─────────────────────────────────────────────────────────
 
@@ -166,12 +159,12 @@ export async function onRequestGet(context) {
 
     // /api/v1/models/:canonicalId/providers
     if (subPath.includes('/providers')) {
-      const canonicalId = decodeURIComponent(subPath.replace(/\/providers$/, ''));
-      const target = normalizeId(canonicalId);
-      const matches = pricing.models.filter(m => normalizeId(m.id) === target);
+      const requestedId = decodeURIComponent(subPath.replace(/\/providers$/, ''));
+      const target = canonicalId(requestedId);
+      const matches = pricing.models.filter(m => canonicalId(m.id) === target);
 
       if (matches.length === 0) {
-        return json({ error: 'Model not found', canonical_id: canonicalId }, 404);
+        return json({ error: 'Model not found', canonical_id: requestedId }, 404);
       }
 
       // Sort by cost — use mix-aware cost if params provided, else input+output
@@ -306,8 +299,8 @@ export async function onRequestGet(context) {
 
     // /api/v1/images/:id — single model (accepts org/model or bare canonical id)
     if (path.startsWith('images/') && subPath) {
-      const target = normalizeId(decodeURIComponent(subPath));
-      const model = imagePricing.models.find(m => normalizeId(m.id) === target);
+      const target = canonicalId(decodeURIComponent(subPath));
+      const model = imagePricing.models.find(m => canonicalId(m.id) === target);
       if (!model) {
         return json({ error: 'Image model not found', id: subPath }, 404);
       }
@@ -376,8 +369,8 @@ export async function onRequestGet(context) {
 
     // /api/v1/videos/:id — single model (accepts org/model or bare canonical id)
     if (path.startsWith('videos/') && subPath) {
-      const target = normalizeId(decodeURIComponent(subPath));
-      const model = videoPricing.models.find(m => normalizeId(m.id) === target);
+      const target = canonicalId(decodeURIComponent(subPath));
+      const model = videoPricing.models.find(m => canonicalId(m.id) === target);
       if (!model) {
         return json({ error: 'Video model not found', id: subPath }, 404);
       }

@@ -31,6 +31,16 @@
  */
 
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
+import {
+  num, perTokToPerM, centsToDollars, passthrough,
+  NON_TEXT_ID, isTextModel,
+  ORG_ALIASES, PROVIDER_NAME_MAP,
+  orgFromId, orgFromName,
+  canonicalId, orgLookupKey,
+  normalizeProvider, dedupKey, dedupModels,
+  fetchJson, fetchJsonWithRetry,
+  checkCoverageDrop,
+} from './lib.mjs';
 
 // ── direct providers config ───────────────────────────────────────────────────
 
@@ -84,157 +94,14 @@ const DIRECT_PROVIDERS = [
 const OPENROUTER_MODELS_URL = 'https://openrouter.ai/api/v1/models';
 const OPENROUTER_ENDPOINT_BASE = 'https://openrouter.ai/api/v1/models';
 const OR_CONCURRENCY = 20;
-const OR_MAX_RETRIES = 1;
-const OR_RETRY_DELAY_MS = 2000;
+// OR_MAX_RETRIES / OR_RETRY_DELAY_MS removed — fetchJsonWithRetry (from lib.mjs)
+// has equivalent defaults (retries=1, delayMs=2000) as parameters.
 
 // ── helpers ───────────────────────────────────────────────────────────────────
-
-/** Parse a pricing value that may be a string ("0.435e-6", "$0.0000014"), number, or null. */
-function num(v) {
-  if (v === null || v === undefined || v === '') return null;
-  const s = typeof v === 'string' ? v.replace(/[$,]/g, '').trim() : v;
-  const n = typeof s === 'string' ? parseFloat(s) : s;
-  return Number.isFinite(n) ? n : null;
-}
-
-/** $/token → $/M tokens */
-const perTokToPerM = (v) => { const n = num(v); return n === null ? null : n * 1e6; };
-/** cents/M → $/M tokens */
-const centsToDollars = (v) => { const n = num(v); return n === null ? null : n / 100; };
-const passthrough = (v) => num(v);
-/** Filter out non-text models by ID pattern.
- *  Applied ONLY to direct providers (which lack modality metadata).
- *  OpenRouter rows are filtered via architecture.output_modalities instead. */
-const NON_TEXT_ID = /(?:^|[-/])(embed|embedding|embeddinggemma|clip|bge|tts|bark|parler|kokoro|openvoice)(?:[-/]|$)/i;
-function isTextModel(id) {
-  return !NON_TEXT_ID.test(id);
-}
-
-// ── org extraction ────────────────────────────────────────────────────────────
-
-/** Canonicalize an org prefix — normalize variants to a single key. */
-const ORG_ALIASES = {
-  'deepseek-ai': 'deepseek',
-  'zai-org': 'z-ai',
-  'meta-llama': 'meta',
-  'mistralai': 'mistral',
-  'nousresearch': 'nous',
-  'moonshotai': 'moonshot',
-  'ibm-granite': 'ibm',
-  'bytedance-seed': 'bytedance',
-  'stepfun-ai': 'stepfun',
-  'minimaxai': 'minimax',
-  'xiaomimimo': 'xiaomi',
-};
-
-/** Extract org from a model ID with a slash prefix. */
-function orgFromId(id) {
-  if (!id.includes('/')) return null;
-  let org = id.split('/')[0].replace(/^[~]/, '').toLowerCase();
-  return ORG_ALIASES[org] || org;
-}
-
-/** Extract org from model name when ID has no slash.
- *  Names like "DeepSeek: DeepSeek V4 Pro" → "deepseek" */
-function orgFromName(name) {
-  if (!name) return null;
-  const match = name.match(/^(?:~)?([^:]+):/);
-  if (!match) return null;
-  let org = match[1].trim().toLowerCase();
-  return ORG_ALIASES[org] || org;
-}
-
-/** Build canonical model ID for cross-referencing and dedup.
- *  Strips provider prefix, suffixes (:free, dates, -preview, :thinking), lowercases.
- *  Date formats stripped: YYYY-MM-DD, YYYYMMDD, YYYYMM.
- *  Preview formats stripped: -preview, -preview-MM-YY, -preview-MM-YYYY, -preview-YYYY-MM-DD.
- *  Turbo variants kept separate (different SKUs).
- *  Quantization suffixes baked into the ID (e.g. glm-5.2-fp8) are left as-is —
- *  they are distinct model entries, not collapsed. */
-function canonicalId(id) {
-  let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
-  k = k.replace(/:free$/, '')
-       .replace(/:thinking$/, '')
-       .replace(/-(\d{4})-(\d{2})-(\d{2})$/, '')   // -2024-08-06
-       .replace(/-preview-(\d{2})-(\d{4})$/, '')  // -preview-09-2025
-       .replace(/-preview-(\d{4})-(\d{2})-(\d{2})$/, '') // -preview-2024-08-06
-       .replace(/-preview-(\d{2})-(\d{2})$/, '')  // -preview-05-06
-       .replace(/-preview$/, '')
-       .replace(/-(\d{8})$/, '')                  // -20260420
-       .replace(/-(\d{6})$/, '')                  // -250712
-       .toLowerCase().trim();
-  return k;
-}
-
-/** Build a key for org cross-referencing.
- *  Like canonicalId but also strips quantization and tier suffixes.
- *  Used ONLY for org resolution — not for dedup or model display. */
-function orgLookupKey(id) {
-  return canonicalId(id)
-    .replace(/-(fp8|nvfp4|int4-mixed-ar|int4|bf16|fp16|fp6|mxfp4)$/, '')
-    .replace(/-long$/, '');
-}
-
-// ── provider-name normalization ───────────────────────────────────────────────
-
-/** Normalize provider names across sources to a single key.
- *  Direct providers use lowercase keys (ember, deepinfra, wafer).
- *  OpenRouter uses display names (EmberCloud, DeepInfra, Wafer).
- *  This map reconciles them for dedup precedence. */
-const PROVIDER_NAME_MAP = {
-  // OpenRouter display name → normalized key (matching direct provider keys)
-  'deepinfra': 'deepinfra',
-  'embercloud': 'ember',
-  'wafer': 'wafer',
-  'crof': 'crof',
-  'synthetic': 'synthetic',
-  'lilac': 'lilac',
-  'xiaomimimo': 'xiaomi',
-  // Infra providers without direct fetch — keep OpenRouter display name lowercased
-  'fireworks': 'fireworks',
-  'together': 'together',
-  'novita': 'novita',
-  'siliconflow': 'siliconflow',
-  'gmicloud': 'gmicloud',
-  'digitalocean': 'digitalocean',
-  'parasail': 'parasail',
-  'akashml': 'akashml',
-  'venice': 'venice',
-  'morph': 'morph',
-  'dekallm': 'dekallm',
-  'cohere': 'cohere',
-  'groq': 'groq',
-  'nebius': 'nebius',
-  'sambanova': 'sambanova',
-  'streamlake': 'streamlake',
-  'atlascloud': 'atlascloud',
-  'baidu': 'baidu',
-  'alibaba': 'alibaba',
-  'minimax': 'minimax',
-  'mistral': 'mistral',
-  'anthropic': 'anthropic',
-  'openai': 'openai',
-  'azure': 'azure',
-  'google': 'google',
-  'google ai studio': 'google',
-  'amazon bedrock': 'amazon',
-  'z.ai': 'z-ai',
-  'xai': 'xai',
-  'deepseek': 'deepseek',
-  'moonshot ai': 'moonshot',
-  'sakana ai': 'sakana',
-  'arcee ai': 'arcee',
-  'inception': 'inception',
-  'infermatic': 'infermatic',
-  'mara': 'mara',
-  'nextbit': 'nextbit',
-  'nex agi': 'nex-agi',
-  'poolside': 'poolside',
-  'phala': 'phala',
-  'friendli': 'friendli',
-  'chutes': 'chutes',
-  'wandb': 'wandb',
-};
+// (num, perTokToPerM, centsToDollars, passthrough, NON_TEXT_ID, isTextModel,
+//  ORG_ALIASES, orgFromId, orgFromName, canonicalId, orgLookupKey,
+//  PROVIDER_NAME_MAP, normalizeProvider, dedupKey, dedupModels,
+//  fetchJson, fetchJsonWithRetry, checkCoverageDrop — all imported from ./lib.mjs)
 
 const MANUAL_PROVIDER_META = {
   crof: {
@@ -333,12 +200,6 @@ const SUBSCRIPTION_PROVIDERS = new Set([
   'moonshot',
   'xai',
 ]);
-
-/** Normalize a provider display name to a lowercase key. */
-function normalizeProvider(displayName) {
-  const key = displayName.toLowerCase().trim();
-  return PROVIDER_NAME_MAP[key] || key.replace(/[\s.]/g, '-');
-}
 
 // ── direct provider parsers ───────────────────────────────────────────────────
 
@@ -505,30 +366,6 @@ function parseSambaNova(data) {
 }
 
 // ── OpenRouter de-aggregation ─────────────────────────────────────────────────
-
-/** Fetch JSON with retry on 429/5xx. */
-async function fetchJsonWithRetry(url, retries = OR_MAX_RETRIES) {
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      const res = await fetch(url, {
-        headers: { Accept: 'application/json' },
-        signal: AbortSignal.timeout(45_000),
-      });
-      if (res.ok) return res.json();
-      if ((res.status === 429 || res.status >= 500) && attempt < retries) {
-        await new Promise((r) => setTimeout(r, OR_RETRY_DELAY_MS));
-        continue;
-      }
-      throw new Error(`HTTP ${res.status} for ${url}`);
-    } catch (err) {
-      if (attempt < retries && err.name !== 'AbortError') {
-        await new Promise((r) => setTimeout(r, OR_RETRY_DELAY_MS));
-        continue;
-      }
-      throw err;
-    }
-  }
-}
 
 /** Fetch /endpoints for a single model, return per-backend rows. */
 async function fetchModelEndpoints(model) {
@@ -850,40 +687,9 @@ function parseOpenCodeGo() {
 }
 
 // ── dedup / precedence ────────────────────────────────────────────────────────
-
-/** Build a dedup key: (canonical_model, normalized_provider).
- *  Quantization is NOT part of the key — the same model from the same
- *  inference provider at different quantizations collapses to one row
- *  (the first-seen / highest-tier row wins). */
-function dedupKey(m) {
-  return `${canonicalId(m.id)}|${normalizeProvider(m.provider)}`;
-}
-
-/** Apply 3-tier precedence: direct > OpenRouter > CSV/hardcoded.
- *  Models are inserted in tier order, so the first occurrence of a key
- *  is from the highest-authority tier. Later duplicates are dropped. */
-function dedupModels(tieredModels) {
-  const seen = new Set();
-  const result = [];
-  for (const m of tieredModels) {
-    const key = dedupKey(m);
-    if (seen.has(key)) continue;
-    seen.add(key);
-    result.push(m);
-  }
-  return result;
-}
+// (dedupKey, dedupModels — imported from ./lib.mjs)
 
 // ── main ───────────────────────────────────────────────────────────────────────
-
-async function fetchJson(url) {
-  const res = await fetch(url, {
-    headers: { Accept: 'application/json' },
-    signal: AbortSignal.timeout(45_000),
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.json();
-}
 
 async function main() {
   // Usage: node scripts/fetch-pricing.mjs [--dry-run]
@@ -959,22 +765,9 @@ async function main() {
   if (deduped > 0) console.log(`  Deduped ${deduped} overlapping rows (direct > OpenRouter > CSV)`);
 
   // ── Coverage-drop check: compare against last pricing.json ──
-  let prevCount = null;
-  try {
-    const prev = JSON.parse(await readFile('public/pricing.json', 'utf-8'));
-    prevCount = prev.models?.length || 0;
-    const drop = prevCount > 0 ? (prevCount - out.models.length) / prevCount : 0;
-    if (prevCount > 0 && drop > 0.15) {
-      throw new Error(`Coverage drop: ${out.models.length} models vs previous ${prevCount} (${(drop * 100).toFixed(1)}% drop) exceeds 15% threshold — aborting to preserve last-good data`);
-    }
-    console.log(`  Previous: ${prevCount} models | Current: ${out.models.length} models`);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      // No previous file — first run, proceed
-    } else {
-      throw err; // re-throw coverage-drop or read errors
-    }
-  }
+  // checkCoverageDrop returns prevCount (null if no previous file) so the
+  // dry-run summary below can print the delta.
+  const prevCount = await checkCoverageDrop('public/pricing.json', out.models.length);
 
   // ── Org enrichment ──
   const canonToOrg = {};

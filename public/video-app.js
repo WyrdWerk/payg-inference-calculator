@@ -169,7 +169,12 @@ function buildRows() {
     }
     for (const p of m.pricing) {
       if (state.resolutionFilter && p.resolution !== state.resolutionFilter) continue;
-      if (state.audioFilter !== '' && String(p.audio) !== state.audioFilter) continue;
+      // Audio filter: "With audio" = strictly audio===true; "Without / no audio"
+      // = anything not strictly true (includes null + false). null means the SKU
+      // has no audio dimension — it survives "Without / no audio" so models like
+      // Sora 2 Pro, Grok Imagine, Wan 2.6/2.7 don't vanish from the catalog.
+      if (state.audioFilter === 'true' && p.audio !== true) continue;
+      if (state.audioFilter === 'false' && p.audio === true) continue;
       rows.push({
         model: m,
         pricing: p,
@@ -410,7 +415,7 @@ function computeAndRender() {
   if (state.modelSearch) parts.push(`matching '${state.modelSearch}'`);
   if (state.resolutionFilter) parts.push(state.resolutionFilter.toUpperCase());
   if (state.audioFilter === 'true') parts.push('with audio');
-  if (state.audioFilter === 'false') parts.push('without audio');
+  else if (state.audioFilter === 'false') parts.push('without/no audio');
   els.resultsTitle.textContent = parts.length > 0
     ? `Video models (${parts.join(', ')}) \u2014 ${rows.length} results`
     : `All video generation models \u2014 ${rows.length} results`;

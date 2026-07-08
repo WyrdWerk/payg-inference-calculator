@@ -3,7 +3,7 @@
 ## Critical bugs
 
 ### STALE CACHE — column misalignment on returning visitors
-**Status**: ✅ FIXED. Cache-busting query strings added to `app.js` and `styles.css` in `index.html` (currently `?v=20260707e`). Update the version string on each deploy that changes CSS/JS.
+**Status**: ✅ FIXED (automated). `scripts/bust-cache.mjs` rewrites `?v=` tokens in `public/*.html` to 8-char SHA-1 content hashes of the referenced assets. Runs automatically in CI before every deploy (both `deploy` and `refresh` jobs). The repo HTML keeps its old `?v=` strings; the busted HTML is deployed but not committed. No more manual version-string bumps.
 
 ### MOBILE RESPONSIVE LAYOUT — ✅ SHIPPED
 Card layout + mobile sort dropdown shipped at ≤640px across all 3 tabs. See README Usage > Mobile.

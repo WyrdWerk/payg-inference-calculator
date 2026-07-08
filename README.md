@@ -116,6 +116,12 @@ npm run fetch -- --dry-run
 
 # Serve locally
 npm run serve
+
+# Run the test suite (zero-dep, uses node:test)
+npm test
+
+# Rewrite ?v= cache-bust tokens to content hashes (run before deploy)
+npm run bust:cache
 ```
 
 Requires Node ≥18 (uses native `fetch`). No dependencies.
@@ -150,13 +156,17 @@ functions/
 
 ## CI/CD
 
-The `refresh-pricing.yml` workflow has two triggers:
-- **Daily cron** (00:00 UTC): fetch pricing → commit `pricing.json` if changed → deploy to Cloudflare Pages
-- **Push to main**: deploy-only (no fetch)
+The `refresh-pricing.yml` workflow has three jobs:
+- **`test`** (push/PR): runs `node --test` — gates the `deploy` job.
+- **`refresh`** (daily cron 00:00 UTC + manual): test → fetch pricing → commit JSON if changed → bust cache → deploy.
+- **`deploy`** (push to main): test (via `needs: test`) → bust cache → deploy. No fetch, no commit.
+
+Cache-busting (`scripts/bust-cache.mjs`) rewrites `?v=` tokens in `public/*.html` to 8-char SHA-1 content hashes of the referenced assets before each deploy. The rewritten HTML is deployed but not committed — the repo keeps its old `?v=` strings.
 
 Safety checks:
 - Aborts if >20% of API calls fail
 - Aborts if model count drops >15% vs previous run
+- Tests must pass before deploy (`needs: test`)
 
 GitHub secrets required: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`.
 

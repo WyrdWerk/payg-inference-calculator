@@ -8,7 +8,9 @@
     "fetch:videos": "node scripts/fetch-videos.mjs",
     "fetch:all": "node scripts/fetch-pricing.mjs && node scripts/fetch-images.mjs && node scripts/fetch-videos.mjs",
     "serve": "npx --yes serve public -l 3000",
-    "build:prod": "node scripts/fetch-pricing.mjs && node scripts/fetch-images.mjs && node scripts/fetch-videos.mjs && echo 'Static site in ./public'"
+    "build:prod": "node scripts/fetch-pricing.mjs && node scripts/fetch-images.mjs && node scripts/fetch-videos.mjs && echo 'Static site in ./public'",
+    "test": "node --test test/*.test.mjs",
+    "bust:cache": "node scripts/bust-cache.mjs"
   },
   "license": "MIT",
   "engines": {
