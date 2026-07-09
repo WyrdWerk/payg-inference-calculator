@@ -203,3 +203,37 @@ test('org-prefix fallback does NOT fire when stripped key is not in index (no fa
   applyBenchmarkEnrichment(models, idx);
   assert.equal(models[0].benchmarks, undefined, 'fallback must not fire when stripped key absent from index');
 });
+
+// ── Variant-suffix fallback (instruct/thinking/chat/base/reasoning) ──
+
+test('variant fallback: qwen3-next-instruct inherits thinking variant benchmark', () => {
+  // The -instruct variant has no benchmark, but the -thinking variant of the same
+  // base model does. Same underlying capability → inherit.
+  const models = [{ id: 'qwen/qwen3-next-80b-a3b-instruct', provider: 'parasail', pricing: { input: 1, output: 2 } }];
+  const idx = buildBenchmarkIndex([
+    { id: 'qwen/qwen3-next-80b-a3b-thinking', benchmarks: { artificial_analysis: { intelligence_index: 16.7, coding_index: 30, agentic_index: 15 } } },
+  ]);
+  applyBenchmarkEnrichment(models, idx);
+  assert.ok(models[0].benchmarks, 'instruct variant matched thinking variant via strip');
+  assert.equal(models[0].benchmarks.intelligence_index, 16.7);
+});
+
+test('variant fallback: gpt-5.2-chat inherits gpt-5.2 base benchmark', () => {
+  const models = [{ id: 'openai/gpt-5.2-chat', provider: 'openai', pricing: { input: 1, output: 2 } }];
+  const idx = buildBenchmarkIndex([
+    { id: 'openai/gpt-5.2', benchmarks: { artificial_analysis: { intelligence_index: 54.8, coding_index: 72, agentic_index: 48 } } },
+  ]);
+  applyBenchmarkEnrichment(models, idx);
+  assert.ok(models[0].benchmarks, 'chat variant matched base model via strip');
+  assert.equal(models[0].benchmarks.intelligence_index, 54.8);
+});
+
+test('variant fallback does NOT fire when stripped key absent (no false match)', () => {
+  // -instruct stripped yields a key not in the index — must not match.
+  const models = [{ id: 'unknown/model-instruct', provider: 'p', pricing: { input: 1, output: 2 } }];
+  const idx = buildBenchmarkIndex([
+    { id: 'totally/different', benchmarks: { artificial_analysis: { intelligence_index: 50, coding_index: 60, agentic_index: 40 } } },
+  ]);
+  applyBenchmarkEnrichment(models, idx);
+  assert.equal(models[0].benchmarks, undefined);
+});

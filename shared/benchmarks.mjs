@@ -21,6 +21,13 @@ const QUANT_SUFFIXES = ['fp8', 'fp16', 'bf16', 'int8', 'int4', 'nvfp4', 'awq', '
 // Trailing SKU performance suffixes (MUST be last token to strip).
 const SKU_SUFFIXES = ['turbo', 'fast', 'highspeed'];
 
+// Trailing SKU variant suffixes — same base model, different default behavior.
+// -instruct / -thinking / -chat / -base / -reasoning variants share the base
+// model's underlying capability, so they inherit the base model's benchmark.
+// Stripped as a second-tier fallback (only when conservativeBase misses AND
+// the stripped key exists in the index — zero misattribution risk).
+const VARIANT_SUFFIXES = ['instruct', 'thinking', 'base', 'chat', 'reasoning'];
+
 /**
  * Compute the conservative base-model key for matching.
  *
@@ -55,6 +62,27 @@ export function conservativeBase(modelId) {
 }
 
 /**
+ * The full base-key normalization: conservativeBase + variant-suffix strip.
+ * Applied identically on BOTH sides (OR index build + our model lookup) so
+ * -instruct/-thinking/-chat/-base/-reasoning variants of the same base model
+ * collapse to the same key. This is the "same underlying model" principle.
+ *
+ * Example: 'qwen3-next-80b-a3b-instruct' and 'qwen3-next-80b-a3b-thinking'
+ * both normalize to 'qwen3-next-80b-a3b'.
+ */
+function baseKey(modelId) {
+  let c = conservativeBase(modelId);
+  for (const suffix of VARIANT_SUFFIXES) {
+    const re = new RegExp('-' + suffix + '$');
+    if (re.test(c)) {
+      c = c.replace(re, '');
+      break; // only strip one
+    }
+  }
+  return c;
+}
+
+/**
  * Pick the best (highest-Elo) entry from a design_arena array.
  * Returns { category, elo, win_rate, rank } or null if empty.
  */
@@ -70,7 +98,9 @@ function bestArenaEntry(arena) {
 /**
  * Build a benchmark index from OpenRouter /models response data.
  *
- * Keys: conservativeBase(id). Value: flattened benchmark block:
+ * Keys: baseKey(id) — conservativeBase + variant-suffix strip, so the
+ * -instruct/-thinking/-chat variants of the same model collapse to one key.
+ * Value: flattened benchmark block:
  *   { intelligence_index, coding_index, agentic_index, design_arena_best }
  *
  * On collision (two OR models map to same base), prefer the entry with
@@ -96,7 +126,7 @@ export function buildBenchmarkIndex(orModels) {
       design_arena_best: hasArena ? bestArenaEntry(bench.design_arena) : null,
     };
 
-    const key = conservativeBase(m.id);
+    const key = baseKey(m.id);
     const existing = idx.get(key);
     // Collision: prefer the entry with AA indices (richer). If both have AA or neither, keep first-seen.
     if (!existing || (!existing.intelligence_index && flattened.intelligence_index !== null)) {
@@ -107,27 +137,28 @@ export function buildBenchmarkIndex(orModels) {
 }
 
 /**
- * Try to resolve a benchmark match, with a safe org-prefix fallback.
+ * Try to resolve a benchmark match, with safe fallbacks for known ID-asymmetry
+ * patterns between our catalog and OpenRouter's.
  *
- * Primary: conservativeBase(model.id).
- * Fallback: if the primary key doesn't hit, try stripping one leading token
- * (the org-name doubling case). E.g. canonicalId keeps 'nvidia-nemotron-...'
- * when the model name repeats the org, but OR's canonical is just 'nemotron-...'.
+ * The index is keyed by baseKey() (conservativeBase + variant-suffix strip),
+ * so -instruct/-thinking/-chat variants collapse automatically.
  *
- * The fallback ONLY fires when the stripped key exists in the index — so there
- * is zero misattribution risk (the match is always confirmed against real data).
+ * Tier 1: baseKey(model.id) — matches any variant of the same base model.
+ * Tier 2: org-prefix strip — for org-name doubling where canonicalId keeps a
+ *   leading 'nvidia-'/'meta-llama-' that OR strips. Only fires when the
+ *   stripped key exists in the index (zero misattribution risk).
  *
  * @param {string} modelId - our model id
  * @param {Map<string, object>} index - from buildBenchmarkIndex()
  * @returns {object|null} the flattened benchmark block, or null if no match
  */
 function resolveBenchmark(modelId, index) {
-  const primary = conservativeBase(modelId);
+  const primary = baseKey(modelId);
   const direct = index.get(primary);
   if (direct) return direct;
-  // Fallback: strip one leading token if the remainder hits the index.
-  // Covers org-name doubling: 'nvidia-nemotron-3-super-120b-a12b' → 'nemotron-3-super-120b-a12b',
-  // 'meta-llama-3.1-8b-instruct' → 'llama-3.1-8b-instruct'.
+
+  // Tier 2: strip one leading token (org-name doubling).
+  // 'nvidia-nemotron-...' → 'nemotron-...', 'meta-llama-...' → 'llama-...'
   const dashIdx = primary.indexOf('-');
   if (dashIdx > 0) {
     const stripped = primary.slice(dashIdx + 1);
