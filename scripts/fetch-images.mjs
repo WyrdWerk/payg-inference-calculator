@@ -23,8 +23,9 @@
 import { writeFile, mkdir } from 'node:fs/promises';
 import {
   orgFromId, orgFromName, canonicalId, orgLookupKey, ORG_ALIASES,
-  num, fetchJsonWithRetry, checkCoverageDrop, parseArgs,
+  num, fetchJsonWithRetry, checkCoverageDrop, parseArgs, dedupModels,
 } from './lib.mjs';
+import { fetchFalImageModels } from './fetch-fal.mjs';
 
 const IMAGES_MODELS_URL = 'https://openrouter.ai/api/v1/images/models';
 const IMAGES_ENDPOINT_BASE = 'https://openrouter.ai/api/v1/images/models';
@@ -136,19 +137,26 @@ async function main() {
 
   console.log(`  ${models.length} models with pricing (${failed} endpoints failed)`);
 
+  // ── Merge fal.ai image models (Tier 1 — first-seen wins over OpenRouter) ──
+  const falImageModels = await fetchFalImageModels();
+  // Prepend fal rows so dedupModels gives them Tier-1 precedence
+  const tieredModels = [...falImageModels, ...models];
+  const dedupedModels = dedupModels(tieredModels);
+  console.log(`  Image models: ${models.length} OpenRouter + ${falImageModels.length} fal → ${dedupedModels.length} after dedup`);
+
   // Coverage drop check
-  const prevCount = await checkCoverageDrop(OUTPUT_PATH, models.length);
+  const prevCount = await checkCoverageDrop(OUTPUT_PATH, dedupedModels.length);
 
   // Org enrichment (cross-reference via orgLookupKey)
   const canonToOrg = {};
-  for (const m of models) {
+  for (const m of dedupedModels) {
     if (m.org) {
       canonToOrg[canonicalId(m.id)] = m.org;
       canonToOrg[orgLookupKey(m.id)] = m.org;
     }
   }
   let unresolved = 0;
-  for (const m of models) {
+  for (const m of dedupedModels) {
     if (!m.org || m.org === m.id.split('/')[0]) {
       const resolved = canonToOrg[orgLookupKey(m.id)] || canonToOrg[canonicalId(m.id)];
       if (resolved && resolved !== m.org) m.org = resolved;
@@ -160,18 +168,18 @@ async function main() {
   // Dry run
   const out = {
     generated_at: new Date().toISOString(),
-    models,
+    models: dedupedModels,
   };
 
   if (dryRun) {
     console.log('\n── Summary ──');
-    console.log(`  Models: ${models.length}`);
-    const flatCount = models.filter(m => m.pricing.some(p => p.unit === 'image')).length;
-    const tokenCount = models.filter(m => m.pricing.every(p => p.unit === 'token')).length;
+    console.log(`  Models: ${dedupedModels.length}`);
+    const flatCount = dedupedModels.filter(m => m.pricing.some(p => p.unit === 'image')).length;
+    const tokenCount = dedupedModels.filter(m => m.pricing.every(p => p.unit === 'token')).length;
     console.log(`  Flat per-image: ${flatCount} | Per-token: ${tokenCount}`);
     if (prevCount !== null) {
-      const delta = models.length - prevCount;
-      console.log(`  Coverage delta: ${delta >= 0 ? '+' : ''}${delta} (${prevCount} → ${models.length})`);
+      const delta = dedupedModels.length - prevCount;
+      console.log(`  Coverage delta: ${delta >= 0 ? '+' : ''}${delta} (${prevCount} → ${dedupedModels.length})`);
     }
     console.log(`\n→ Dry run — image-pricing.json not written`);
     return;
@@ -179,7 +187,7 @@ async function main() {
 
   await mkdir('public', { recursive: true });
   await writeFile(OUTPUT_PATH, JSON.stringify(out, null, 2));
-  console.log(`\n→ Wrote ${OUTPUT_PATH} (${models.length} models)`);
+  console.log(`\n→ Wrote ${OUTPUT_PATH} (${dedupedModels.length} models)`);
 }
 
 main().catch((err) => { console.error('Fatal:', err); process.exit(1); });

@@ -78,9 +78,9 @@ async function fetchPricingBatched(endpointIds, headers) {
     for (const p of (d.prices || [])) {
       priceMap.set(p.endpoint_id, p);
     }
-    // Small delay between batches to avoid 429s
+    // Delay between batches to avoid 429s (fal's rate limit is unstated but aggressive)
     if (i + PRICING_BATCH_SIZE < endpointIds.length) {
-      await new Promise(res => setTimeout(res, 200));
+      await new Promise(res => setTimeout(res, 500));
     }
   }
   return priceMap;
