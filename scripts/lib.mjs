@@ -174,6 +174,72 @@ export function dedupModels(tieredModels) {
   return result;
 }
 
+// ── fal.ai helpers ──
+// fal's endpoint IDs are deeply nested (e.g. 'fal-ai/kling-video/v3/pro/image-to-video')
+// and carry model identity in every path segment. The shared canonicalId (built for
+// text models) keeps only the last segment, which would collapse all kling variants
+// to 'image-to-video'. falCanonicalId preserves the model+version+tier and drops
+// only pure modality suffixes (image-to-video, text-to-video, edit, upscale, etc.).
+
+const FAL_MODALITY_SUFFIXES = ['image-to-video', 'text-to-video', 'reference-to-video', 'video-to-video', 'audio-to-video', 'edit', 'upscale', 'image', 'video'];
+
+/**
+ * Compute a canonical ID for a fal.ai endpoint, preserving model identity.
+ *
+ * Strips the 'fal-ai/' namespace prefix (but keeps other org prefixes like
+ * 'bytedance/', 'openai/', 'xai/'). Drops trailing pure-modality segments.
+ * Joins remaining segments with '-'.
+ *
+ * Examples:
+ *   'fal-ai/kling-video/v3/pro/image-to-video' → 'kling-video-v3-pro'
+ *   'fal-ai/flux-pro/v1.1-ultra'               → 'flux-pro-v1.1-ultra'
+ *   'bytedance/seedance-2.0/image-to-video'    → 'bytedance-seedance-2.0'
+ *   'fal-ai/nano-banana-pro/edit'              → 'nano-banana-pro'
+ *   'fal-ai/wan/v2.2-a14b/image-to-video/turbo'→ 'wan-v2.2-a14b-turbo' (turbo kept)
+ */
+export function falCanonicalId(endpointId) {
+  let id = endpointId;
+  // Strip 'fal-ai/' namespace prefix only (keep bytedance/, openai/, xai/, etc.)
+  if (id.startsWith('fal-ai/')) id = id.slice('fal-ai/'.length);
+  // Drop pure-modality segments ANYWHERE in the path — they're routing artifacts
+  // (image-to-video, text-to-video, edit, upscale, etc.), not model identity.
+  // This handles both trailing ('.../image-to-video') and mid-path
+  // ('.../image-to-video/turbo') cases uniformly.
+  const segments = id.split('/').filter(s => !FAL_MODALITY_SUFFIXES.includes(s));
+  return segments.join('-').toLowerCase();
+}
+
+/**
+ * Map from fal model family (first segment after fal-ai/) to the real model org.
+ * Built from the top ~20 families by endpoint count. Long-tail families fall back
+ * to 'fal' as org (set in fetch-fal.mjs).
+ */
+export const FAL_ORG_MAP = {
+  'flux': 'black-forest-labs',
+  'flux-pro': 'black-forest-labs',
+  'flux-2': 'black-forest-labs',
+  'kling-video': 'kuaishou',
+  'kling': 'kuaishou',
+  'nano-banana': 'google',
+  'nano-banana-2': 'google',
+  'nano-banana-pro': 'google',
+  'ideogram': 'ideogram',
+  'pixverse': 'pixsocial',
+  'minimax': 'minimax',
+  'wan': 'alibaba',
+  'wan-i2v': 'alibaba',
+  'wan-t2v': 'alibaba',
+  'ltx-video': 'lightricks',
+  'seedance': 'bytedance',
+  'veo': 'google',
+  'veo3': 'google',
+  'veo3.1': 'google',
+  'recraft': 'recraft',
+  'vidu': 'shengshu',
+  'pika': 'pika',
+  'hunyuan-video': 'tencent',
+};
+
 // ── HTTP ──────────────────────────────────────────────────────────────────────
 
 /** Fetch JSON with no retry (for simple endpoints). */
