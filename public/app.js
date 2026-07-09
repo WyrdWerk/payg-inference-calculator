@@ -50,6 +50,10 @@ const els = {
   compareModal: $('compareModal'),
   compareClose: $('compareClose'),
   compareBody: $('compareBody'),
+  detailModal: $('detailModal'),
+  detailClose: $('detailClose'),
+  detailBody: $('detailBody'),
+  detailTitle: $('detailTitle'),
   cacheWriteTokens: $('cacheWriteTokens'),
   amortizeN: $('amortizeN'),
   mobileSort: $('mobileSort'),
@@ -357,14 +361,25 @@ function attachListeners() {
   els.groupBy.addEventListener('change', () => computeAndRender());
 
   els.resultsBody.addEventListener('click', (e) => {
+    // Compare checkbox — handled by change event, ignore here.
+    if (e.target.closest('.compare-check')) return;
+    // Group header toggle (collapse/expand child rows).
     const header = e.target.closest('.group-header');
-    if (!header) return;
-    header.classList.toggle('collapsed');
-    const group = header.dataset.group;
-    const collapsed = header.classList.contains('collapsed');
-    els.resultsBody.querySelectorAll(`tr[data-group="${CSS.escape(group)}"]:not(.group-header)`).forEach((row) => {
-      row.style.display = collapsed ? 'none' : '';
-    });
+    if (header) {
+      header.classList.toggle('collapsed');
+      const group = header.dataset.group;
+      const collapsed = header.classList.contains('collapsed');
+      els.resultsBody.querySelectorAll(`tr[data-group="${CSS.escape(group)}"]:not(.group-header)`).forEach((row) => {
+        row.style.display = collapsed ? 'none' : '';
+      });
+      return;
+    }
+    // Detail card open (any other click on a body row).
+    const tr = e.target.closest('tr[data-idx]');
+    if (tr) {
+      const idx = Number(tr.dataset.idx);
+      if (Number.isInteger(idx)) showDetailModal(idx);
+    }
   });
 
   for (const id of ['totalTokens', 'inputPct', 'cacheReadPct', 'outputPct', 'cacheWriteTokens', 'amortizeN']) {
@@ -411,6 +426,16 @@ function attachListeners() {
     if (e.target === els.compareModal) closeCompareModal();
   });
 
+  els.detailClose.addEventListener('click', closeDetailModal);
+  els.detailModal.addEventListener('click', (e) => {
+    if (e.target === els.detailModal) closeDetailModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (els.detailModal.style.display !== 'none') closeDetailModal();
+    if (els.compareModal.style.display !== 'none') closeCompareModal();
+  });
+
   window.addEventListener('hashchange', () => {
     deserializeState(location.hash.slice(1));
     computeAndRender();
@@ -449,6 +474,106 @@ function updateCompareTray() {
   els.compareTray.style.display = n > 0 ? '' : 'none';
   els.compareCount.textContent = `${n} selected`;
   els.compareBtn.disabled = n < 2;
+}
+
+function closeDetailModal() {
+  els.detailModal.style.display = 'none';
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(
+    () => { btn.textContent = '✓'; setTimeout(() => { btn.textContent = '📋'; }, 1200); },
+    () => { btn.textContent = '✗'; setTimeout(() => { btn.textContent = '📋'; }, 1200); }
+  );
+}
+
+function showDetailModal(idx) {
+  const r = state.currentRows?.[idx]?.model;
+  if (!r) return;
+  const md = r.modelsdev;
+  const parts = [];
+
+  // Header
+  parts.push(`<div class="detail-subtitle">${esc(orgDisplay(r.org))} · via ${esc(providerName(r.provider, r.provider_display))}` +
+    (md && md.confidence === 'medium' ? ' <span class="approx-badge" title="Matched by fuzzy logic against models.dev — verify before configuring">⚠ approx</span>' : '') +
+    `</div>`);
+
+  // Section: Connect (only if enrichment exists)
+  if (md) {
+    parts.push('<div class="detail-section"><div class="detail-section-title">Connect</div>');
+    parts.push(`<div class="detail-field"><span class="detail-field-label">Base URL</span>` +
+      `<span class="detail-field-value">${esc(md.base_url || '—')} <button class="copy-btn" data-copy="${esc(md.base_url || '')}">📋</button></span></div>`);
+    parts.push(`<div class="detail-field"><span class="detail-field-label">Model ID</span>` +
+      `<span class="detail-field-value">${esc(md.model_id || '—')} <button class="copy-btn" data-copy="${esc(md.model_id || '')}">📋</button></span></div>`);
+    if (md.doc_url) {
+      parts.push(`<div class="detail-field"><span class="detail-field-label">Docs</span>` +
+        `<span class="detail-field-value"><a href="${esc(md.doc_url)}" target="_blank" rel="noopener">${esc(md.doc_url)} ↗</a></span></div>`);
+    }
+    parts.push('</div>');
+  } else {
+    parts.push('<div class="detail-section"><div class="detail-no-enrich">Direct configuration not available for this provider — use OpenRouter.</div></div>');
+  }
+
+  // Section: Pricing
+  const p = r.pricing || {};
+  parts.push('<div class="detail-section"><div class="detail-section-title">Pricing ($/M tokens)</div>');
+  parts.push('<div class="detail-pricing-grid">');
+  parts.push(`<div class="detail-pricing-cell"><div class="detail-pricing-cell-label">Input</div><div class="detail-pricing-cell-value">${p.input != null ? '$' + p.input : '—'}</div></div>`);
+  parts.push(`<div class="detail-pricing-cell"><div class="detail-pricing-cell-label">Output</div><div class="detail-pricing-cell-value">${p.output != null ? '$' + p.output : '—'}</div></div>`);
+  parts.push(`<div class="detail-pricing-cell"><div class="detail-pricing-cell-label">Cache read</div><div class="detail-pricing-cell-value">${p.cache_read != null ? '$' + p.cache_read : '—'}</div></div>`);
+  parts.push(`<div class="detail-pricing-cell"><div class="detail-pricing-cell-label">Cache write</div><div class="detail-pricing-cell-value">${p.cache_write != null ? '$' + p.cache_write : '—'}</div></div>`);
+  parts.push('</div></div>');
+
+  // Section: Capabilities (only if enrichment exists)
+  if (md && md.capabilities) {
+    const caps = md.capabilities;
+    const trueCaps = [];
+    if (caps.reasoning) trueCaps.push('Reasoning');
+    if (caps.tool_call) trueCaps.push('Tool call');
+    if (caps.structured_output) trueCaps.push('Structured output');
+    if (caps.attachment) trueCaps.push('Attachment');
+    if (caps.temperature) trueCaps.push('Temperature');
+    parts.push('<div class="detail-section"><div class="detail-section-title">Capabilities</div>');
+    if (trueCaps.length > 0) {
+      parts.push('<div class="detail-capabilities">' + trueCaps.map((c) => `<span class="detail-capability">✓ ${esc(c)}</span>`).join('') + '</div>');
+    }
+    if (md.modalities) {
+      const inp = (md.modalities.input || []).join(', ');
+      const out = (md.modalities.output || []).join(', ');
+      parts.push(`<div class="detail-modalality-line">Input: ${esc(inp)} → Output: ${esc(out)}</div>`);
+    }
+    parts.push('</div>');
+
+    // Section: About
+    parts.push('<div class="detail-section"><div class="detail-section-title">About</div>');
+    if (md.description) {
+      const desc = md.description.length > 200 ? md.description.slice(0, 200) + '…' : md.description;
+      parts.push(`<div class="detail-description" title="${esc(md.description)}">${esc(desc)}</div>`);
+    }
+    const provBits = [];
+    if (md.release_date) provBits.push('Released ' + esc(md.release_date));
+    if (md.knowledge_cutoff) provBits.push('Knowledge cutoff ' + esc(md.knowledge_cutoff));
+    if (md.open_weights === true) provBits.push('Open weights ✓');
+    if (provBits.length > 0) parts.push(`<div class="detail-provenance">${provBits.join(' · ')}</div>`);
+    parts.push('</div>');
+  }
+
+  // Footer actions
+  parts.push('<div class="detail-actions">');
+  parts.push(`<button type="button" id="detailAddCompare">Add to compare</button>`);
+  parts.push(`<a href="https://openrouter.ai/model/${encodeURIComponent(r.id)}" target="_blank" rel="noopener">Open in OpenRouter ↗</a>`);
+  parts.push('</div>');
+
+  els.detailTitle.textContent = r.name || r.id;
+  els.detailBody.innerHTML = parts.join('');
+  els.detailModal.style.display = '';
+
+  // Wire footer actions + copy buttons
+  const addBtn = document.getElementById('detailAddCompare');
+  if (addBtn) addBtn.addEventListener('click', () => { closeDetailModal(); toggleCompare(r); });
+  for (const btn of els.detailBody.querySelectorAll('.copy-btn')) {
+    btn.addEventListener('click', () => copyToClipboard(btn.dataset.copy, btn));
+  }
 }
 
 function showCompareModal() {
@@ -876,7 +1001,7 @@ function renderModelRow(r, rank, groupKey, cheapest) {
     ? state.currentRows.findIndex((x) => x.model.id === r.model.id && x.model.provider === r.model.provider)
     : rank - 1;
   const checkbox = `<input type="checkbox" class="compare-check" data-idx="${rowIdx}" ${isSelected ? 'checked' : ''}${state.compareSelection.length >= 6 && !isSelected ? ' disabled' : ''}>`;
-  return `<tr${groupAttr}>
+  return `<tr data-idx="${rowIdx}"${groupAttr}>
     <td class="rank" data-label="#">${checkbox} ${rank}${cheapest ? ' 🏆' : ''}</td>
     <td data-label="Org"><span class="org-badge">${esc(orgDisplay(r.model.org))}</span></td>
     <td data-label="Provider">${renderProviderCell(r)}</td>

@@ -199,10 +199,10 @@
     </p>
   </footer>
 
-  <div class="compare-modal" id="compareModal" style="display:none;">
+  <div class="compare-modal" id="compareModal" role="dialog" aria-modal="true" aria-labelledby="compareModalTitle" style="display:none;">
     <div class="compare-modal-content">
       <div class="compare-modal-header">
-        <h2>Comparison</h2>
+        <h2 id="compareModalTitle">Comparison</h2>
         <button id="compareClose" type="button">✕</button>
       </div>
       <div id="compareBody"></div>
@@ -210,7 +210,7 @@
   </div>
 
   <!-- Detail modal (per-model enrichment view) -->
-  <div class="detail-modal" id="detailModal" style="display:none;">
+  <div class="detail-modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" style="display:none;">
     <div class="detail-modal-content">
       <div class="detail-modal-header">
         <h2 id="detailTitle">—</h2>
