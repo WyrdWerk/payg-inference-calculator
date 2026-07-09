@@ -87,5 +87,66 @@ export function normalizeForMatch(providerKey, modelId) {
   return fn ? fn(modelId) : canonicalId(modelId);
 }
 
-// Filled in by later tasks. Default fallback uses canonicalId.
-const PROVIDER_NORMALIZERS = {};
+/**
+ * Strip a leading region segment from a Bedrock model ID.
+ *   'global.anthropic.claude-haiku-4-5-20251001-v1:0' → 'anthropic.claude-haiku-4-5-20251001-v1:0'
+ *   'us.meta.llama4-scout-17b-instruct-v1:0'          → 'meta.llama4-scout-17b-instruct-v1:0'
+ * Regions seen in real data: global, us, eu, jp, ap, sa, ca.
+ */
+function stripBedrockRegion(id) {
+  return id.replace(/^(global|us|eu|jp|ap|sa|ca)\./i, '');
+}
+
+/**
+ * Normalize an Amazon Bedrock model ID for matching.
+ *   'global.anthropic.claude-haiku-4-5-20251001-v1:0'
+ *     → strip region        → 'anthropic.claude-haiku-4-5-20251001-v1:0'
+ *     → first dot = org sep → 'anthropic/claude-haiku-4-5-20251001-v1:0'
+ *     → strip :N stamp      → 'anthropic/claude-haiku-4-5-20251001-v1'
+ *     → strip trailing -vN  → 'anthropic/claude-haiku-4-5-20251001'
+ *     → canonicalId (-date)→ 'claude-haiku-4-5'
+ *
+ * The trailing -v<N> segment (e.g. '-v1') is stripped here because canonicalId
+ * only strips a bare trailing date; with '-v1' left on the end the date isn't
+ * terminal and would otherwise survive canonicalId.
+ */
+function normalizeAmazon(id) {
+  const noRegion = stripBedrockRegion(id);
+  const firstDot = noRegion.indexOf('.');
+  const withSlash = firstDot > 0
+    ? noRegion.slice(0, firstDot) + '/' + noRegion.slice(firstDot + 1)
+    : noRegion;
+  const noVersion = withSlash.replace(/:\d+$/, '').replace(/-v\d+$/, '');
+  return canonicalId(noVersion);
+}
+
+/**
+ * Strip the Fireworks accounts/fireworks/{models,routers}/ prefix and decode
+ * the version encoding where 'p' replaces '.' (e.g. 'k2p6' → 'k2.6', '5p2' → '5.2').
+ * ONLY decodes the version pattern — other 'p' occurrences are left alone.
+ * SKU suffixes (-turbo, -fast, -highspeed) are preserved as distinct SKUs.
+ */
+function normalizeFireworks(id) {
+  const stripped = id.replace(/^accounts\/fireworks\/(?:models|routers)\//, '');
+  // Decode version pattern: a digit followed by 'p' followed by a digit.
+  // Applies across multi-segment versions like 'k2p6' (k2.6) and '5p2' (5.2).
+  const decoded = stripped.replace(/(\d)p(\d)/g, '$1.$2');
+  return canonicalId(decoded);
+}
+
+/**
+ * Strip the duplicated brand prefix on Minimax models.dev IDs.
+ *   'MiniMax-M2.5-highspeed' → 'M2.5-highspeed' → canonicalId → 'm2.5-highspeed'
+ * SKU suffixes preserved.
+ */
+function normalizeMinimax(id) {
+  const noBrand = id.replace(/^MiniMax-/i, '');
+  return canonicalId(noBrand);
+}
+
+const PROVIDER_NORMALIZERS = {
+  cloudflare: (id) => canonicalId(id.replace(/^@cf\//, '')),
+  amazon: normalizeAmazon,
+  fireworks: normalizeFireworks,
+  minimax: normalizeMinimax,
+};

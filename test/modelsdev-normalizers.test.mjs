@@ -48,3 +48,73 @@ test('normalizeForMatch default: case-folded and trimmed', () => {
 test('normalizeForMatch default: unknown provider falls back to canonicalId', () => {
   assert.equal(normalizeForMatch('unknownprov', 'org/model-name'), 'model-name');
 });
+
+// ── cloudflare: strip @cf/ prefix ────────────────────────────────────────────
+
+test('normalizeForMatch cloudflare: strips @cf/ prefix then canonicalId', () => {
+  assert.equal(
+    normalizeForMatch('cloudflare', '@cf/moonshotai/kimi-k2.7-code'),
+    'kimi-k2.7-code'
+  );
+  assert.equal(
+    normalizeForMatch('cloudflare', '@cf/google/gemma-4-26b-a4b-it'),
+    'gemma-4-26b-a4b-it'
+  );
+});
+
+// ── amazon-bedrock: strip region prefix + :N versionstamp ────────────────────
+
+test('normalizeForMatch amazon: strips region prefix and :N versionstamp', () => {
+  assert.equal(
+    normalizeForMatch('amazon', 'global.anthropic.claude-haiku-4-5-20251001-v1:0'),
+    'claude-haiku-4-5'
+  );
+  assert.equal(
+    normalizeForMatch('amazon', 'us.meta.llama4-scout-17b-instruct-v1:0'),
+    'llama4-scout-17b-instruct'
+  );
+  assert.equal(
+    normalizeForMatch('amazon', 'jp.anthropic.claude-sonnet-4-5-20250929-v1:0'),
+    'claude-sonnet-4-5'
+  );
+});
+
+// ── fireworks: strip accounts/fireworks/{models,routers}/ + decode p→. ───────
+// SKU suffixes (-turbo, -fast) are PRESERVED.
+
+test('normalizeForMatch fireworks: strips path prefix and decodes p→. in version', () => {
+  assert.equal(
+    normalizeForMatch('fireworks', 'accounts/fireworks/models/glm-5p2'),
+    'glm-5.2'
+  );
+  assert.equal(
+    normalizeForMatch('fireworks', 'accounts/fireworks/models/glm-5p1'),
+    'glm-5.1'
+  );
+});
+
+test('normalizeForMatch fireworks: PRESERVES -turbo SKU suffix (regression)', () => {
+  assert.equal(
+    normalizeForMatch('fireworks', 'accounts/fireworks/routers/kimi-k2p6-turbo'),
+    'kimi-k2.6-turbo'
+  );
+});
+
+test('normalizeForMatch fireworks: PRESERVES -fast SKU suffix (regression)', () => {
+  assert.equal(
+    normalizeForMatch('fireworks', 'accounts/fireworks/models/glm-5p2-fast'),
+    'glm-5.2-fast'
+  );
+  assert.equal(
+    normalizeForMatch('fireworks', 'accounts/fireworks/routers/kimi-k2p7-code-fast'),
+    'kimi-k2.7-code-fast'
+  );
+});
+
+// ── minimax: strip duplicated MiniMax- brand prefix ──────────────────────────
+// SKU suffixes (-highspeed) are PRESERVED.
+
+test('normalizeForMatch minimax: strips duplicated brand prefix', () => {
+  assert.equal(normalizeForMatch('minimax', 'MiniMax-M2.1'), 'm2.1');
+  assert.equal(normalizeForMatch('minimax', 'MiniMax-M2.5-highspeed'), 'm2.5-highspeed');
+});
