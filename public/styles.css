@@ -618,6 +618,29 @@ footer {
   letter-spacing: 0.05em; color: var(--text-dim, #888);
   margin-bottom: 0.5rem;
 }
+
+/* Quality section in detail modal — tabular label/value rows */
+.detail-quality-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.85rem;
+  padding: 0.2rem 0;
+  font-variant-numeric: tabular-nums;
+}
+.detail-quality-label {
+  color: var(--text-dim, #888);
+}
+.detail-quality-value {
+  color: var(--text, #222);
+  font-weight: 500;
+}
+.detail-quality-source {
+  font-size: 0.72rem;
+  color: var(--text-dim, #888);
+  font-style: italic;
+  margin-top: 0.5rem;
+}
 .detail-field {
   display: flex; align-items: center; justify-content: space-between;
   gap: 0.75rem; padding: 0.35rem 0;

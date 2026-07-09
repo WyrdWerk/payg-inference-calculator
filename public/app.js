@@ -561,6 +561,28 @@ function showDetailModal(idx) {
       parts.push('</div>');
     }
 
+    // Section: Quality (only if benchmark data exists)
+    if (r.benchmarks) {
+      const b = r.benchmarks;
+      const hasAA = b.intelligence_index !== null && b.intelligence_index !== undefined;
+      const hasArena = !!b.design_arena_best;
+      if (hasAA || hasArena) {
+        parts.push('<div class="detail-section"><div class="detail-section-title">Quality</div>');
+        if (hasAA) {
+          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Intelligence Index</span><span class="detail-quality-value">' + esc(b.intelligence_index) + '</span></div>');
+          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Coding Index</span><span class="detail-quality-value">' + esc(b.coding_index) + '</span></div>');
+          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Agentic Index</span><span class="detail-quality-value">' + esc(b.agentic_index) + '</span></div>');
+        }
+        if (hasArena) {
+          const a = b.design_arena_best;
+          const arenaStr = a.elo + ' (' + esc(a.category) + ', rank ' + a.rank + ', ' + a.win_rate + '% win rate)';
+          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Design Arena Elo</span><span class="detail-quality-value">' + arenaStr + '</span></div>');
+        }
+        parts.push('<div class="detail-quality-source">Source: Artificial Analysis via OpenRouter</div>');
+        parts.push('</div>');
+      }
+    }
+
     // Section: About
     parts.push('<div class="detail-section"><div class="detail-section-title">About</div>');
     if (meta.description) {
