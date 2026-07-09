@@ -80,19 +80,23 @@ This means each (model, version, tier) is one row, and the modality (image-to-vi
 
 **Include (clean per-output-unit pricing):**
 - `images` → image `cost_per_unit` (flat per-image)
-- `megapixels` + `processed megapixels` → image `cost_per_million` (convert $/MP to $/M-pixels, ÷1e6 if needed — actually $/MP is already $ per million pixels, so store as `cost_per_million` with `unit: "megapixel"`)
+- `megapixels` + `processed megapixels` → image `cost_per_million` ($/MP, store as `unit: "megapixel"`)
 - `seconds` + `5 seconds` (÷5) + `minutes` (×60) → video `cost_per_second`
 
 **Exclude per user direction:**
 - `compute seconds` — GPU-time-based, not output-based (64 endpoints)
 
 **Exclude (ambiguous / out-of-scope):**
-- `units`, `credits`, `1m tokens`, `1000 tokens`, empty unit — not image/video output pricing
+- `units`, `credits`, `1m tokens`, `1000 tokens`, empty unit, `1`, `16 frames`, `video segments` — not image/video output pricing
 
-**Open: flat per-video / per-generation pricing (44 endpoints)**
-- `videos` (25) — per-video flat. Comparable to per-image flat. **Recommend include** as image-style `cost_per_unit` with `variant: "per-video"` if the endpoint is video-category, OR extend video schema with a flat-pricing variant.
-- `generations` (19) — per-generation. Semantically same as per-image/per-video. **Recommend include** mapped to the endpoint's category.
-- `video segments` (5), `16 frames` (1) — too few and too idiosyncratic. **Recommend exclude.**
+**Exclude (decided this session):**
+- `videos` (flat per-video, 24 video endpoints) — our video tab is per-second only; fal provides no duration data to convert $/video → $/sec. Only 2 of 24 mention "5 second" in marketing copy, which is not a reliable spec. Converting would require an invented divisor. **Excluded rather than hallucinate.**
+- `generations` (19 endpoints) — investigation showed these are almost all `image-to-3d` (excluded category) and `image-to-image` try-on/edit endpoints, not video. The few image-category ones use ambiguous "per-generation" semantics that don't cleanly map. **Excluded.**
+
+**Final includable counts (script-verified):**
+- Video: **143 models** (132 `seconds` + 5 `5 seconds`÷5 + 6 `minutes`÷60)
+- Image: **167 models** (83 `images` + 77 `megapixels` + 7 `processed megapixels`)
+- **Total: ~310 models** before canonical-ID dedup
 
 ### DD-3: Endpoint filtering — status and category
 
@@ -205,11 +209,16 @@ Mirror existing patterns:
 3. **Parity guard:** add fal coverage floor to `test/parity.test.mjs` (e.g. ≥200 fal image+video models after dedup)
 4. **Manual:** local serve, verify image + video tabs show fal rows, pricing computes correctly, mobile layout intact
 
-## Open questions for user review
+## Resolved decisions (from this session)
 
-1. **Flat per-video / per-generation pricing (44 endpoints)** — include (mapped to the endpoint's category) or exclude (too idiosyncratic)? My recommendation: **include**, they're legitimate output-based pricing.
-2. **Org extraction fallback** — when we can't determine the real org (flux→black-forest-labs, etc.), use `fal` as org or leave the `FAL_ORG_MAP` sparse and accept some rows show `fal`? My recommendation: **build the map for the top ~20 families, accept `fal` fallback for the long tail.**
-3. **`supported_durations` / `supported_resolutions` for video** — fal doesn't expose these. Omit entirely (existing UI handles null) or fetch from the model's detail page (extra calls, may not have the data)? My recommendation: **omit** — the UI already handles missing metadata.
+| Question | Decision | Rationale |
+|---|---|---|
+| Per-video / per-generation pricing | **Exclude** | Per-video: 24 endpoints with no duration data → can't convert to per-second without inventing a divisor. Per-generation: mostly 3D/edit endpoints, not video. |
+| Org extraction fallback | **`fal` for long tail** | Build `FAL_ORG_MAP` for top ~20 families; accept `fal` as org for the rest. |
+| `supported_durations` / `supported_resolutions` | **Omit** | fal doesn't expose these; existing UI handles null. |
+| Focus | **Latest models with pricing only** | Exclude deprecated (`status !== 'active'`), exclude unpriced (770 endpoints). Per user: "focus on the latest models where pricing is actually available." |
+| Catalog scope | **Full image + video** | Both tabs get fal as Tier-1 provider. |
+| compute-seconds | **Exclude** | GPU-time pricing, not output-based. Per user. |
 
 ## Build sequence (high-level — detailed plan comes from writing-plans skill)
 
