@@ -64,6 +64,7 @@ const els = {
   totalTokensField: $('totalTokensField'),
   budgetLabel: $('budgetLabel'),
   budgetHint: $('budgetHint'),
+  benchmarkBar: $('benchmarkBar'),
 };
 
 
@@ -766,6 +767,50 @@ function fmtAffordability(tokens_M) {
   return Math.round(tokens_M).toLocaleString();
 }
 
+/** Median of a numeric array. Returns null for empty input. */
+function median(arr) {
+  if (!arr.length) return null;
+  const s = [...arr].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+}
+
+/** Benchmark bar — dynamic median/mean/range/free strip over the current result
+ *  cohort. Recomputed on every render from state.currentRows, so it reflects
+ *  whatever the current search/filter/budget selection is. */
+function renderBenchmarkBox(rows) {
+  const bar = els.benchmarkBar;
+  if (!bar) return;
+  if (!rows || rows.length === 0) { bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+
+  const budget = state.computeBy === 'budget';
+  const vals = rows.map((r) => r.cost).filter((v) => v != null);
+  const finite = vals.filter((v) => isFinite(v));
+  const free = budget ? vals.filter((v) => !isFinite(v)).length : vals.filter((v) => v === 0).length;
+
+  const noun = rows.length === 1 ? 'offering' : 'offerings';
+
+  // All-free cohort — avoid NaN median; show a clean summary instead.
+  if (!finite.length) {
+    bar.innerHTML = `<strong>All ${rows.length} ${noun} free</strong>`;
+    return;
+  }
+
+  const med = median(finite);
+  const mean = finite.reduce((a, b) => a + b, 0) / finite.length;
+  const min = Math.min(...finite);
+  const max = Math.max(...vals); // budget mode: Infinity included → renders "∞"
+  const fmt = budget ? fmtAffordability : fmtCost;
+  const unit = budget ? ' M tokens' : state.costMode === 'monthly' ? '/month' : '/session';
+
+  let html = `<strong>Median ${fmt(med)}${unit}</strong>` +
+    ` <span class="bench-sep">·</span> mean ${fmt(mean)}` +
+    ` <span class="bench-sep">·</span> range ${fmt(min)}–${fmt(max)}`;
+  if (free > 0) html += ` <span class="bench-sep">·</span> ${free} free`;
+  bar.innerHTML = html;
+}
+
 // ── Rendering ─────────────────────────────────────────────────────────────────
 
 function computeAndRender() {
@@ -868,6 +913,7 @@ function computeAndRender() {
   els.mobileSort.value = `${state.sortBy}:${state.sortDir}`;
 
   state.currentRows = rows;
+  renderBenchmarkBox(rows);
   renderTable(rows, tokens);
   updateHash();
 }

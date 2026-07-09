@@ -282,6 +282,25 @@ select:focus, input:focus { border-color: var(--accent); }
 .usage-summary #tokenBreakdown { font-variant-numeric: tabular-nums; }
 .pct-ok { color: var(--green); font-weight: 600; }
 .pct-warn { color: var(--yellow); font-weight: 600; }
+
+/* Benchmark bar — dynamic median/mean/range/free strip over current result cohort */
+.benchmark-bar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 0.75rem;
+  align-items: baseline;
+  font-variant-numeric: tabular-nums;
+}
+.benchmark-bar strong { color: var(--text); font-weight: 600; }
+.benchmark-bar .bench-sep { opacity: 0.5; }
+.hidden { display: none !important; }
 .total-field input { font-size: 1.1rem; font-weight: 600; }
 
 .token-field { display: flex; flex-direction: column; gap: 0.2rem; }
@@ -684,7 +703,7 @@ tbody tr[data-idx]:hover { background: var(--surface-2, #f5f5f5); }
   .controls { flex-direction: column; }
   .control-group { min-width: 100%; }
   main { padding: 0 0.75rem 2rem; }
-  .controls, .token-inputs, .results { padding: 1rem; }
+  .controls, .token-inputs, .results, .benchmark-bar { padding: 1rem; }
   th, td { padding: 0.4rem 0.4rem; font-size: 0.78rem; }
   th { font-size: 0.68rem; }
   /* Allow text wrapping on mobile to avoid horizontal scroll */
