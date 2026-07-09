@@ -65,3 +65,43 @@ test('glm-5.2 quant variants stay distinct (not collapsed by dedup)', async () =
       `${k} should be distinct from glm-5.2 (quant suffix preserved)`);
   }
 });
+
+// ── models.dev enrichment regression guards ──────────────────────────────────
+
+// DeepInfra (112 models) and ~26 smaller OR-exclusive providers are structurally
+// absent from models.dev — 35% floor catches normalizer regressions while
+// accommodating the known ceiling.
+test('models.dev enrichment coverage floor (≥35% of catalog)', async () => {
+  const data = JSON.parse(await readFile(PRICING_JSON, 'utf-8'));
+  const enriched = data.models.filter((m) => m.modelsdev).length;
+  const pct = enriched / data.models.length;
+  assert.ok(pct >= 0.35,
+    `enrichment coverage ${(pct * 100).toFixed(1)}% below 35% floor — a normalizer may have regressed`);
+});
+
+test('models.dev confidence values are always "high" or "medium"', async () => {
+  const data = JSON.parse(await readFile(PRICING_JSON, 'utf-8'));
+  for (const m of data.models) {
+    if (!m.modelsdev) continue;
+    assert.ok(
+      m.modelsdev.confidence === 'high' || m.modelsdev.confidence === 'medium',
+      `${m.provider}/${m.id} has invalid confidence: ${m.modelsdev.confidence}`
+    );
+  }
+});
+
+// models.dev's `api` field is optional — ~141 enriched models legitimately
+// carry base_url: null (providers like Azure/Bedrock/Google/Perplexity that
+// don't expose a documented HTTP endpoint on models.dev). When base_url IS
+// present it must be a valid https URL.
+test('models.dev base_url is null or a valid https URL', async () => {
+  const data = JSON.parse(await readFile(PRICING_JSON, 'utf-8'));
+  for (const m of data.models) {
+    if (!m.modelsdev) continue;
+    const u = m.modelsdev.base_url;
+    assert.ok(
+      u === null || (typeof u === 'string' && u.startsWith('https://')),
+      `${m.provider}/${m.id} has invalid base_url: ${u}`
+    );
+  }
+});
