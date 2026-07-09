@@ -79,6 +79,11 @@ import { canonicalId, orgLookupKey } from '../shared/normalize.mjs';
 // Re-exported here for fetch-modelsdev.mjs to consume.
 export { PROVIDER_MAP, normalizeForMatch, findEnrichment, applyEnrichment } from '../shared/modelsdev.mjs';
 
+// Benchmark matching helpers live in shared/benchmarks.mjs (pure, no node:
+// imports) — same purity contract as normalize.mjs and modelsdev.mjs so they
+// could be bundled into the Worker. Re-exported here for fetch-pricing.mjs.
+export { conservativeBase, buildBenchmarkIndex, applyBenchmarkEnrichment } from '../shared/benchmarks.mjs';
+
 // ── provider-name normalization ───────────────────────────────────────────────
 
 export const PROVIDER_NAME_MAP = {
