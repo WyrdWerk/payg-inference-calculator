@@ -145,3 +145,45 @@ test('benchmarks field structure is correct when present', async () => {
       `${m.id} benchmarks block missing expected keys`);
   }
 });
+
+// ── fal.ai integration regression guards ──────────────────────────────────────
+
+const IMAGE_PRICING_JSON = join(__dirname, '..', 'public', 'image-pricing.json');
+const VIDEO_PRICING_JSON = join(__dirname, '..', 'public', 'video-pricing.json');
+
+test('fal.ai image models present in image-pricing.json (≥100)', async () => {
+  const data = JSON.parse(await readFile(IMAGE_PRICING_JSON, 'utf-8'));
+  const fal = data.models.filter((m) => m.provider === 'fal');
+  assert.ok(fal.length >= 100,
+    `fal image models ${fal.length} below 100 floor — fal fetch may have regressed`);
+});
+
+test('fal.ai video models present in video-pricing.json (≥100)', async () => {
+  const data = JSON.parse(await readFile(VIDEO_PRICING_JSON, 'utf-8'));
+  const fal = data.models.filter((m) => m.provider === 'fal');
+  assert.ok(fal.length >= 100,
+    `fal video models ${fal.length} below 100 floor — fal fetch may have regressed`);
+});
+
+test('fal image models have valid pricing schema', async () => {
+  const data = JSON.parse(await readFile(IMAGE_PRICING_JSON, 'utf-8'));
+  const fal = data.models.filter((m) => m.provider === 'fal');
+  for (const m of fal.slice(0, 30)) {
+    assert.ok(Array.isArray(m.pricing) && m.pricing.length > 0, `${m.id} has no pricing array`);
+    for (const p of m.pricing) {
+      assert.ok(['image', 'megapixel'].includes(p.unit), `${m.id} invalid unit ${p.unit}`);
+      assert.equal(typeof p.cost_per_unit, 'number', `${m.id} cost_per_unit not a number`);
+    }
+  }
+});
+
+test('fal video models have valid per-second pricing', async () => {
+  const data = JSON.parse(await readFile(VIDEO_PRICING_JSON, 'utf-8'));
+  const fal = data.models.filter((m) => m.provider === 'fal');
+  for (const m of fal.slice(0, 30)) {
+    assert.ok(Array.isArray(m.pricing) && m.pricing.length > 0, `${m.id} has no pricing array`);
+    for (const p of m.pricing) {
+      assert.equal(typeof p.cost_per_second, 'number', `${m.id} cost_per_second not a number`);
+    }
+  }
+});

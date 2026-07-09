@@ -140,8 +140,9 @@ The pipeline includes unattended-operation safeguards:
 | `data/manual-pricing.csv` | Static pricing for CSV-sourced providers (Hyper, Makora, Xiaomimimo) |
 | `scripts/lib.mjs` | Shared utilities: org extraction, dedup, HTTP retry, coverage guard, dry-run — imported by all three fetchers. Re-exports `canonicalId`/`orgLookupKey` from `shared/normalize.mjs`. |
 | `scripts/bust-cache.mjs` | Rewrites `?v=` cache-bust tokens in `public/*.html` to 8-char SHA-1 content hashes of the referenced assets. Run before deploy in CI (deploy + refresh jobs) and locally via `npm run bust:cache`. |
-| `scripts/fetch-images.mjs` | Image pipeline: fetch `/images/models` + `/endpoints`, normalize flat/megapixel/token pricing → `public/image-pricing.json` |
-| `scripts/fetch-videos.mjs` | Video pipeline: fetch `/videos/models`, normalize cents→dollars, filter per-second → `public/video-pricing.json` |
+| `scripts/fetch-images.mjs` | Image pipeline: fetch `/images/models` + `/endpoints`, normalize flat/megapixel/token pricing → `public/image-pricing.json`. Merges fal.ai image models (Tier-1 precedence) + runs `dedupModels`. |
+| `scripts/fetch-videos.mjs` | Video pipeline: fetch `/videos/models`, normalize cents→dollars, filter per-second → `public/video-pricing.json`. Merges fal.ai video models (Tier-1 precedence) + runs `dedupModels`. |
+| `scripts/fetch-fal.mjs` | Sidecar fetcher for fal.ai image + video pricing — paginated `/v1/models` + batched `/v1/models/pricing`, filters to active priced endpoints, maps to schema. Exports `fetchFalImageModels()` / `fetchFalVideoModels()`. Auth: `FAL_API_KEY` env. |
 | `public/image.html` + `public/image-app.js` | Image pricing tab: calculator (count × $/unit), provider + model typeahead search, unit-adaptive table, variant filter, mobile card layout, mobile sort dropdown |
 | `public/video.html` + `public/video-app.js` | Video pricing tab: calculator (seconds × $/sec), provider + model typeahead search, resolution + audio filters, mobile card layout, mobile sort dropdown |
 | `public/image-pricing.json` | Generated data — 34 image models with pricing arrays (image/megapixel/token units) |
@@ -154,6 +155,7 @@ The pipeline includes unattended-operation safeguards:
 npm run fetch           # Fetch text pricing (~317 API calls, ~15-20s)
 npm run fetch:images    # Fetch image pricing (~40 API calls, ~12s)
 npm run fetch:videos    # Fetch video pricing (1 API call, ~2s)
+npm run fetch:fal       # Fetch fal.ai image+video pricing standalone (writes /tmp/fal-*.json)
 npm run fetch:all       # Run all three fetchers
 npm run serve           # Serve public/ on localhost:3000
 npm test                # Run the test suite (node --test, zero-dep)
@@ -201,6 +203,19 @@ OpenRouter has dedicated APIs for image and video generation — separate from t
 - 16 models listed, 13 with per-second pricing (3 Seedance models excluded — per-token only)
 - Normalization: cent-denominated keys (`cents_*`) → dollars; non-per-second keys (`video_tokens`) filtered out
 - Writes `public/video-pricing.json` — per-second pricing with resolution + audio variants
+
+### fal.ai pipeline (`scripts/fetch-fal.mjs`)
+- Source: `GET /v1/models` (paginated, 500/page) + `GET /v1/models/pricing?endpoint_id=...` (batched 50/call) — both authenticated (`Authorization: Key ${FAL_API_KEY}`)
+- Filters: `metadata.status === 'active'`, category in image/video sets, paid pricing in includable unit
+- Includable units: `images`/`megapixels`/`processed megapixels` (image); `seconds`/`5 seconds`(÷5)/`minutes`(÷60) (video)
+- Excluded: `compute seconds` (GPU-time, not output-based), `videos` (flat per-video, no duration data to convert to per-second), `generations`/`units`/`credits`/token-based, ~770 free/unpriced endpoints
+- Canonicalization: `falCanonicalId()` (in `scripts/lib.mjs`) preserves model identity from nested paths (`fal-ai/kling-video/v3/pro/image-to-video` → `kling-video-v3-pro`); drops pure-modality segments (`image-to-video`, `edit`, etc.) anywhere in the path. The shared `canonicalId` would collapse all variants to `image-to-video`.
+- Org extraction: `FAL_ORG_MAP` (41 families: flux→black-forest-labs, kling-video→kuaishou, nano-banana→google, etc.); `fal` fallback for long tail (~100 community/specialty models)
+- Non-fatal: returns `[]` on failure; image/video pipelines continue without fal data
+- Rate limiting: 500ms delay between pricing batches + exponential-backoff retry on 429 (up to 3 retries)
+- Merge: fal rows prepended to OpenRouter arrays → `dedupModels` gives Tier-1 precedence (first-seen wins). First model-level dedup in fetch-images/fetch-videos.
+- Auth: `FAL_API_KEY` GitHub secret, injected as env var on the image + video fetch CI steps
+- Coverage: ~270 image + ~145 video models from 1,398 endpoints (770 unpriced, 312 excluded unit)
 
 ### Frontend tabs
 - `public/image.html` + `public/image-app.js`: image calculator (count × $/image for flat-priced; varies for others), provider + model typeahead search, variant/resolution filter, sortable table with unit-adaptive columns, mobile card layout via data-label, mobile sort dropdown
