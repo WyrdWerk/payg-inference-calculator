@@ -730,18 +730,27 @@ function getTokens() {
   };
 }
 
-/** cost = (tokens × $/M) / 1e6  — prices are $/M tokens */
+/** cost = (tokens × $/M) / 1e6  — prices are $/M tokens
+ *
+ *  Null-price semantics: a model is only filtered out (returns null) if it
+ *  lacks an input or output price AND the user requested those token types.
+ *  Cache fields are NEVER disqualifiers:
+ *  - cache_read null → cached tokens charged at the INPUT rate (no cache discount)
+ *  - cache_write null → cache-write component is $0 (provider doesn't charge for it)
+ *  This ensures models without published cache pricing still appear in results. */
 function costFor(pricing, tokens) {
   const c = (price, tok) => (price != null ? (price * tok) / 1e6 : null);
   const inputCost = c(pricing.input, tokens.input);
   const outputCost = c(pricing.output, tokens.output);
-  const cacheReadCost = c(pricing.cache_read, tokens.cacheRead);
-  const cacheWriteCost = tokens.cacheWrite > 0 ? c(pricing.cache_write, tokens.cacheWrite / (tokens.amortizeN || 1)) : 0;
+  // Cache-read null → fall back to input price (model offers no cache discount)
+  const cacheReadCost = c(pricing.cache_read != null ? pricing.cache_read : pricing.input, tokens.cacheRead);
+  // Cache-write null → $0 (do NOT filter the model)
+  const cacheWriteCost = tokens.cacheWrite > 0 && pricing.cache_write != null
+    ? (pricing.cache_write * (tokens.cacheWrite / (tokens.amortizeN || 1))) / 1e6
+    : 0;
   if (tokens.input > 0 && inputCost === null) return null;
   if (tokens.output > 0 && outputCost === null) return null;
-  if (tokens.cacheRead > 0 && cacheReadCost === null) return null;
-  if (tokens.cacheWrite > 0 && cacheWriteCost === null) return null;
-  return (inputCost || 0) + (outputCost || 0) + (cacheReadCost || 0) + (cacheWriteCost || 0);
+  return (inputCost || 0) + (outputCost || 0) + (cacheReadCost || 0) + cacheWriteCost;
 }
 
 /** Affordability: given a $ budget and the per-session token breakdown shape,
@@ -757,16 +766,17 @@ function affordabilityFor(pricing, tokens, budget) {
   const rate = (price, pct) => (price != null ? price * pct / 100 : null);
   const inRate   = tokens.inputPct    > 0 ? rate(pricing.input,     tokens.inputPct)    : 0;
   const outRate  = tokens.outputPct   > 0 ? rate(pricing.output,    tokens.outputPct)   : 0;
-  const crRate   = tokens.cacheReadPct> 0 ? rate(pricing.cache_read,tokens.cacheReadPct): 0;
+  // Cache-read null → fall back to input rate (model offers no cache discount)
+  const crPrice  = pricing.cache_read != null ? pricing.cache_read : pricing.input;
+  const crRate   = tokens.cacheReadPct> 0 ? rate(crPrice, tokens.cacheReadPct): 0;
   if (tokens.inputPct    > 0 && inRate  === null) return null;
   if (tokens.outputPct   > 0 && outRate === null) return null;
-  if (tokens.cacheReadPct> 0 && crRate  === null) return null;
   // Cache-write: fixed per-session charge, amortized over N requests.
+  // If provider has no cache_write price (null), treat as $0 fixed charge — do
+  // NOT filter the model out (same semantics as costFor).
   let cwFixed = 0;
-  if (tokens.cacheWrite > 0) {
-    const cwPrice = pricing.cache_write;
-    if (cwPrice == null) return null;
-    cwFixed = (cwPrice * (tokens.cacheWrite / (tokens.amortizeN || 1))) / 1e6;
+  if (tokens.cacheWrite > 0 && pricing.cache_write != null) {
+    cwFixed = (pricing.cache_write * (tokens.cacheWrite / (tokens.amortizeN || 1))) / 1e6;
   }
   const effectiveRate = (inRate || 0) + (outRate || 0) + (crRate || 0);
   if (effectiveRate <= 0) {

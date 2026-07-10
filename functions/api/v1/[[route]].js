@@ -182,7 +182,11 @@ export async function onRequestGet(context) {
           const cT = total * cachePct / 100;
           const oT = total * outputPct / 100;
           if (iT > 0) { if (p.input == null) valid = false; else c += (p.input * iT) / 1e6; }
-          if (cT > 0) { if (p.cache_read == null) valid = false; else c += (p.cache_read * cT) / 1e6; }
+          // Cache-read null → fall back to input price (no cache discount); do NOT invalidate
+          if (cT > 0) {
+            const crPrice = p.cache_read != null ? p.cache_read : p.input;
+            c += (crPrice * cT) / 1e6;
+          }
           if (oT > 0) { if (p.output == null) valid = false; else c += (p.output * oT) / 1e6; }
           return valid ? c : Infinity;
         };
