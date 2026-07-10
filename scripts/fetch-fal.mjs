@@ -20,9 +20,9 @@ const FAL_PRICING_URL = 'https://api.fal.ai/v1/models/pricing';
 const PRICING_BATCH_SIZE = 50; // fal accepts 1-50 endpoint_ids per call
 const MAX_PAGES = 10; // safety cap on pagination
 
-// Categories we care about
-const IMAGE_CATEGORIES = new Set(['text-to-image', 'image-to-image']);
-const VIDEO_CATEGORIES = new Set(['text-to-video', 'image-to-video', 'video-to-video', 'audio-to-video']);
+// Categories we care about — generation only (no editing/processing/upscale tools)
+const IMAGE_CATEGORIES = new Set(['text-to-image']);
+const VIDEO_CATEGORIES = new Set(['text-to-video', 'image-to-video']);
 
 // Pricing units we include (per spec DD-2)
 const IMAGE_UNITS = new Set(['images', 'megapixels', 'processed megapixels']);

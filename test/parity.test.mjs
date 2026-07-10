@@ -151,18 +151,18 @@ test('benchmarks field structure is correct when present', async () => {
 const IMAGE_PRICING_JSON = join(__dirname, '..', 'public', 'image-pricing.json');
 const VIDEO_PRICING_JSON = join(__dirname, '..', 'public', 'video-pricing.json');
 
-test('fal.ai image models present in image-pricing.json (≥100)', async () => {
+test('fal.ai image models present in image-pricing.json (≥80)', async () => {
   const data = JSON.parse(await readFile(IMAGE_PRICING_JSON, 'utf-8'));
   const fal = data.models.filter((m) => m.provider === 'fal');
-  assert.ok(fal.length >= 100,
-    `fal image models ${fal.length} below 100 floor — fal fetch may have regressed`);
+  assert.ok(fal.length >= 80,
+    `fal image models ${fal.length} below 80 floor — fal fetch may have regressed`);
 });
 
-test('fal.ai video models present in video-pricing.json (≥100)', async () => {
+test('fal.ai video models present in video-pricing.json (≥50)', async () => {
   const data = JSON.parse(await readFile(VIDEO_PRICING_JSON, 'utf-8'));
   const fal = data.models.filter((m) => m.provider === 'fal');
-  assert.ok(fal.length >= 100,
-    `fal video models ${fal.length} below 100 floor — fal fetch may have regressed`);
+  assert.ok(fal.length >= 50,
+    `fal video models ${fal.length} below 50 floor — fal fetch may have regressed`);
 });
 
 test('fal image models have valid pricing schema', async () => {
