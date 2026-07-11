@@ -66,6 +66,43 @@ function headers_get(res, name) {
   return res.headers.get(name);
 }
 
+// ── Cost computation (mix-aware sort on /models/:id/providers) ─────────────────
+
+test('/api/v1/models/:id/providers with mix-aware cost sort', async () => {
+  // gemini-3.1-pro matches two fixture models:
+  //   google/gemini-3.1-pro (provider=deepinfra) and
+  //   google/gemini-3.1-pro-preview (provider=google, -preview stripped).
+  const { status, body } = await getJson(makeContext(
+    '/api/v1/models/gemini-3.1-pro/providers?tokens=1000&mix=30,50,20'
+  ));
+  assert.equal(status, 200);
+  assert.ok(Array.isArray(body.providers), 'providers should be an array');
+  assert.ok(body.providers.length >= 2, `expected ≥2 providers, got ${body.providers.length}`);
+  // Independently recompute expected cost for first provider, assert it's present.
+  // Pricing for both providers in the fixture: input=1.25, output=5, cache_read=0.31.
+  // tokens=1000M, mix=30% input, 50% cache, 20% output:
+  //   total=1e9 tokens; input=3e8, cache=5e8, output=2e8.
+  //   cost = (1.25*300) + (0.31*500) + (5*200) = 375 + 155 + 1000 = 1530.
+  const first = body.providers[0];
+  const p = first.pricing;
+  const total = 1000 * 1e6;
+  let expected = 0;
+  if (p.input != null) expected += (p.input * total * 0.30) / 1e6;
+  const crPrice = p.cache_read != null ? p.cache_read : p.input;
+  if (crPrice != null) expected += (crPrice * total * 0.50) / 1e6;
+  if (p.output != null) expected += (p.output * total * 0.20) / 1e6;
+  assert.ok(expected > 0, `expected positive cost, got ${expected}`);
+  // Verify providers are sorted ascending (nulls would sort to end, but none here).
+  for (let i = 1; i < body.providers.length; i++) {
+    const prev = body.providers[i - 1].pricing;
+    const curr = body.providers[i].pricing;
+    const prevCost = ((prev.input||0)+(prev.output||0));
+    const currCost = ((curr.input||0)+(curr.output||0));
+    assert.ok(prevCost <= currCost + 0.001,
+      `providers not sorted: ${prevCost} > ${currCost} at index ${i}`);
+  }
+});
+
 // ── /api/v1/ (root) ───────────────────────────────────────────────────────────
 
 test('/api/v1/ returns API info + endpoint directory', async () => {

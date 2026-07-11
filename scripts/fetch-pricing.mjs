@@ -91,7 +91,7 @@ const DIRECT_PROVIDERS = [
     url: 'https://api.sambanova.ai/v1/models',
     parse: parseSambaNova,
   },
-];
+  ];
 
 // ── OpenRouter config ──────────────────────────────────────────────────────────
 
@@ -186,6 +186,16 @@ const MANUAL_PROVIDER_META = {
     may_train: false,         // "Xiaomi will not use the content you provide for model training"
     retention_days: null,
   },
+    umans: {
+    privacy_policy_url: 'https://app.umans.ai/offers/code/legal/privacy-policy',
+      terms_of_service_url: 'https://app.umans.ai/offers/code/legal/terms-of-use',
+    status_page_url: 'https://status.umans.ai/status',
+    headquarters: null,
+    datacenters: null,
+    retains_prompts: false,  // ZDR: "By default, we do not store request payloads"
+    may_train: false,         // "do not use to train or improve our models"
+    retention_days: null,
+  },
 };
 
 // ── Subscription providers (coding plans) — provider-level badge ──
@@ -203,7 +213,7 @@ const SUBSCRIPTION_PROVIDERS = new Set([
   'chutes',
   'moonshot',
   'xai',
-]);
+  ]);
 
 // ── direct provider parsers ───────────────────────────────────────────────────
 
@@ -367,6 +377,23 @@ function parseSambaNova(data) {
         },
       };
     })
+}
+
+function parseUmans(data) {
+  return (data.data || []).map((m) => ({
+    id: m.id,
+    name: m.id,
+    provider: 'umans',
+    quantization: null,
+    discount: 0,
+    context_length: m.context_length ?? null,
+    pricing: {
+      input: passthrough(m.pricing?.input),
+      output: passthrough(m.pricing?.output),
+      cache_read: null,
+      cache_write: null,
+    },
+  }));
 }
 
 // ── OpenRouter de-aggregation ─────────────────────────────────────────────────
@@ -690,6 +717,29 @@ function parseOpenCodeGo() {
   }));
 }
 
+  // ── Umans AI (hardcoded pricing) ──────────────────────────────────────────────
+  // Manually maintained — update when Umans changes pricing at https://api.code.umans.ai/v1/models
+
+  const UMANS_MODELS = [
+    { id: 'umans-kimi-k2.7', name: 'Umans Kimi K2.7 Code', input: 0.95, output: 4.00, context_length: 262144 },
+    { id: 'umans-glm-5.2', name: 'Umans GLM 5.2', input: 1.40, output: 4.40, context_length: 405504 },
+    { id: 'umans-coder', name: 'Umans Coder', input: 0.95, output: 4.00, context_length: 262144 },
+    { id: 'umans-flash', name: 'Umans Flash', input: 0.15, output: 1.00, context_length: 262144 },
+    { id: 'umans-qwen3.6-35b-a3b', name: 'Umans Qwen3.6 35B A3B', input: 0.15, output: 1.00, context_length: 262144 },
+  ];
+
+  function parseUmansHardcoded() {
+    return UMANS_MODELS.map((m) => ({
+      id: m.id,
+      name: m.name,
+      provider: 'umans',
+      quantization: null,
+      discount: 0,
+      context_length: m.context_length || null,
+      pricing: { input: m.input, output: m.output, cache_read: null, cache_write: null },
+    }));
+  }
+
 // ── dedup / precedence ────────────────────────────────────────────────────────
 // (dedupKey, dedupModels — imported from ./lib.mjs)
 
@@ -763,6 +813,16 @@ async function main() {
   } catch (err) {
     out.providers.push({ key: 'opencode', name: 'OpenCode Go', model_count: 0, status: `error: ${err.message}` });
     console.error(`✗ OpenCode Go: ${err.message}`);
+  }
+
+  try {
+    const umansModels = parseUmansHardcoded();
+    out.providers.push({ key: 'umans', name: 'Umans AI', model_count: umansModels.length, status: 'ok' });
+    tieredModels.push(...umansModels);
+    console.log(`✓ Umans AI: ${umansModels.length} models`);
+  } catch (err) {
+    out.providers.push({ key: 'umans', name: 'Umans AI', model_count: 0, status: `error: ${err.message}` });
+    console.error(`✗ Umans AI: ${err.message}`);
   }
 
   // ── Dedup with 3-tier precedence ──

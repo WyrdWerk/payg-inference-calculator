@@ -1,0 +1,226 @@
+#!/usr/bin/env node
+/**
+ * fetch-performance.mjs
+ *
+ * Sidecar script — fetches per-endpoint latency and throughput data from
+ * OpenRouter's authenticated /v1/models/:slug/endpoints API.  Writes a
+ * compact lookup table to public/performance.json, keyed by the same
+ * dedup key the main pipeline uses:
+ *
+ *   canonicalId(model_id)|normalizeProvider(provider_name)
+ *
+ * The frontend loads this file alongside pricing.json and renders inline
+ * latency/throughput pills in the provider cell.
+ *
+ * Non-fatal: if OPENROUTER_API_KEY is missing, writes an empty JSON object
+ * and the frontend degrades gracefully.  Metadata calls are free.
+ *
+ * Usage:
+ *   node scripts/fetch-performance.mjs [--dry-run]
+ */
+
+import { writeFile, mkdir, readFile } from 'node:fs/promises';
+import {
+  canonicalId,
+  normalizeProvider,
+  fetchJson,
+  fetchJsonWithRetry,
+    parseArgs,
+} from './lib.mjs';
+
+const OR_MODELS_URL = 'https://openrouter.ai/api/v1/models';
+const OR_ENDPOINT_BASE = 'https://openrouter.ai/api/v1/models';
+const CONCURRENCY = 15;
+const OUTPUT_PATH = 'public/performance.json';
+
+const USAGE = `Usage: node scripts/fetch-performance.mjs [--dry-run]
+  Requires OPENROUTER_API_KEY env var for live latency/throughput data.
+  --dry-run  Fetch and process but don't write performance.json`;
+
+// ── helpers ───────────────────────────────────────────────────────────────────
+
+/** Build a dedup key matching the pipeline's dedupKey() — canonicalId|normalizedProvider. */
+function perfKey(modelId, providerName) {
+  return `${canonicalId(modelId)}|${normalizeProvider(providerName)}`;
+}
+
+// ── main ───────────────────────────────────────────────────────────────────────
+
+async function main() {
+  const { dryRun, help } = parseArgs(USAGE);
+  if (help) return;
+
+  const apiKey = process.env.OPENROUTER_API_KEY;
+  const headers = apiKey
+    ? { Authorization: `Bearer ${apiKey}`, Accept: 'application/json' }
+    : { Accept: 'application/json' };
+
+  if (!apiKey) {
+    console.warn('⚠ OPENROUTER_API_KEY not set — writing empty performance.json');
+    const out = {};
+    if (!dryRun) {
+      await mkdir('public', { recursive: true });
+      await writeFile(OUTPUT_PATH, JSON.stringify(out));
+    }
+    console.log('→ Wrote empty ' + OUTPUT_PATH);
+    return;
+  }
+
+  console.log('Fetching performance data from OpenRouter...');
+
+  // ── Step 1: Read our catalog to know which models we track ──
+  let catalogCanonicalIds;
+  try {
+    const pricing = JSON.parse(await readFile('public/pricing.json', 'utf-8'));
+    catalogCanonicalIds = new Set(pricing.models.map(m => canonicalId(m.id)));
+    console.log(`  Catalog: ${pricing.models.length} models, ${catalogCanonicalIds.size} unique canonical IDs`);
+  } catch (err) {
+    console.error('✗ Failed to read pricing.json — run fetch-pricing first');
+    process.exit(1);
+  }
+
+  // ── Step 2: Fetch OR model listing to get canonical_slugs ──
+  const t0 = Date.now();
+  const listData = await fetchJsonWithRetry(OR_MODELS_URL, 1, 2000, { apiKey });
+  const allORModels = (listData.data || []).filter(m => !m.id.endsWith(':free'));
+
+  // Build canonicalId → slug map, only for models we track
+  const modelSlugs = new Map();
+  for (const m of allORModels) {
+    const cid = canonicalId(m.id);
+    if (catalogCanonicalIds.has(cid) && m.canonical_slug) {
+      // First-seen wins (first slug per canonical id)
+      if (!modelSlugs.has(cid)) modelSlugs.set(cid, m.canonical_slug);
+    }
+  }
+  console.log(`  OR models: ${allORModels.length} total → ${modelSlugs.size} match our catalog`);
+
+  // ── Step 3: Fetch endpoints for each matched model ──
+  const slugs = [...modelSlugs.values()];
+  const results = [];
+  let failed = 0;
+
+  for (let i = 0; i < slugs.length; i += CONCURRENCY) {
+    const batch = slugs.slice(i, i + CONCURRENCY);
+    const batchResults = await Promise.allSettled(
+      batch.map(async (slug) => {
+        const url = `${OR_ENDPOINT_BASE}/${slug}/endpoints`;
+        return fetchJsonWithRetry(url, 1, 2000, { apiKey });
+      })
+    );
+    for (let j = 0; j < batchResults.length; j++) {
+      const r = batchResults[j];
+      if (r.status === 'fulfilled') {
+        results.push(r.value);
+      } else {
+        failed++;
+        if (failed <= 5) console.error(`    ✗ ${batch[j]}: ${r.reason?.message || r.reason}`);
+      }
+    }
+    if (i % (CONCURRENCY * 4) === 0 && i > 0) {
+      console.log(`    ... ${Math.min(i + CONCURRENCY, slugs.length)}/${slugs.length} models fetched`);
+    }
+  }
+
+  // Abort on high failure rate
+  const failureRate = slugs.length > 0 ? failed / slugs.length : 0;
+  if (failureRate > 0.20) {
+    throw new Error(
+      `Performance fetch failure rate ${(failureRate * 100).toFixed(1)}% ` +
+      `(${failed}/${slugs.length}) exceeds 20% threshold — aborting`
+    );
+  }
+
+  // ── Step 4: Build performance lookup table ──
+  const perfData = {};
+  let epCount = 0;
+
+  for (const data of results) {
+    const eps = data.data?.endpoints || [];
+    // model_id lives on each endpoint object, not on data.data
+    const modelId = eps[0]?.model_id;
+    if (!modelId) continue;
+
+    for (const ep of eps) {
+      const lat = ep.latency_last_30m;
+      const tput = ep.throughput_last_30m;
+      if (!lat && !tput) continue;
+
+      const key = perfKey(modelId, ep.provider_name);
+      perfData[key] = {
+        latency: lat ? { p50: lat.p50, p75: lat.p75, p90: lat.p90, p99: lat.p99 } : null,
+        throughput: tput ? { p50: tput.p50, p75: tput.p75, p90: tput.p90, p99: tput.p99 } : null,
+      };
+      epCount++;
+    }
+  }
+
+  // ── Lilac (direct provider) performance data ───────────────────────────────
+  // Lilac isn't routed through OpenRouter, so fetch from their own status API.
+  console.log('  Fetching Lilac performance data...');
+  try {
+    const lilacRes = await fetchJson('https://api.getlilac.com/status?window=1h');
+    const lilacModels = lilacRes.models || [];
+    let lilacCount = 0;
+    for (const lm of lilacModels) {
+      if (!lm.id || (!lm.tps && !lm.ttfb_seconds)) continue;
+      const key = perfKey(lm.id, 'Lilac');
+      // Lilac API gives scalar tps and ttfb_seconds — wrap as p50 for shape consistency
+      const tps = typeof lm.tps === 'number' ? lm.tps : null;
+      const ttfbMs = typeof lm.ttfb_seconds === 'number' ? Math.round(lm.ttfb_seconds * 1000) : null;
+      perfData[key] = {
+        latency: ttfbMs !== null ? { p50: ttfbMs, p75: null, p90: null, p99: null } : null,
+        throughput: tps !== null ? { p50: tps, p75: null, p90: null, p99: null } : null,
+      };
+      lilacCount++;
+    }
+    console.log(`    Lilac: ${lilacCount} models indexed`);
+  } catch (err) {
+    console.warn(`    ⚠ Lilac status fetch failed: ${err.message} — continuing without Lilac perf data`);
+  }
+
+  // ── Umans AI (direct provider) performance data ────────────────────────────
+  // Proxied through our own Cloudflare Pages Function to keep the API key off-box.
+  const UMANS_STATUS_URL = process.env.UMANS_STATUS_URL || 'https://tokenwatch.wyrdwerk.com/api/umans-status';
+  console.log('  Fetching Umans AI performance data...');
+  try {
+    const umansRes = await fetchJson(UMANS_STATUS_URL);
+    // Umans status API returns { liveMetrics: { "umans-model-id": { ttft_ms_p50, throughput_tokens_per_second }, ... } }
+    const liveMetrics = umansRes.liveMetrics || {};
+    let umansCount = 0;
+    for (const [modelId, metrics] of Object.entries(liveMetrics)) {
+      if (!metrics || (!metrics.ttft_ms_p50 && !metrics.throughput_tokens_per_second)) continue;
+      const key = perfKey(modelId, 'Umans AI');
+      const ttft = typeof metrics.ttft_ms_p50 === 'number' ? Math.round(metrics.ttft_ms_p50) : null;
+      const tps = typeof metrics.throughput_tokens_per_second === 'number' ? Math.round(metrics.throughput_tokens_per_second) : null;
+      perfData[key] = {
+        latency: ttft !== null ? { p50: ttft, p75: null, p90: null, p99: null } : null,
+        throughput: tps !== null ? { p50: tps, p75: null, p90: null, p99: null } : null,
+      };
+      umansCount++;
+    }
+    console.log(`    Umans AI: ${umansCount} models indexed`);
+  } catch (err) {
+    console.warn(`    ⚠ Umans status fetch failed: ${err.message} — continuing without Umans perf data`);
+  }
+
+  const ms = Date.now() - t0;
+  const total = Object.keys(perfData).length;
+  console.log(`  Performance data: ${total} total records in ${ms}ms (${failed} model fetches failed)`);
+
+  // ── Dry run ──
+  if (dryRun) {
+    console.log('\n── Summary ──');
+    console.log(`  Models matched: ${modelSlugs.size}/${catalogCanonicalIds.size}`);
+    console.log(`  Total performance records: ${Object.keys(perfData).length}`);
+    console.log(`  Failed fetches: ${failed}`);
+    console.log(`\n→ Dry run — performance.json not written`);
+    return;
+  }
+
+  await mkdir('public', { recursive: true });
+  await writeFile(OUTPUT_PATH, JSON.stringify(perfData));
+  console.log(`\n→ Wrote ${OUTPUT_PATH} (${Object.keys(perfData).length} total records)`);
+}
+
+main().catch((err) => { console.error('Fatal:', err); process.exit(1); });

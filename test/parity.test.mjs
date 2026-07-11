@@ -50,6 +50,44 @@ test('every model produces a non-empty canonical key', async () => {
   assert.equal(empty, 0, `${empty} models produced empty canonical keys`);
 });
 
+// app.js carries its own canonicalModelId() — must stay identical to shared/normalize.mjs.
+// This test catches drift: if someone adds a suffix rule to shared/ but forgets app.js,
+// this fires. The function below is a verbatim copy of public/app.js:247-260.
+test('app.js canonicalModelId() matches shared canonicalId() for key inputs', () => {
+  function appCanonicalId(id) {
+    let k = id.includes('/') ? id.split('/').slice(-1)[0] : id;
+    k = k.replace(/:free$/, '')
+         .replace(/:thinking$/, '')
+         .replace(/-(\d{4})-(\d{2})-(\d{2})$/, '')
+         .replace(/-preview-(\d{2})-(\d{4})$/, '')
+         .replace(/-preview-(\d{4})-(\d{2})-(\d{2})$/, '')
+         .replace(/-preview-(\d{2})-(\d{2})$/, '')
+         .replace(/-preview$/, '')
+         .replace(/-(\d{8})$/, '')
+         .replace(/-(\d{6})$/, '')
+         .toLowerCase().trim();
+    return k;
+  }
+  const cases = [
+    'anthropic/claude-sonnet-5',
+    'google/gemini-3.1-pro',
+    'openai/gpt-4:free',
+    'qwen/qwen3:thinking',
+    'org/model-2024-08-06',
+    'org/model-preview-09-2025',
+    'org/model-preview-2024-08-06',
+    'google/gemini-3.1-pro-preview-customtools',
+    'org/model-20260420',
+    'org/model-250712',
+    'z-ai/glm-5.2-fp8',
+    'org/model-preview',
+  ];
+  for (const id of cases) {
+    assert.equal(appCanonicalId(id), canonicalId(id),
+      `canonicalId mismatch for "${id}": app="${appCanonicalId(id)}" shared="${canonicalId(id)}"`);
+  }
+});
+
 test('glm-5.2 quant variants stay distinct (not collapsed by dedup)', async () => {
   const data = JSON.parse(await readFile(PRICING_JSON, 'utf-8'));
   const glmKeys = new Set();

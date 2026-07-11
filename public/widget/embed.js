@@ -48,12 +48,6 @@
   function computeCost(pricing, totalTokens, mix, cacheWriteTokens, amortizeN) {
     var parts = mix.split(',').map(parseFloat);
     var inputPct = parts[0] || 0, cachePct = parts[1] || 0, outputPct = parts[2] || 0;
-    var sum = inputPct + cachePct + outputPct;
-    if (sum > 0 && Math.abs(sum - 100) > 1) {
-      inputPct = inputPct / sum * 100;
-      cachePct = cachePct / sum * 100;
-      outputPct = outputPct / sum * 100;
-    }
     var total = totalTokens * 1e6;
     var inputTokens = total * inputPct / 100;
     var cacheTokens = total * cachePct / 100;
@@ -67,8 +61,9 @@
       else cost += (pricing.input * inputTokens) / 1e6;
     }
     if (cacheTokens > 0) {
-      if (pricing.cache_read === null || pricing.cache_read === undefined) { valid = false; }
-      else cost += (pricing.cache_read * cacheTokens) / 1e6;
+      var crPrice = pricing.cache_read != null ? pricing.cache_read : pricing.input;
+      if (crPrice === null || crPrice === undefined) { valid = false; }
+      else cost += (crPrice * cacheTokens) / 1e6;
     }
     if (outputTokens > 0) {
       if (pricing.output === null || pricing.output === undefined) { valid = false; }
@@ -97,7 +92,7 @@
     if (tokens === undefined) tokens = parseFloat(target.getAttribute('data-tw-tokens')) || DEFAULTS.tokens;
     if (mix === undefined) mix = target.getAttribute('data-tw-mix') || DEFAULTS.mix;
     var cacheWrite = parseFloat(target.getAttribute('data-tw-cache-write')) || 0;
-    var amortizeN = parseInt(target.getAttribute('data-tw-amortize'), 10) || 1;
+    var amortizeN = parseInt(target.getAttribute('data-tw-amortize'), 10) || 100;
     var theme = getTheme(target.getAttribute('data-tw-theme'));
     var c = STYLES[theme];
 
@@ -115,7 +110,7 @@
     }
 
     var cheapest = providers[0]; // API returns sorted by cost
-    var cost = computeCost(cheapest.pricing, tokens, mix, cacheWrite, amortizeN);
+    var cost = computeCost(cheapest.pricing, tokens, mix, cacheWrite, amortizeN || 100);
     var promo = cheapest.discount > 0 ? ' <span class="tw-promo">' + (cheapest.discount * 100).toFixed(0) + '% off</span>' : '';
 
     var html = '<style>' + getCss(c) + '</style>' +

@@ -16,6 +16,7 @@ const state = {
   groupBy: 'none',
   compareSelection: [], // array of model objects (max 6)
   currentRows: null,
+  perfData: null,         // loaded from performance.json
 };
 
 // ── DOM ───────────────────────────────────────────────────────────────────────
@@ -145,9 +146,9 @@ function serializeState() {
   if (els.groupBy.value !== 'none') params.set('group', els.groupBy.value);
 
   const cacheWriteVal = parseFloat(document.getElementById('cacheWriteTokens').value) || 0;
-  const amortizeVal = parseInt(document.getElementById('amortizeN').value, 10) || 1;
+  const amortizeVal = parseInt(document.getElementById('amortizeN').value, 10) || 100;
   if (cacheWriteVal > 0) params.set('cw', document.getElementById('cacheWriteTokens').value);
-  if (amortizeVal !== 1) params.set('cwn', String(amortizeVal));
+  if (amortizeVal !== 100) params.set('cwn', String(amortizeVal));
 
   return params.toString();
 }
@@ -174,7 +175,7 @@ function deserializeState(hash) {
   updateLabelsAndHeaders();
   els.groupBy.value = DEFAULTS.groupBy;
   document.getElementById('cacheWriteTokens').value = '0';
-  document.getElementById('amortizeN').value = '1';
+  document.getElementById('amortizeN').value = '100';
 
   const raw = (hash || '').replace(/^#/, '');
   if (!raw) return;
@@ -235,7 +236,13 @@ async function init() {
   deserializeState(location.hash.slice(1));
   attachListeners();
   updateCompareTray();
-  computeAndRender();
+  try {
+    const perfRes = await fetch('performance.json');
+      state.perfData = perfRes.ok ? await perfRes.json() : {};
+    } catch (_) {
+      state.perfData = {};
+    }
+    computeAndRender();
 }
 
 /** Build a canonical model key for cross-provider matching.
@@ -719,7 +726,7 @@ function getTokens() {
   const cacheReadPct = Math.max(0, parseFloat(els.cacheReadPct.value) || 0);
   const outputPct = Math.max(0, parseFloat(els.outputPct.value) || 0);
   const cacheWriteTokens = Math.max(0, parseFloat(document.getElementById('cacheWriteTokens').value) || 0) * 1e6;
-  const amortizeN = Math.max(1, parseInt(document.getElementById('amortizeN').value, 10) || 1);
+  const amortizeN = Math.max(1, parseInt(document.getElementById('amortizeN').value, 10) || 100);
   return {
     total, inputPct, cacheReadPct, outputPct, sum: inputPct + cacheReadPct + outputPct,
     input: total * inputPct / 100,
@@ -1065,11 +1072,32 @@ function providerMetaHtml(providerKey) {
 }
 
 function renderProviderCell(r) {
-  const name = providerName(r.model.provider, r.model.provider_display);
-  const zdrBadge = r.model.zdr ? ' <span class="zdr-badge" title="Zero Data Retention — provider does not store prompts">ZDR</span>' : '';
-  const subBadge = r.model.subscription ? ' <span class="subscription-badge" title="This provider offers subscription/coding plans">Sub</span>' : '';
-  return `<span class="provider-badge">${esc(name)}</span>${zdrBadge}${subBadge}${providerMetaHtml(r.model.provider)}`;
-}
+    const name = providerName(r.model.provider, r.model.provider_display);
+    const zdrBadge = r.model.zdr ? ' <span class="zdr-badge" title="Zero Data Retention — provider does not store prompts">ZDR</span>' : '';
+    const subBadge = r.model.subscription ? ' <span class="subscription-badge" title="This provider offers subscription/coding plans">Sub</span>' : '';
+    // Performance pill — lookup by dedup key
+    let perfPill = '';
+    if (state.perfData) {
+      const key = canonicalModelId(r.model.id) + '|' + r.model.provider;
+      const perf = state.perfData[key];
+      if (perf && (perf.latency || perf.throughput)) {
+        const parts = [];
+        if (perf.latency) parts.push(perf.latency.p50 + 'ms');
+        if (perf.throughput) parts.push(perf.throughput.p50 + 'tps');
+        const titleBits = [];
+        if (perf.latency) {
+          const l = perf.latency;
+          titleBits.push('Latency p50/p75/p90/p99: ' + l.p50 + '/' + l.p75 + '/' + l.p90 + '/' + l.p99 + ' ms');
+        }
+        if (perf.throughput) {
+          const t = perf.throughput;
+          titleBits.push('Throughput p50/p75/p90/p99: ' + t.p50 + '/' + t.p75 + '/' + t.p90 + '/' + t.p99 + ' tps');
+        }
+        perfPill = ' <span class="perf-pill" title="' + esc(titleBits.join('\n')) + '">⚡' + parts.join(' · ') + '</span>';
+      }
+    }
+    return '<span class="provider-badge">' + esc(name) + '</span>' + perfPill + zdrBadge + subBadge + providerMetaHtml(r.model.provider);
+  }
 
 function globalBestValue(rows) {
   // Highlight the row that's currently "winning" on the cost/affordability column

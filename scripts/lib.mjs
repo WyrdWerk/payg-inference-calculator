@@ -146,6 +146,8 @@ export const PROVIDER_NAME_MAP = {
   'sourceful': 'sourceful',
   'x-ai': 'xai',
   'microsoft': 'microsoft',
+    'umans': 'umans',
+  'umans ai': 'umans',
 };
 
 /** Normalize a provider display name to a lowercase key. */
@@ -261,9 +263,11 @@ export const FAL_ORG_MAP = {
 // ── HTTP ──────────────────────────────────────────────────────────────────────
 
 /** Fetch JSON with no retry (for simple endpoints). */
-export async function fetchJson(url) {
+export async function fetchJson(url, opts = {}) {
+  const headers = { Accept: 'application/json' };
+  if (opts.apiKey) headers.Authorization = `Bearer ${opts.apiKey}`;
   const res = await fetch(url, {
-    headers: { Accept: 'application/json' },
+    headers,
     signal: AbortSignal.timeout(45_000),
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
@@ -271,11 +275,13 @@ export async function fetchJson(url) {
 }
 
 /** Fetch JSON with retry on 429/5xx. */
-export async function fetchJsonWithRetry(url, retries = 1, delayMs = 2000) {
+export async function fetchJsonWithRetry(url, retries = 1, delayMs = 2000, opts = {}) {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
+      const headers = { Accept: 'application/json' };
+      if (opts.apiKey) headers.Authorization = `Bearer ${opts.apiKey}`;
       const res = await fetch(url, {
-        headers: { Accept: 'application/json' },
+        headers,
         signal: AbortSignal.timeout(45_000),
       });
       if (res.ok) return res.json();
