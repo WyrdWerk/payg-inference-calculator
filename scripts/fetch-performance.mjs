@@ -185,14 +185,15 @@ async function main() {
   console.log('  Fetching Umans AI performance data...');
   try {
     const umansRes = await fetchJson(UMANS_STATUS_URL);
-    // Umans status API returns { liveMetrics: { "umans-model-id": { ttft_ms_p50, throughput_tokens_per_second }, ... } }
-    const liveMetrics = umansRes.liveMetrics || {};
+    // Umans status API returns { models: { "umans-glm-5.2": { latency: { ttft_ms: { p50 } }, output_tokens_per_second: { p50 } } } }
+    const umansModels = umansRes.models || {};
     let umansCount = 0;
-    for (const [modelId, metrics] of Object.entries(liveMetrics)) {
-      if (!metrics || (!metrics.ttft_ms_p50 && !metrics.throughput_tokens_per_second)) continue;
+    for (const [modelId, metrics] of Object.entries(umansModels)) {
+      if (!metrics) continue;
+      const ttft = metrics.latency?.ttft_ms?.p50;
+      const tps = metrics.output_tokens_per_second?.p50;
+      if (!ttft && !tps) continue;
       const key = perfKey(modelId, 'Umans AI');
-      const ttft = typeof metrics.ttft_ms_p50 === 'number' ? Math.round(metrics.ttft_ms_p50) : null;
-      const tps = typeof metrics.throughput_tokens_per_second === 'number' ? Math.round(metrics.throughput_tokens_per_second) : null;
       perfData[key] = {
         latency: ttft !== null ? { p50: ttft, p75: null, p90: null, p99: null } : null,
         throughput: tps !== null ? { p50: tps, p75: null, p90: null, p99: null } : null,
