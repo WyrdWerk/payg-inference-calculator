@@ -721,12 +721,10 @@ function parseOpenCodeGo() {
   // Manually maintained — update when Umans changes pricing at https://api.code.umans.ai/v1/models
 
   const UMANS_MODELS = [
-    { id: 'umans-kimi-k2.7', name: 'Umans Kimi K2.7 Code', input: 0.95, output: 4.00, context_length: 262144 },
-    { id: 'umans-glm-5.2', name: 'Umans GLM 5.2', input: 1.40, output: 4.40, context_length: 405504 },
-    { id: 'umans-coder', name: 'Umans Coder', input: 0.95, output: 4.00, context_length: 262144 },
-    { id: 'umans-flash', name: 'Umans Flash', input: 0.15, output: 1.00, context_length: 262144 },
-    { id: 'umans-qwen3.6-35b-a3b', name: 'Umans Qwen3.6 35B A3B', input: 0.15, output: 1.00, context_length: 262144 },
-  ];
+    { id: 'umans-kimi-k2.7', name: 'Umans Kimi K2.7 Code', input: 0.95, output: 4.00, cache_read: 0.19, context_length: 262144 },
+    { id: 'umans-glm-5.2',    name: 'Umans GLM 5.2',       input: 1.40, output: 4.40, cache_read: 0.26, context_length: 405504 },
+    { id: 'umans-flash',      name: 'Umans Flash',          input: 0.15, output: 1.00, cache_read: 0.05, context_length: 262144 },
+    ];
 
   function parseUmansHardcoded() {
     return UMANS_MODELS.map((m) => ({
@@ -736,7 +734,7 @@ function parseOpenCodeGo() {
       quantization: null,
       discount: 0,
       context_length: m.context_length || null,
-      pricing: { input: m.input, output: m.output, cache_read: null, cache_write: null },
+      pricing: { input: m.input, output: m.output, cache_read: m.cache_read || null, cache_write: null },
     }));
   }
 
