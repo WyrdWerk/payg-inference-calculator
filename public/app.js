@@ -17,7 +17,22 @@ const state = {
   compareSelection: [], // array of model objects (max 6)
   currentRows: null,
   perfData: null,         // loaded from performance.json
+  showAllRows: false,    // when false, flat unfiltered table caps at ROW_CAP rows
 };
+
+// Flat-table render cap: first paint shows this many rows + a "Show all" row.
+// data-idx is resolved via findIndex against the full state.currentRows, so a
+// head slice keeps detail-modal/compare indices correct for visible rows.
+const ROW_CAP = 250;
+
+/** Trailing-edge debounce. Delays fn until `wait`ms after the last call. */
+function debounce(fn, wait = 120) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), wait);
+  };
+}
 
 // ── DOM ───────────────────────────────────────────────────────────────────────
 const $ = (id) => document.getElementById(id);
@@ -404,14 +419,19 @@ function attachListeners() {
   els.modeMonthly.addEventListener('click', () => setCostMode('monthly'));
   els.byTokens?.addEventListener('click', () => setComputeBy('tokens'));
   els.byBudget?.addEventListener('click', () => setComputeBy('budget'));
-  els.budgetInput?.addEventListener('input', () => computeAndRender());
+  // Changing a filter/search can change the visible row set, so drop any
+  // "show all" expansion and re-render (immediate for toggles, debounced for text).
+  const onFilterChange = () => { state.showAllRows = false; computeAndRender(); };
+  const onFilterChangeDebounced = debounce(onFilterChange);
 
-  els.providerSearch.addEventListener('input', () => computeAndRender());
-  els.modelSearch.addEventListener('input', () => computeAndRender());
-  els.promoOnly.addEventListener('change', () => computeAndRender());
-  if (els.zdrOnly) els.zdrOnly.addEventListener('change', () => computeAndRender());
-  if (els.subscriptionOnly) els.subscriptionOnly.addEventListener('change', () => computeAndRender());
-  els.groupBy.addEventListener('change', () => computeAndRender());
+  els.budgetInput?.addEventListener('input', debounce(() => computeAndRender()));
+
+  els.providerSearch.addEventListener('input', onFilterChangeDebounced);
+  els.modelSearch.addEventListener('input', onFilterChangeDebounced);
+  els.promoOnly.addEventListener('change', onFilterChange);
+  if (els.zdrOnly) els.zdrOnly.addEventListener('change', onFilterChange);
+  if (els.subscriptionOnly) els.subscriptionOnly.addEventListener('change', onFilterChange);
+  els.groupBy.addEventListener('change', onFilterChange);
   els.showOrg?.addEventListener('change', () => {
     document.getElementById('resultsTable').classList.toggle('hide-org', !els.showOrg.checked);
     computeAndRender();
@@ -420,6 +440,12 @@ function attachListeners() {
   els.resultsBody.addEventListener('click', (e) => {
     // Compare checkbox — handled by change event, ignore here.
     if (e.target.closest('.compare-check')) return;
+    // "Show all N models" — lift the flat-table row cap and re-render.
+    if (e.target.closest('#showAllRows')) {
+      state.showAllRows = true;
+      computeAndRender();
+      return;
+    }
     // Group header toggle (collapse/expand child rows).
     const header = e.target.closest('.group-header');
     if (header) {
@@ -439,8 +465,9 @@ function attachListeners() {
     }
   });
 
+  const debouncedRender = debounce(() => computeAndRender());
   for (const id of ['totalTokens', 'inputPct', 'cacheReadPct', 'outputPct', 'cacheWriteTokens', 'amortizeN']) {
-    els[id].addEventListener('input', () => computeAndRender());
+    els[id].addEventListener('input', debouncedRender);
   }
 
   document.querySelectorAll('.presets button').forEach((btn) => {
@@ -1233,12 +1260,23 @@ function renderModelRow(r, rank, groupKey, cheapest) {
 
 function renderFlatTable(rows, tokens) {
   const best = globalBestValue(rows);
-  els.resultsBody.innerHTML = rows
+  // Cap first paint at ROW_CAP; data-idx is resolved against full state.currentRows
+  // so the head slice keeps visible-row indices valid. Grouped view is not capped.
+  const capped = !state.showAllRows && rows.length > ROW_CAP;
+  const visible = capped ? rows.slice(0, ROW_CAP) : rows;
+  let html = visible
     .map((r, i) => {
       const isBest = best !== null && r.cost != null && r.cost === best;
       return renderModelRow(r, i + 1, undefined, isBest);
     })
     .join('');
+  if (capped) {
+    const colCount = els.showOrg?.checked ? 10 : 9;
+    html += `<tr class="show-all-row"><td colspan="${colCount}">
+      <button type="button" id="showAllRows">Show all ${rows.length} models</button>
+    </td></tr>`;
+  }
+  els.resultsBody.innerHTML = html;
 }
 function renderGroupedTable(rows, tokens, groupBy) {
   const best = globalBestValue(rows);

@@ -385,6 +385,19 @@ th.num, td.num { text-align: right; font-variant-numeric: tabular-nums; }
 tbody tr:hover { background: var(--surface-2); }
 .empty { text-align: center; color: var(--text-dim); padding: 2rem; }
 
+.show-all-row td { text-align: center; padding: 1rem; }
+.show-all-row button {
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.55rem 1.4rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.show-all-row button:hover { background: var(--accent); color: #fff; }
+
 .rank { color: var(--text-dim); font-weight: 600; width: 2rem; }
 .provider-badge {
   display: inline-block;
