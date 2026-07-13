@@ -1,0 +1,24 @@
+# Cloudflare Pages custom headers
+# Data JSON: always revalidate; ETag drives cheap 304s.
+/*.json
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Content-hashed assets (referenced with ?v= cache-busting tokens) — immutable.
+/styles.css
+  Cache-Control: public, max-age=31536000, immutable
+/app.js
+  Cache-Control: public, max-age=31536000, immutable
+/image-app.js
+  Cache-Control: public, max-age=31536000, immutable
+/video-app.js
+  Cache-Control: public, max-age=31536000, immutable
+/shared-ui.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# Self-hosted fonts — immutable.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# External embed script loaded WITHOUT ?v= by third-party sites — must revalidate.
+/widget/embed.js
+  Cache-Control: public, max-age=3600, must-revalidate

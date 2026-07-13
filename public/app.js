@@ -238,7 +238,7 @@ function fmtIST(iso) {
 // ── Init ───────────────────────────────────────────────────────────────────────
 async function init() {
   try {
-    const res = await fetch('pricing.json', { cache: 'no-store' });
+    const res = await fetch('pricing.json');
     state.data = await res.json();
   } catch (err) {
     els.resultsBody.innerHTML = `<tr><td colspan="${els.showOrg?.checked ? 10 : 9}" class="empty">Could not load pricing.json. Run <code>node scripts/fetch-pricing.mjs</code> first.</td></tr>`;
@@ -261,27 +261,33 @@ const PERF_COOLDOWN_MS = 60_000; // min 60s between refreshes
 
 async function refreshPerfData(isInitial = false) {
   const now = Date.now();
-  if (_perfInFlight) return;
-  if (!isInitial && now - _lastPerfFetch < PERF_COOLDOWN_MS) return;
+  if (_perfInFlight) return false;
+  if (!isInitial && now - _lastPerfFetch < PERF_COOLDOWN_MS) return false;
   _perfInFlight = true;
   _lastPerfFetch = now;
+  let changed = false;
   try {
-    const perfRes = await fetch('performance.json', { cache: 'no-store' });
+    const perfRes = await fetch('performance.json');
     if (perfRes.ok) {
-      state.perfData = await perfRes.json();
-      const ts = state.perfData?._meta?.generated_at;
+      const next = await perfRes.json();
+      const prevTs = state.perfData?._meta?.generated_at;
+      const ts = next?._meta?.generated_at;
+      changed = isInitial || ts !== prevTs;
+      state.perfData = next;
       if (els.perfUpdated) els.perfUpdated.textContent = ts
         ? `Performance (IST): ${fmtIST(ts)}`
         : 'Performance (IST): (no timestamp)';
     } else if (isInitial) {
       state.perfData = {};
+      changed = true;
     }
   } catch (err) {
-    if (isInitial) state.perfData = {};
+    if (isInitial) { state.perfData = {}; changed = true; }
     // On refresh failure: retain last-good state.perfData and timestamp
   } finally {
     _perfInFlight = false;
   }
+  return changed;
 }
 
 /** Build a canonical model key for cross-provider matching.
@@ -497,10 +503,10 @@ function attachListeners() {
   // refreshPerfData has an in-flight guard + 60s cooldown to prevent overlap.
   const PERF_REFRESH_MS = 2 * 60 * 60 * 1000; // 2 hours
   setInterval(() => {
-    if (document.visibilityState === 'visible') refreshPerfData().then(() => computeAndRender());
+    if (document.visibilityState === 'visible') refreshPerfData().then((changed) => { if (changed) computeAndRender(); });
   }, PERF_REFRESH_MS);
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') refreshPerfData().then(() => computeAndRender());
+    if (document.visibilityState === 'visible') refreshPerfData().then((changed) => { if (changed) computeAndRender(); });
   });
 }
 
