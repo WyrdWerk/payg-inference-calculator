@@ -326,7 +326,12 @@ function computeAndRender() {
 
   document.querySelectorAll('th.sortable').forEach(th => {
     th.classList.remove('sort-asc', 'sort-desc');
-    if (th.dataset.sort === state.sortBy) th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    if (th.dataset.sort === state.sortBy) {
+      th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+      th.setAttribute('aria-sort', state.sortDir === 'asc' ? 'ascending' : 'descending');
+    } else {
+      th.setAttribute('aria-sort', 'none');
+    }
   });
 
   updateLabelsAndHeaders();
@@ -521,11 +526,17 @@ function attachListeners() {
   els.byTokens?.addEventListener('click', () => setComputeBy('tokens'));
   els.byBudget?.addEventListener('click', () => setComputeBy('budget'));
   document.querySelectorAll('th.sortable').forEach(th => {
-    th.addEventListener('click', () => {
+    const sort = () => {
       const col = th.dataset.sort;
       if (state.sortBy === col) { state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'; }
       else { state.sortBy = col; state.sortDir = 'asc'; }
       computeAndRender();
+    };
+    th.setAttribute('tabindex', '0');
+    th.setAttribute('role', 'button');
+    th.addEventListener('click', sort);
+    th.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sort(); }
     });
   });
   els.mobileSort.addEventListener('change', () => {

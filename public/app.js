@@ -440,6 +440,17 @@ function attachListeners() {
     }
   });
 
+  // Keyboard: Enter/Space on a focused data row opens its detail modal.
+  els.resultsBody.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest('.compare-check')) return; // let checkbox toggle itself
+    const tr = e.target.closest('tr[data-idx]');
+    if (tr) {
+      const idx = Number(tr.dataset.idx);
+      if (Number.isInteger(idx)) { e.preventDefault(); showDetailModal(idx); }
+    }
+  });
+
   const debouncedRender = debounce(() => computeAndRender());
   for (const id of ['totalTokens', 'inputPct', 'cacheReadPct', 'outputPct', 'cacheWriteTokens', 'amortizeN']) {
     els[id].addEventListener('input', debouncedRender);
@@ -449,9 +460,9 @@ function attachListeners() {
     btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
   });
 
-  // Sortable column headers
+  // Sortable column headers (mouse + keyboard).
   document.querySelectorAll('th.sortable').forEach((th) => {
-    th.addEventListener('click', () => {
+    const sort = () => {
       const col = th.dataset.sort;
       if (state.sortBy === col) {
         state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
@@ -460,6 +471,12 @@ function attachListeners() {
         state.sortDir = 'asc';
       }
       computeAndRender();
+    };
+    th.setAttribute('tabindex', '0');
+    th.setAttribute('role', 'button');
+    th.addEventListener('click', sort);
+    th.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sort(); }
     });
   });
 
@@ -1023,11 +1040,14 @@ function computeAndRender() {
   // Sort by current sort column
   sortRows(rows);
 
-  // Update sort indicator on headers
+  // Update sort indicator on headers (+ aria-sort for screen readers)
   document.querySelectorAll('th.sortable').forEach((th) => {
     th.classList.remove('sort-asc', 'sort-desc');
     if (th.dataset.sort === state.sortBy) {
       th.classList.add(state.sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+      th.setAttribute('aria-sort', state.sortDir === 'asc' ? 'ascending' : 'descending');
+    } else {
+      th.setAttribute('aria-sort', 'none');
     }
   });
 
@@ -1194,7 +1214,7 @@ function renderModelRow(r, rank, groupKey, cheapest) {
     ? state.currentRows.findIndex((x) => x.model.id === r.model.id && x.model.provider === r.model.provider)
     : rank - 1;
   const checkbox = `<input type="checkbox" class="compare-check" data-idx="${rowIdx}" ${isSelected ? 'checked' : ''}${state.compareSelection.length >= 6 && !isSelected ? ' disabled' : ''}>`;
-  return `<tr data-idx="${rowIdx}"${groupAttr}>
+  return `<tr data-idx="${rowIdx}"${groupAttr} tabindex="0" aria-label="Open details">
     <td class="rank" data-label="#">${checkbox} ${rank}${cheapest ? ' 🏆' : ''}</td>
     <td data-label="Org"><span class="org-badge">${esc(orgDisplay(r.model.org))}</span></td>
     <td data-label="Provider">${renderProviderCell(r)}</td>

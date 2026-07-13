@@ -81,6 +81,22 @@ body {
   min-height: 100vh;
 }
 
+/* ── Focus & keyboard a11y ──────────────────────────────────────────── */
+/* Suppress the ring for mouse focus, show a clear one for keyboard focus. */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+th.sortable:focus-visible { outline-offset: -2px; }
+
+/* Keep numeric columns aligned regardless of digit widths. */
+.num, .cost { font-variant-numeric: tabular-nums; }
+
+/* Roomier compare checkboxes for easier targeting. */
+.compare-check { width: 18px; height: 18px; }
+
 th, .num, .cost, button, select, label, .org-badge, .mode-btn, h1, h2, .provider-badge, .section-label, .preset-label, .group-control label, .control-group label {
   font-family: 'Space Grotesk', system-ui, sans-serif;
 }
@@ -195,7 +211,6 @@ select, input[type="text"], input[type="number"] {
   padding: 0.55rem 0.7rem;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
-  outline: none;
   transition: border-color 0.15s;
 }
 select:focus, input:focus { border-color: var(--accent); }
@@ -327,7 +342,6 @@ select:focus, input:focus { border-color: var(--accent); }
   border-radius: var(--radius-sm);
   font-size: 1rem;
   font-weight: 600;
-  outline: none;
   transition: border-color 0.15s;
 }
 .token-field input[type="number"]:focus { border-color: var(--accent); }
@@ -380,7 +394,6 @@ select:focus, input:focus { border-color: var(--accent); }
   padding: 0.55rem 0.7rem;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
-  outline: none;
   transition: border-color 0.15s;
   font-family: 'Space Grotesk', system-ui, sans-serif;
 }
