@@ -49,6 +49,10 @@ jobs:
         if: steps.commit.outputs.changed == 'true'
         run: node scripts/bust-cache.mjs
 
+      - name: Minify JSON
+        if: steps.commit.outputs.changed == 'true'
+        run: node scripts/minify-json.mjs
+
       - name: Deploy to Cloudflare Pages
         if: steps.commit.outputs.changed == 'true'
         uses: cloudflare/wrangler-action@v3

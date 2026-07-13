@@ -78,6 +78,9 @@ jobs:
       - name: Bust cache (content-hash ?v= tokens)
         run: node scripts/bust-cache.mjs
 
+      - name: Minify JSON
+        run: node scripts/minify-json.mjs
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
@@ -98,6 +101,9 @@ jobs:
 
       - name: Bust cache (content-hash ?v= tokens)
         run: node scripts/bust-cache.mjs
+
+      - name: Minify JSON
+        run: node scripts/minify-json.mjs
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
