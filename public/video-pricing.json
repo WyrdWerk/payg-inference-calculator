@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T07:46:06.832Z",
+  "generated_at": "2026-07-14T09:46:04.381Z",
   "models": [
     {
       "id": "kling-video-v3-pro",
@@ -227,21 +227,6 @@
       ]
     },
     {
-      "id": "bytedance-omnihuman-v1.5",
-      "name": "Bytedance Omnihuman V1.5",
-      "org": "bytedance",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.16
-        }
-      ]
-    },
-    {
       "id": "wan-v2.7",
       "name": "Wan",
       "org": "alibaba",
@@ -253,6 +238,21 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.1
+        }
+      ]
+    },
+    {
+      "id": "bytedance-omnihuman-v1.5",
+      "name": "Bytedance Omnihuman V1.5",
+      "org": "bytedance",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.16
         }
       ]
     },
@@ -452,21 +452,6 @@
       ]
     },
     {
-      "id": "kling-video-o1",
-      "name": "Kling O1 First Frame Last Frame to Video [Pro]",
-      "org": "kuaishou",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.112
-        }
-      ]
-    },
-    {
       "id": "ltx-2.3-fast",
       "name": "LTX 2.3 Video Fast",
       "org": "lightricks",
@@ -478,6 +463,21 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.06
+        }
+      ]
+    },
+    {
+      "id": "kling-video-o1",
+      "name": "Kling O1 First Frame Last Frame to Video [Pro]",
+      "org": "kuaishou",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.112
         }
       ]
     },
@@ -782,21 +782,6 @@
       ]
     },
     {
-      "id": "wan-v2.2-a14b-lora",
-      "name": "Wan v2.2 A14B Image-to-Video A14B with LoRAs",
-      "org": "alibaba",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.1
-        }
-      ]
-    },
-    {
       "id": "ltxv-13b-098-distilled",
       "name": "LTX-Video 13B 0.9.8 Distilled",
       "org": "lightricks",
@@ -808,6 +793,21 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.02
+        }
+      ]
+    },
+    {
+      "id": "wan-v2.2-a14b-lora",
+      "name": "Wan v2.2 A14B Image-to-Video A14B with LoRAs",
+      "org": "alibaba",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.1
         }
       ]
     },
@@ -962,21 +962,6 @@
       ]
     },
     {
-      "id": "kling-video-v1.6-pro-elements",
-      "name": "Kling 1.6 Elements",
-      "org": "kuaishou",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.098
-        }
-      ]
-    },
-    {
       "id": "kling-video-v1.6-standard-elements",
       "name": "Kling 1.6 Elements",
       "org": "kuaishou",
@@ -988,6 +973,21 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.056
+        }
+      ]
+    },
+    {
+      "id": "kling-video-v1.6-pro-elements",
+      "name": "Kling 1.6 Elements",
+      "org": "kuaishou",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.098
         }
       ]
     },
@@ -1022,6 +1022,21 @@
       ]
     },
     {
+      "id": "kling-video-v1.6-pro-effects",
+      "name": "Kling 1.6",
+      "org": "kuaishou",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.098
+        }
+      ]
+    },
+    {
       "id": "longcat-video-720p",
       "name": "LongCat Video",
       "org": "anthropic",
@@ -1048,21 +1063,6 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.01
-        }
-      ]
-    },
-    {
-      "id": "kling-video-v1.6-pro-effects",
-      "name": "Kling 1.6",
-      "org": "kuaishou",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.098
         }
       ]
     },
@@ -1142,21 +1142,6 @@
       ]
     },
     {
-      "id": "davinci-magihuman",
-      "name": "Davinci Magihuman",
-      "org": "fal",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.05
-        }
-      ]
-    },
-    {
       "id": "heygen-avatar3-digital-twin",
       "name": "Heygen",
       "org": "heygen",
@@ -1172,9 +1157,9 @@
       ]
     },
     {
-      "id": "wan-pro",
-      "name": "Wan-2.1 Pro Text-to-Video",
-      "org": "alibaba",
+      "id": "davinci-magihuman",
+      "name": "Davinci Magihuman",
+      "org": "fal",
       "provider": "fal",
       "supported_durations": [],
       "supported_resolutions": [],
@@ -1182,7 +1167,7 @@
         {
           "resolution": null,
           "audio": null,
-          "cost_per_second": 0.16
+          "cost_per_second": 0.05
         }
       ]
     },
@@ -1213,6 +1198,21 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.0333
+        }
+      ]
+    },
+    {
+      "id": "wan-pro",
+      "name": "Wan-2.1 Pro Text-to-Video",
+      "org": "alibaba",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.16
         }
       ]
     },
@@ -1337,9 +1337,9 @@
       ]
     },
     {
-      "id": "kling-video-v1.5-pro-effects",
-      "name": "Kling 1.5",
-      "org": "kuaishou",
+      "id": "heygen-avatar4-digital-twin",
+      "name": "Heygen",
+      "org": "heygen",
       "provider": "fal",
       "supported_durations": [],
       "supported_resolutions": [],
@@ -1352,9 +1352,9 @@
       ]
     },
     {
-      "id": "heygen-avatar4-digital-twin",
-      "name": "Heygen",
-      "org": "heygen",
+      "id": "kling-video-v1.5-pro-effects",
+      "name": "Kling 1.5",
+      "org": "kuaishou",
       "provider": "fal",
       "supported_durations": [],
       "supported_resolutions": [],
