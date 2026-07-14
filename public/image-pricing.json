@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T17:03:01.902Z",
+  "generated_at": "2026-07-14T19:01:11.315Z",
   "models": [
     {
       "id": "flux-schnell",
@@ -1456,6 +1456,24 @@
           "variant": null,
           "cost_per_unit": 0.035,
           "cost_per_million": 0.035
+        }
+      ]
+    },
+    {
+      "id": "reve-2.1-text-to-image",
+      "name": "2.1",
+      "org": "reve",
+      "provider": "fal",
+      "output_modalities": [
+        "image"
+      ],
+      "supported_parameters": null,
+      "pricing": [
+        {
+          "unit": "image",
+          "variant": null,
+          "cost_per_unit": 0.25,
+          "cost_per_million": null
         }
       ]
     },
