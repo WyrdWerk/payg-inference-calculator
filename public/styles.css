@@ -650,17 +650,65 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
+.compare-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.compare-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.compare-brand-link:hover { text-decoration: underline; }
+.compare-brand-mark { flex-shrink: 0; opacity: 0.9; }
 .compare-modal-header h2 {
   font-size: 1.2rem;
+  margin: 0;
 }
-.compare-modal-header button {
+.compare-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.compare-copy-btn {
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm, 6px);
+  padding: 0.35rem 0.75rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.compare-copy-btn:hover:not(:disabled) { background: var(--accent); color: #fff; }
+.compare-copy-btn:disabled { opacity: 0.7; cursor: wait; }
+.compare-modal-header button#compareClose,
+.compare-modal-header .compare-header-actions > button:last-child {
   background: none;
   border: none;
   color: var(--text-dim);
   font-size: 1.2rem;
   cursor: pointer;
+  padding: 0.15rem 0.35rem;
+  line-height: 1;
+}
+.compare-modal-header button#compareClose:hover {
+  color: var(--text);
 }
 .compare-snapshot {
   background: var(--surface);
