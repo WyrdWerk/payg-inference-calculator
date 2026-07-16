@@ -11,8 +11,26 @@ Card layout + mobile sort dropdown shipped at ≤640px across all 3 tabs. See RE
 
 ## Planned features
 
+### Blended $/M + Export CSV + Speed compare — ✅ SHIPPED (2026-07-16)
+**Status**: Shipped on text tab.
+
+**What's done**:
+- `blendedCostFor()`: mix-weighted effective $/M (input/cache_read/output); excludes cache_write and monthly ×30
+- Blended $/M table column before sticky Total Cost; sortable (desktop + mobile)
+- Comparison modal rows: Speed (throughput p50, higher-is-best) + Blended $/M
+- Export CSV button above results; formula-injection-safe escaping
+
+**Deferred**:
+- Cache-write billing simplification (bill all input at cache_write when present) — rejected for now: 50/131 models have `cache_write < input`, 29 have `cache_write === 0`
+
+### Hyper Tier-1 direct API — ✅ SHIPPED
+**Status**: Migrated off CSV. `parseHyper()` via `https://hyper.charm.land/v1/models`. CSV is Makora + Xiaomimimo only.
+
+### fal.ai / quality benchmarks / models.dev — ✅ SHIPPED
+See `docs/superpowers/plans/` (historical). Live: `scripts/fetch-fal.mjs`, `shared/benchmarks.mjs`, `shared/modelsdev.mjs` + tests. Catalog sizes after fal merge: image ~165, video ~105.
+
 ### ZDR (Zero Data Retention) — ✅ IMPLEMENTED
-**Status**: Implemented. 648 of 910 models (71%) tagged ZDR.
+**Status**: Implemented. ~606 of ~937 models (~65%) tagged ZDR.
 
 **What's done**:
 - Pipeline: two-stage ZDR tagging via OpenRouter `/api/v1/endpoints/zdr` (endpoint-level) + `/api/frontend/all-providers` (provider-level fallback)
@@ -60,7 +78,7 @@ Store daily pricing.json snapshots to enable price-drop alerts, trend charts, an
 `MANUAL_PROVIDER_META` for ember has privacy/ToS URLs filled but no HQ/datacenters — update if available.
 
 ### Image & Video Generation Tabs — ✅ IMPLEMENTED
-**Status**: Implemented. 34 image models, 13 video models across separate tabs.
+**Status**: Implemented. ~165 image models, ~105 video models across separate tabs (OpenRouter + fal.ai merge).
 
 **What's done**:
 - `scripts/lib.mjs`: shared utilities extracted from fetch-pricing.mjs (org extraction, dedup, HTTP retry, coverage guard, --dry-run)

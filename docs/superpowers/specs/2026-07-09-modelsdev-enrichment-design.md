@@ -1,5 +1,8 @@
 # models.dev Enrichment Layer — Design Spec
 
+> **SHIPPED** — Historical artifact. Implementation complete as of 2026-07. Do not treat checklist/status below as pending work.
+
+
 **Date**: 2026-07-09
 **Status**: Approved (brainstorm phase complete; pending implementation plan)
 **Author**: Brainstorm session, reviewed with project owner

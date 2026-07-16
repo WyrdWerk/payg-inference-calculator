@@ -1,5 +1,8 @@
 # fal.ai integration — design spec
 
+> **SHIPPED** — Historical artifact. Implementation complete as of 2026-07. Do not treat checklist/status below as pending work.
+
+
 **Date:** 2026-07-09
 **Status:** Draft (awaiting user review)
 **Author:** brainstormed with user

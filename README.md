@@ -6,12 +6,12 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 
 ## How it works
 
-1. **`scripts/fetch-pricing.mjs`** fetches text-generation pricing from 3 tiers: direct providers (DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova), OpenRouter's de-aggregated `/endpoints` API (per-backend pricing for Fireworks, Together, Novita, SiliconFlow, etc.), and CSV-sourced static providers (Hyper, Makora, Xiaomimimo, OpenCode Go). Also fetches provider metadata and ZDR data. Normalizes all pricing to $/M tokens and writes `public/pricing.json`.
-2. **`scripts/fetch-images.mjs`** fetches image generation models from OpenRouter's dedicated `/api/v1/images/models` + `/endpoints`. Handles flat per-image, per-megapixel, and per-token pricing. Writes `public/image-pricing.json` (34 models).
-3. **`scripts/fetch-videos.mjs`** fetches video generation models from OpenRouter's `/api/v1/videos/models`. Normalizes per-second pricing with resolution and audio variants (cents→dollars). Writes `public/video-pricing.json` (13 models).
+1. **`scripts/fetch-pricing.mjs`** fetches text-generation pricing from 3 tiers: direct `/v1/models` providers (DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova, Hyper), OpenRouter de-aggregated `/endpoints` (Fireworks, Together, Novita, SiliconFlow, etc.), plus CSV/hardcoded (Makora, Xiaomimimo, OpenCode Go) and manually maintained Umans pricing (`UMANS_MODELS` in the fetcher). Also fetches provider metadata, ZDR data, models.dev enrichment, and quality benchmarks. Normalizes all pricing to $/M tokens and writes `public/pricing.json`.
+2. **`scripts/fetch-images.mjs`** fetches image generation models from OpenRouter plus fal.ai (Tier-1 precedence). Handles flat per-image, per-megapixel, and per-token pricing. Writes `public/image-pricing.json` (~165 models).
+3. **`scripts/fetch-videos.mjs`** fetches video generation models from OpenRouter plus fal.ai (Tier-1 precedence). Normalizes per-second pricing with resolution and audio variants. Writes `public/video-pricing.json` (~105 models).
 4. **`public/`** is a zero-dependency static site (HTML/CSS/JS) with three tabs (Text/Image/Video), each loading its own pricing JSON and computing costs in-browser.
 5. **`functions/api/v1/`** provides a queryable API via Cloudflare Pages Functions for all three catalogs (text, image, video).
-6. **GitHub Actions** runs all three fetch scripts daily, commits updated pricing, and deploys to Cloudflare Pages.
+6. **GitHub Actions** refreshes pricing + performance on a 2-hourly cron, commits updated JSON, and deploys to Cloudflare Pages.
 
 ## Usage
 
@@ -22,12 +22,15 @@ Compare pay-as-you-go LLM inference pricing across inference providers. Enter yo
 - **Cost mode**: Toggle between **"Per Session"** (enter total tokens, see per-session cost) and **"Monthly Volume"** (enter daily tokens, see monthly cost × 30 days).
 - **Budget mode**: Toggle "Compute by" to **Budget → Tokens** (text tab), **Budget → Count** (image), or **Budget → Seconds** (video) to invert the calculator — enter a $ budget and see how many tokens/images/seconds each provider offers. Results re-rank by affordability (most units for your budget).
 - **Group by**: Group results by Organization, Provider, or keep flat.
-- **Compare**: Checkboxes on each row let you select up to 6 models for side-by-side comparison in a modal.
+- **Compare**: Checkboxes on each row let you select up to 6 models for side-by-side comparison (pricing, Speed p50 throughput, Blended $/M, Total Cost, ZDR, and more).
 - **Provider metadata**: HQ flag badges (🇺🇸🇸🇬🇨🇳) and links to privacy policy, ToS, and status pages appear next to provider names. Data policy fields (retains prompts, may train, retention days) are sourced from OpenRouter and provider policy review.
 - **ZDR badges**: Models from providers with Zero Data Retention show a green "ZDR" badge. Use the "ZDR only" filter to restrict results to ZDR-compliant offerings.
 - **Subscription badges**: Providers with coding plan subscriptions show a blue "Sub" badge. Use the "Sub only" filter to restrict results to subscription providers (13 providers, 142 models).
 - **Promo badges**: Discounted offerings show a "promo" badge with the discount percentage.
 - **Cache write**: An adjustable one-time cache-population cost with amortization over N requests, included in the Total Cost column.
+- **Blended $/M**: Table column (before Total Cost) showing the effective per-million-token rate at your current input/cache/output mix. Excludes cache-write and monthly multiplier — pure cross-model comparison metric. Also shown in the comparison modal.
+- **Export CSV**: Button above the results table downloads the current filtered/sorted results (all pricing columns, Speed, Blended $/M, ZDR, subscription, discount).
+- **Speed**: Throughput p50 (tokens/sec) from performance data — table column + comparison modal row (blank when unavailable).
 
 - **Image tab**: Enter number of images, optionally filter by resolution variant. Search by provider or model using the typeahead inputs. Flat per-image models show total cost; token-priced and megapixel-priced models show per-unit rates (cost varies by generation complexity).
 - **Video tab**: Enter video duration in seconds, filter by resolution and audio. Search by provider or model using the typeahead inputs. All models show per-second pricing with computed total cost.
@@ -54,22 +57,23 @@ Presets: Agentic (2.5/97/0.5), Balanced (30/50/20), Heavy output (10/0/90), No c
 
 | Source | Tier | Description |
 |---|---|---|
-| Direct providers | Tier 1 | DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova — fetched via their own `/v1/models` endpoints |
+| Direct providers | Tier 1 | DeepInfra, Crof, EmberCloud, Wafer, Synthetic, Lilac, SambaNova, Hyper — public `/v1/models` endpoints |
 | OpenRouter `/endpoints` | Tier 2 | De-aggregated per-backend pricing — each backend (Fireworks, Together, Novita, SiliconFlow, etc.) becomes its own row. Also captures cache_write, uptime, max_completion_tokens. |
-| CSV-sourced | Tier 3 | Hyper, Makora, Xiaomimimo (from `data/manual-pricing.csv`) |
-| Hardcoded | Tier 3 | OpenCode Go (16 models with user-provided pricing) |
+| CSV-sourced | Tier 3 | Makora, Xiaomimimo (from `data/manual-pricing.csv`) |
+| Hardcoded | Tier 3 | OpenCode Go + Umans (`UMANS_MODELS` manual table in fetcher; status.umans.ai SSR is for performance data only) |
 
 **3-tier precedence**: when the same (model, provider) appears in multiple tiers, the higher-authority tier wins — direct > OpenRouter > CSV/hardcoded. Quantization is not part of the dedup key — same model+provider at different quants collapses to one row.
-**Text models**: ~910 text-generation models across ~75 inference providers and 60+ underlying orgs. **648 models (71%) are ZDR-compliant**.
+**Text models**: ~937 text-generation models across ~75 inference providers and 60+ underlying orgs. **~606 models (~65%) are ZDR-compliant**.
+**Sidecar enrichments** (non-fatal): models.dev metadata (~42% coverage), Artificial Analysis quality benchmarks (~73% coverage), fal.ai image/video (Tier-1 merge).
 
 ## Image & Video Generation
 
-TokenWatch now also tracks dedicated image and video generation models from OpenRouter's separate catalogs:
+TokenWatch also tracks dedicated image and video generation models from OpenRouter and fal.ai:
 
 | Modality | Source | Models | Pricing |
 |---|---|---|---|
-| **Image** | `/api/v1/images/models` + `/endpoints` | 34 | Flat per-image ($0.019–$0.17/image), per-megapixel ($0.014–$0.07/MP), or per-token ($8–$120/M image-tokens) |
-| **Video** | `/api/v1/videos/models` | 13 | Per-second with resolution/audio variants ($0.03–$0.60/sec) |
+| **Image** | OpenRouter `/images` + fal.ai | ~165 | Flat per-image, per-megapixel, or per-token |
+| **Video** | OpenRouter `/videos` + fal.ai | ~105 | Per-second with resolution/audio variants |
 
 Image and video models have their own tabs (see navigation bar). Pricing units vary by model — flat per-image costs are directly computable; token-priced and megapixel-priced models show per-unit rates since total cost depends on generation complexity.
 
@@ -134,8 +138,8 @@ scripts/
 data/
   manual-pricing.csv          # Static pricing for CSV-sourced providers
 public/
-  index.html                 # UI: dual search, usage inputs, 10-column results table, group-by, comparison modal, mobile sort
-  app.js                     # State, URL hash, search, cost computation, group-by, comparison, monthly mode, mobile sort, rendering
+  index.html                 # UI: dual search, usage inputs, 11-column results table (incl. Speed + Blended $/M), group-by, comparison modal, Export CSV, mobile sort
+  app.js                     # State, URL hash, search, cost computation, blendedCostFor, exportCsv, group-by, comparison (Speed + Blended rows), monthly mode, rendering
   styles.css                 # Dark/light theme, all badges, group headers, comparison modal, mode toggle, responsive (card layout, mobile sort)
   image.html                 # Image tab: search, count input, variant filter, sortable table, mobile sort
   image-app.js               # Image pricing calculator, typeahead search, unit-adaptive columns, mobile card layout
@@ -158,7 +162,7 @@ functions/
 
 The `refresh-pricing.yml` workflow has three jobs:
 - **`test`** (push/PR): runs `node --test` — gates the `deploy` job.
-- **`refresh`** (daily cron 00:00 UTC + manual): test → fetch pricing → commit JSON if changed → bust cache → deploy.
+- **`refresh`** (every 2h cron + manual): test → fetch all pipelines + performance → commit JSON if changed → bust cache → deploy.
 - **`deploy`** (push to main): test (via `needs: test`) → bust cache → deploy. No fetch, no commit.
 
 Cache-busting (`scripts/bust-cache.mjs`) rewrites `?v=` tokens in `public/*.html` to 8-char SHA-1 content hashes of the referenced assets before each deploy. The rewritten HTML is deployed but not committed — the repo keeps its old `?v=` strings.

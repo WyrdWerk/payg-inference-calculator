@@ -1,5 +1,8 @@
 # Quality Benchmark Enrichment Implementation Plan
 
+> **SHIPPED** — Historical artifact. Implementation complete as of 2026-07. Do not treat checklist/status below as pending work.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Surface Artificial Analysis quality indices (intelligence/coding/agentic) and design_arena Elo from OpenRouter's `benchmarks` field in the text-model detail modal card, with footer attribution links to the benchmark sources.

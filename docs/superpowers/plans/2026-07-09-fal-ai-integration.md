@@ -1,5 +1,8 @@
 # fal.ai Integration Implementation Plan
 
+> **SHIPPED** — Historical artifact. Implementation complete as of 2026-07. Do not treat checklist/status below as pending work.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add fal.ai as a Tier-1 direct provider for image and video catalogs — ~310 new models (167 image + 143 video) with clean per-output-unit pricing, merged into the existing image/video pipelines with Tier-1 precedence over OpenRouter.

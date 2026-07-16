@@ -1,5 +1,8 @@
 # models.dev Enrichment Layer — Implementation Plan
 
+> **SHIPPED** — Historical artifact. Implementation complete as of 2026-07. Do not treat checklist/status below as pending work.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Integrate models.dev as a sidecar enrichment source that decorates TokenWatch's text-model catalog with provider base URLs, native model IDs, capability metadata, and cache-pricing null-fills — then surface that data via a clickable model detail card on the text tab.
