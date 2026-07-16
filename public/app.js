@@ -778,7 +778,7 @@ function showCompareModal() {
     { label: 'Blended $/M', getValue: m => {
         const b = blendedCostFor(m.pricing, tokens);
         return b != null ? fmtPrice(b) : '<span class="missing">—</span>';
-      }, getRaw: m => blendedCostFor(m.pricing, tokens), isCost: true },
+      }, getRaw: m => blendedCostFor(m.pricing, tokens), isCost: true, highlight: true },
     { label: els.costColumnHeader?.textContent || 'Total Cost', getValue: m => headlineFmt(headlineGet(m)), getRaw: headlineGet, isCost: true, isBudget: budgetMode },
   ];
 
@@ -807,7 +807,7 @@ function showCompareModal() {
   html += '</tr></thead><tbody>';
 
   for (const row of rows) {
-    html += `<tr><td class="compare-label">${row.label}</td>`;
+    html += `<tr${row.highlight ? ' class="compare-highlight"' : ''}><td class="compare-label">${row.label}</td>`;
     if ((row.isCost || row.bestHigh) && row.getRaw) {
       const values = models.map(m => row.getRaw(m));
       const nonNull = values.filter(v => v !== null && v !== undefined && (isFinite(v) || !row.isBudget));
