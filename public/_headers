@@ -3,22 +3,27 @@
 /*.json
   Cache-Control: public, max-age=0, must-revalidate
 
-# Content-hashed assets (referenced with ?v= cache-busting tokens) — immutable.
+# Path-fingerprinted deploy assets (public/h/*) — immutable, unique URL per content hash.
+# Query-string ?v= busting is insufficient: custom-domain edge has ignored ?v= in cache key.
+/h/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Unhashed source names (repo/dev, or accidental direct hits) — always revalidate.
 /styles.css
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 /app.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 /image-app.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 /video-app.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 /shared-ui.js
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 
 # Self-hosted fonts — immutable.
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-# External embed script loaded WITHOUT ?v= by third-party sites — must revalidate.
+# External embed script loaded WITHOUT path hash by third-party sites — must revalidate.
 /widget/embed.js
   Cache-Control: public, max-age=3600, must-revalidate

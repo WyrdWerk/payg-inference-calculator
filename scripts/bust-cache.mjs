@@ -1,91 +1,134 @@
 #!/usr/bin/env node
 /**
- * bust-cache.mjs — rewrite ?v= cache-bust tokens in public/*.html to content
- * hashes of the referenced assets.
+ * bust-cache.mjs — rewrite asset refs in public/*.html to content-hashed paths.
  *
- * Replaces the former hand-maintained ?v=20260707e strings that were bumped
- * manually per deploy and occasionally forgotten (causing stale-JS-against-
- * new-HTML bugs — see SESSION-2026-07-05-enhancement.md Lesson #7).
+ * Why path-based (not ?v= query strings)?
+ *   Cloudflare's edge cache for the custom domain (tokenwatch.wyrdwerk.com) has
+ *   been observed to ignore query strings in the cache key for JS/CSS. Content-
+ *   hashed PATHS (h/app.<hash>.js) always miss the stale entry.
  *
- * Run before deploy in CI (deploy job) OR locally via `npm run bust:cache`.
- * The rewritten HTML is uploaded to Cloudflare but NOT committed to the repo
- * — the repo keeps its old ?v= and every deploy gets fresh content hashes.
+ * Repo HTML keeps stable refs like src="app.js?v=dev" (or plain app.js). This
+ * script rewrites them for deploy only — hashed files under public/h/ are
+ * generated, not committed. CI: run before wrangler pages deploy.
+ *
+ * Idempotent: safe to run twice. Existing h/<name>.<hash>.<ext> refs are
+ * normalized back to <name>.<ext> before re-hashing.
  *
  * Zero dependencies. Node >=18.
  */
 
-import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { readFile, writeFile, readdir, mkdir, copyFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { join, dirname, basename } from 'node:path';
+import { join, dirname, basename, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = join(__dirname, '..', 'public');
+const HASH_DIR = join(PUBLIC_DIR, 'h');
 
-// Match href="...?v=..." or src="...?v=..." — captures the asset path and the
-// full ?v=<old> token so we can replace just the version.
-const REF_REGEX = /((?:href|src)=["'])([^"'?]+)(\?v=)([^"']*)/g;
+const FINGERPRINT = new Set([
+  'styles.css',
+  'app.js',
+  'image-app.js',
+  'video-app.js',
+  'shared-ui.js',
+]);
 
-/** Compute an 8-char SHA-1 content hash for an asset file. */
+// href/src="..." capturing the path (with optional ?query)
+const REF_REGEX = /((?:href|src)=["'])([^"']+)(["'])/g;
+
+// h/app.476dfb74.js → app.js
+const HASHED_PATH_RE = /^h\/(.+)\.([a-f0-9]{8})(\.[a-z0-9]+)$/i;
+
 async function hashFile(filePath) {
-  const content = await readFile(filePath, 'utf-8');
+  const content = await readFile(filePath);
   return createHash('sha1').update(content).digest('hex').slice(0, 8);
 }
 
-/** Rewrite ?v= tokens in a single HTML file. Returns count of tokens busted. */
-async function bustHtml(htmlPath) {
-  let html = await readFile(htmlPath, 'utf-8');
-  const matches = [...html.matchAll(REF_REGEX)];
-  if (matches.length === 0) return 0;
+function fingerprintedName(assetBase, hash) {
+  const ext = extname(assetBase);
+  const stem = basename(assetBase, ext);
+  return `${stem}.${hash}${ext}`;
+}
 
-  // Compute hashes for all referenced assets (dedup by asset path)
-  const assetHashes = new Map(); // assetPath → hash
-  for (const match of matches) {
-    const assetPath = match[2];
-    if (!assetHashes.has(assetPath)) {
-      const assetAbs = join(PUBLIC_DIR, basename(assetPath));
-      try {
-        const hash = await hashFile(assetAbs);
-        assetHashes.set(assetPath, hash);
-      } catch {
-        // Asset not found — leave its ?v= unchanged
-        assetHashes.set(assetPath, null);
-      }
-    }
+/** Map any ref path to a bare fingerprintable basename, or null. */
+function baseAssetName(refPath) {
+  // strip query
+  const pathOnly = refPath.split('?')[0];
+  const base = basename(pathOnly);
+
+  // Already path-hashed: h/app.476dfb74.js
+  const m = pathOnly.replace(/^\.\//, '').match(HASHED_PATH_RE);
+  if (m) {
+    const name = m[1] + m[3]; // app + .js
+    return FINGERPRINT.has(name) ? name : null;
   }
 
-  // Synchronous replace using the computed hashes
+  // Bare or ?v= form: app.js or app.js?v=dev
+  if (FINGERPRINT.has(base)) return base;
+  return null;
+}
+
+async function bustHtml(htmlPath, assetHashes) {
+  let html = await readFile(htmlPath, 'utf-8');
   let count = 0;
-  html = html.replace(REF_REGEX, (full, prefix, assetPath, queryToken, oldHash) => {
-    const hash = assetHashes.get(assetPath);
-    if (hash === null) return full; // asset not found, leave as-is
+
+  html = html.replace(REF_REGEX, (full, prefix, refPath, quote) => {
+    const base = baseAssetName(refPath);
+    if (!base) return full;
+    const hash = assetHashes.get(base);
+    if (!hash) return full;
     count++;
-    return `${prefix}${assetPath}${queryToken}${hash}`;
+    return `${prefix}h/${fingerprintedName(base, hash)}${quote}`;
   });
 
-  if (count > 0) {
-    await writeFile(htmlPath, html, 'utf-8');
-  }
+  if (count > 0) await writeFile(htmlPath, html, 'utf-8');
   return count;
 }
 
 async function main() {
+  await rm(HASH_DIR, { recursive: true, force: true });
+  await mkdir(HASH_DIR, { recursive: true });
+
+  const assetHashes = new Map();
+  for (const name of FINGERPRINT) {
+    const abs = join(PUBLIC_DIR, name);
+    try {
+      const hash = await hashFile(abs);
+      assetHashes.set(name, hash);
+      const outName = fingerprintedName(name, hash);
+      await copyFile(abs, join(HASH_DIR, outName));
+      console.log(`  hash ${name} → h/${outName}`);
+    } catch (err) {
+      console.warn(`  skip ${name}: ${err.message}`);
+    }
+  }
+
   const htmlFiles = (await readdir(PUBLIC_DIR))
-    .filter(f => f.endsWith('.html'))
-    .map(f => join(PUBLIC_DIR, f));
+    .filter((f) => f.endsWith('.html'))
+    .map((f) => join(PUBLIC_DIR, f));
+
+  try {
+    const widgetDemo = join(PUBLIC_DIR, 'widget', 'demo.html');
+    await readFile(widgetDemo);
+    htmlFiles.push(widgetDemo);
+  } catch { /* optional */ }
 
   let totalBusted = 0;
   for (const htmlFile of htmlFiles) {
-    const count = await bustHtml(htmlFile);
-    const rel = htmlFile.replace(PUBLIC_DIR + '/', '');
+    const count = await bustHtml(htmlFile, assetHashes);
+    const rel = htmlFile.slice(PUBLIC_DIR.length + 1);
     if (count > 0) {
-      console.log(`✓ ${rel}: ${count} cache-bust token(s) updated`);
+      console.log(`✓ ${rel}: ${count} ref(s) → path-hashed /h/*`);
       totalBusted += count;
     } else {
-      console.log(`· ${rel}: no ?v= tokens found`);
+      console.log(`· ${rel}: no fingerprintable refs`);
     }
   }
-  console.log(`\n→ ${totalBusted} cache-bust token(s) updated across ${htmlFiles.length} HTML file(s)`);
+  console.log(`\n→ ${totalBusted} path-hashed ref(s) across ${htmlFiles.length} HTML file(s)`);
 }
 
-main().catch((err) => { console.error('Fatal:', err); process.exit(1); });
+main().catch((err) => {
+  console.error('Fatal:', err);
+  process.exit(1);
+});
