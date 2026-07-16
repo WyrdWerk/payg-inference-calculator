@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16T17:03:02.277Z",
+  "generated_at": "2026-07-16T18:55:11.498Z",
   "models": [
     {
       "id": "flux-schnell",
@@ -2270,27 +2270,9 @@
       ]
     },
     {
-      "id": "sana-v1.5-1.6b",
-      "name": "Sana v1.5 1.6B",
-      "org": "fal",
-      "provider": "fal",
-      "output_modalities": [
-        "image"
-      ],
-      "supported_parameters": null,
-      "pricing": [
-        {
-          "unit": "megapixel",
-          "variant": null,
-          "cost_per_unit": 0.0075,
-          "cost_per_million": 0.0075
-        }
-      ]
-    },
-    {
-      "id": "ernie-image-lora",
-      "name": "Ernie Image Lora",
-      "org": "fal",
+      "id": "flux-krea-lora-stream",
+      "name": "Flux Krea Lora",
+      "org": "black-forest-labs",
       "provider": "fal",
       "output_modalities": [
         "image"
@@ -2306,27 +2288,9 @@
       ]
     },
     {
-      "id": "bria-fibo-lite-generate",
-      "name": "Fibo Lite",
-      "org": "bria-ai",
-      "provider": "fal",
-      "output_modalities": [
-        "image"
-      ],
-      "supported_parameters": null,
-      "pricing": [
-        {
-          "unit": "image",
-          "variant": null,
-          "cost_per_unit": 0.036,
-          "cost_per_million": null
-        }
-      ]
-    },
-    {
-      "id": "z-image-turbo-tiling-lora",
-      "name": "Z-Image Turbo Seamless Tiling Lora",
-      "org": "z-ai",
+      "id": "flux-lora-stream",
+      "name": "Flux Lora",
+      "org": "black-forest-labs",
       "provider": "fal",
       "output_modalities": [
         "image"
@@ -2336,62 +2300,8 @@
         {
           "unit": "megapixel",
           "variant": null,
-          "cost_per_unit": 0.025,
-          "cost_per_million": 0.025
-        }
-      ]
-    },
-    {
-      "id": "rundiffusion-fal-rundiffusion-photo-flux",
-      "name": "Rundiffusion Photo Flux",
-      "org": "rundiffusion-fal",
-      "provider": "fal",
-      "output_modalities": [
-        "image"
-      ],
-      "supported_parameters": null,
-      "pricing": [
-        {
-          "unit": "megapixel",
-          "variant": null,
-          "cost_per_unit": 0.045,
-          "cost_per_million": 0.045
-        }
-      ]
-    },
-    {
-      "id": "bria-fibo-bbq-preview-generate",
-      "name": "Fibo Bbq Preview",
-      "org": "bria-ai",
-      "provider": "fal",
-      "output_modalities": [
-        "image"
-      ],
-      "supported_parameters": null,
-      "pricing": [
-        {
-          "unit": "image",
-          "variant": null,
-          "cost_per_unit": 0.04,
-          "cost_per_million": null
-        }
-      ]
-    },
-    {
-      "id": "ideogram-custom-models-generate",
-      "name": "Ideogram",
-      "org": "ideogram",
-      "provider": "fal",
-      "output_modalities": [
-        "image"
-      ],
-      "supported_parameters": null,
-      "pricing": [
-        {
-          "unit": "image",
-          "variant": null,
-          "cost_per_unit": 0.03,
-          "cost_per_million": null
+          "cost_per_unit": 0.035,
+          "cost_per_million": 0.035
         }
       ]
     },
