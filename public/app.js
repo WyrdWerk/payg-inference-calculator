@@ -979,6 +979,14 @@ function renderBenchmarkBox(rows) {
     ` <span class="bench-sep">·</span> mean ${fmt(mean)}` +
     ` <span class="bench-sep">·</span> range ${fmt(min)}–${fmt(max)}`;
   if (free > 0) html += ` <span class="bench-sep">·</span> ${free} free`;
+
+  // Blended $/M cohort stats (mix-weighted rate — independent of session size)
+  const blended = rows.map((r) => r.blended).filter((v) => v != null && isFinite(v));
+  if (blended.length) {
+    const bMed = median(blended);
+    const bMean = blended.reduce((a, b) => a + b, 0) / blended.length;
+    html += ` <span class="bench-sep">·</span> Blended $/M median ${fmtPrice(bMed)} · mean ${fmtPrice(bMean)}`;
+  }
   bar.innerHTML = html;
 }
 
