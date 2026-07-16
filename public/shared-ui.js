@@ -175,7 +175,6 @@
       isLabel: cell.classList.contains('compare-label'),
       isNum: cell.classList.contains('num'),
       isBest: cell.classList.contains('compare-cheapest'),
-      isHighlight: tr.classList.contains('compare-highlight'),
     })));
     const colCount = grid.reduce((m, r) => Math.max(m, r.length), 0) || 1;
 
@@ -264,18 +263,10 @@
         // cell bg
         if (cell.isHead) ctx.fillStyle = surface;
         else if (cell.isBest) ctx.fillStyle = theme === 'dark' ? 'rgba(13,115,119,0.25)' : 'rgba(13,115,119,0.12)';
-        else if (cell.isHighlight) ctx.fillStyle = theme === 'dark' ? 'rgba(231,76,60,0.18)' : 'rgba(231,76,60,0.08)';
         else ctx.fillStyle = solidBg(el, pageBg);
         ctx.fillRect(x, y0, w, rowH);
         ctx.strokeStyle = border;
         ctx.strokeRect(x + 0.5, y0 + 0.5, w - 1, rowH - 1);
-        // Highlight-row emphasis: red border drawn over the default border
-        if (cell.isHighlight) {
-          ctx.strokeStyle = theme === 'dark' ? '#e74c3c' : '#c0392b';
-          ctx.lineWidth = 1.5;
-          ctx.strokeRect(x + 0.75, y0 + 0.75, w - 1.5, rowH - 1.5);
-          ctx.lineWidth = 1;
-        }
 
         ctx.fillStyle = cell.isLabel || cell.isHead ? dimColor : textColor;
         if (cell.isBest) ctx.fillStyle = accent;

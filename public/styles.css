@@ -46,8 +46,6 @@
   --accent-faint: rgba(30,110,142,0.09);
   --green: #2d8a5a;
   --yellow: #B8860B;
-  --highlight: #c0392b;
-  --highlight-faint: rgba(192, 57, 43, 0.06);
   --blue: #5B7C99;
   --radius: 14px;
   --radius-sm: 8px;
@@ -68,8 +66,6 @@
   --accent-faint: rgba(30,110,142,0.15);
   --green: #4a9d6f;
   --yellow: #D4A843;
-  --highlight: #e74c3c;
-  --highlight-faint: rgba(231, 76, 60, 0.12);
   --blue: #6B9AC4;
   --radius: 14px;
   --radius-sm: 8px;
@@ -755,10 +751,6 @@ footer {
 .compare-cheapest {
   color: var(--green);
   font-weight: 600;
-}
-.compare-table tr.compare-highlight td {
-  border-color: var(--highlight);
-  background-color: var(--highlight-faint);
 }
 
 /* ── Detail modal (per-model enrichment) ──────────────────────────────────── */
