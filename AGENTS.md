@@ -16,7 +16,7 @@ Rules: Investigation = delegate. Editing/deciding = inline. Never both.
 
 ## Project overview
 
-Static site comparing pay-as-you-go LLM API pricing across inference providers. Uses OpenRouter's `/endpoints` API to de-aggregate per-backend pricing (each backend like DeepInfra, Fireworks, Together becomes its own row). Zero dependencies, pure Node ESM. Deployed to Cloudflare Pages with daily CI/CD refresh + auto-deploy on push.
+Static site comparing pay-as-you-go LLM API pricing across inference providers. Uses OpenRouter's `/endpoints` API to de-aggregate per-backend pricing (each backend like DeepInfra, Fireworks, Together becomes its own row). Zero dependencies, pure Node ESM. Deployed to Cloudflare Pages with 2-hourly CI/CD refresh + auto-deploy on push.
 
 ## Architecture
 
@@ -36,7 +36,7 @@ Static site comparing pay-as-you-go LLM API pricing across inference providers. 
 - **Frontend**: `public/` static site loads `pricing.json` client-side. Typeahead search (by inference provider and by model) on all three pages (text, image, video) via native HTML5 datalist. Cost computation entirely in-browser. Features: group-by toggle (None/Org/Provider), comparison mode (up to 6, side-by-side modal with Speed p50 + Blended $/M rows), cost mode toggle (Per Session / Monthly Volume with ×30 multiplier), budget mode (Budget → Tokens/Count/Seconds inverse affordability calculator on all 3 tabs), **Blended $/M** column (mix-weighted effective rate via `blendedCostFor()`, excludes cache_write/monthly — pure comparison metric), **Export CSV** (`exportCsv()` downloads current results), **Speed** column (throughput p50 from performance.json), **benchmark bar** (dynamic median/mean/range/free strip over the current result cohort, recomputed on every render — sits between usage inputs and results table on all 3 tabs, mode-aware labels), URL hash state persistence, provider HQ flag badges, ZDR badges + "ZDR only" filter, privacy/ToS/status links, promo badges + "Promos only" filter, cache-write cost amortization input. Mobile: table→card layout at ≤640px via `td[data-label]` attributes on all pages; mobile sort dropdown (`<select class="mobile-sort">`) visible only at ≤640px with bidirectional sync to desktop column header clicks.
 - **API**: Cloudflare Pages Functions at `functions/api/v1/` serve queryable endpoints: `/api/v1/models` (with filters: org, provider, min_context, min_output, quantization, cache_read, cache_write, promo, zdr, sub, search, sort), `/api/v1/models/:id/providers` (mix-aware cost sort), `/api/v1/stats` (org/zdr/sub/quantization breakdowns), `/api/v1/orgs`, `/api/v1/providers` (?zdr=true), `/api/v1/images`, `/api/v1/images/:id`, `/api/v1/videos`, `/api/v1/videos/:id`. CORS enabled.
 - **Widget**: `public/widget/embed.js` — embeddable JS snippet using Shadow DOM, auto-detects `[data-tw-model]` elements, fetches the API, renders compact pricing cards.
-- **CI/CD**: `.github/workflows/refresh-pricing.yml` — daily cron at 00:00 UTC (fetch → commit → deploy) + push-to-main trigger (deploy-only, no fetch).
+- **CI/CD**: `.github/workflows/refresh-pricing.yml` — 2-hourly cron (fetch → commit → deploy) + push-to-main trigger (deploy-only, no fetch).
 
 ## Key conventions
 
@@ -133,7 +133,7 @@ The pipeline includes unattended-operation safeguards:
 | `public/app.js` | Frontend state, URL hash persistence, search, cost computation (per-request + monthly ×30), `blendedCostFor()` (Blended $/M column + compare row), `exportCsv()`, group-by, comparison mode (Speed p50 + Blended rows), ZDR filter/badge, HQ badges, meta links, rendering |
 | `public/index.html` | UI layout: controls, usage-grid with mode toggle, 11-column results table (# … Speed, Blended $/M, Total Cost sticky), ZDR + promo filters, group-by, comparison tray + modal, Export CSV |
 | `public/styles.css` | Dark/light theme, all badges (org, provider, promo, ZDR, HQ, meta-link), group headers, comparison modal/tray, mode toggle, responsive |
-| `public/pricing.json` | Generated data — models (with pricing, cache_write, uptime_30m, max_completion_tokens, zdr), providers, providers_meta (with retains_prompts, may_train, retention_days) — do not hand-edit, CI refreshes daily |
+| `public/pricing.json` | Generated data — models (with pricing, cache_write, uptime_30m, max_completion_tokens, zdr), providers, providers_meta (with retains_prompts, may_train, retention_days) — do not hand-edit, CI refreshes every 2h |
 | `functions/api/v1/[[route]].js` | Cloudflare Pages Functions API — imports `canonicalId` from `shared/normalize.mjs`. /models (with filters: org, provider, min_context, min_output, quantization, cache_read, cache_write, promo, zdr, sub, search, sort), /models/:id/providers (mix-aware cost sort), /stats (org/zdr/sub/quantization breakdowns), /orgs, /providers (?zdr=true), /images, /images/:id, /videos, /videos/:id, CORS |
 | `public/widget/embed.js` | Embeddable widget — Shadow DOM, auto-detects [data-tw-model], fetches API, renders pricing card |
 | `public/widget/demo.html` | Widget demo page |
@@ -226,7 +226,7 @@ OpenRouter has dedicated APIs for image and video generation — separate from t
 ### CI/CD
 Three jobs in `.github/workflows/refresh-pricing.yml`:
 - **`test`** (push/PR): runs `node --test test/*.test.mjs` — gates the `deploy` job via `needs: test`.
-- **`refresh`** (daily cron + manual): test → fetch all three pipelines → commit JSON only (`git add public/*.json`) → bust-cache → deploy. The cache-bust rewrites `?v=` tokens to content hashes in the checked-out HTML; the rewritten HTML is deployed but NOT committed.
+- **`refresh`** (every 2h cron + manual): test → fetch all pipelines + performance → commit JSON only (`git add public/*.json`) → bust-cache → deploy. The cache-bust rewrites `?v=` tokens to content hashes in the checked-out HTML; the rewritten HTML is deployed but NOT committed.
 - **`deploy`** (push to main): test (via `needs: test`) → bust-cache → deploy. No fetch, no commit — just re-publishes `public/` with fresh cache hashes.
 
 All three JSON files (`pricing.json`, `image-pricing.json`, `video-pricing.json`) committed and deployed together by the `refresh` job.

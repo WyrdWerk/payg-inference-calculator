@@ -145,9 +145,9 @@ public/
   image-app.js               # Image pricing calculator, typeahead search, unit-adaptive columns, mobile card layout
   video.html                 # Video tab: search, duration input, resolution/audio filters, sortable table, mobile sort
   video-app.js               # Video pricing calculator, typeahead search, resolution/audio filters, mobile card layout
-  pricing.json               # Generated data (refreshed daily by CI)
-  image-pricing.json         # Generated image model data (refreshed daily)
-  video-pricing.json         # Generated video model data (refreshed daily)
+  pricing.json               # Generated data (refreshed every 2h by CI)
+  image-pricing.json         # Generated image model data (refreshed every 2h)
+  video-pricing.json         # Generated video model data (refreshed every 2h)
   widget/
     embed.js                 # Embeddable widget (Shadow DOM, auto-detect, theme support)
     demo.html                # Widget demo page
@@ -155,7 +155,7 @@ functions/
   api/v1/
     [[route]].js             # Cloudflare Pages Functions API
 .github/workflows/
-  refresh-pricing.yml        # Daily cron (fetch+deploy) + push-to-main (deploy-only)
+  refresh-pricing.yml        # 2-hourly cron (fetch+deploy) + push-to-main (deploy-only)
 ```
 
 ## CI/CD

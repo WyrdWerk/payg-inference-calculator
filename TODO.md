@@ -82,12 +82,12 @@ Store daily pricing.json snapshots to enable price-drop alerts, trend charts, an
 
 **What's done**:
 - `scripts/lib.mjs`: shared utilities extracted from fetch-pricing.mjs (org extraction, dedup, HTTP retry, coverage guard, --dry-run)
-- `scripts/fetch-images.mjs`: fetches 34 image models from OpenRouter `/api/v1/images/models` + `/endpoints`, handles 3 unit types (image/megapixel/token), writes `public/image-pricing.json`
-- `scripts/fetch-videos.mjs`: fetches 13 video models from `/api/v1/videos/models`, normalizes cents→dollars, filters per-second only, writes `public/video-pricing.json`
+- `scripts/fetch-images.mjs`: fetches image models from OpenRouter `/api/v1/images/models` + `/endpoints` and merges fal.ai (Tier-1), handles 3 unit types (image/megapixel/token), writes `public/image-pricing.json` (~165 models)
+- `scripts/fetch-videos.mjs`: fetches video models from `/api/v1/videos/models` and merges fal.ai (Tier-1), normalizes cents→dollars, filters per-second only, writes `public/video-pricing.json` (~105 models)
 - `public/image.html` + `image-app.js`: image calculator (count × $/unit), unit-adaptive table, variant filter
 - `public/video.html` + `video-app.js`: video calculator (seconds × $/sec), resolution + audio filters
 - Tab navigation (Text/Image/Video) on all pages, shared from `styles.css`
-- CI: daily cron runs all three fetch scripts
+- CI: 2-hourly cron runs all fetch pipelines + performance
 
 **Remaining**:
 - Video: Seedance models (3) excluded — only have per-token pricing, no per-second SKUs yet
