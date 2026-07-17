@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T18:53:04.679Z",
+  "generated_at": "2026-07-17T20:43:02.367Z",
   "models": [
     {
       "id": "flux-schnell",
@@ -2126,7 +2126,7 @@
       ]
     },
     {
-      "id": "flux-2-lora-gallery-ballpoint-pen-sketch",
+      "id": "flux-2-lora-gallery-satellite-view-style",
       "name": "Flux 2 Lora Gallery",
       "org": "black-forest-labs",
       "provider": "fal",
@@ -2144,7 +2144,7 @@
       ]
     },
     {
-      "id": "flux-2-lora-gallery-satellite-view-style",
+      "id": "flux-2-lora-gallery-ballpoint-pen-sketch",
       "name": "Flux 2 Lora Gallery",
       "org": "black-forest-labs",
       "provider": "fal",
