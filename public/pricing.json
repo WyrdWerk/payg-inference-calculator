@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T17:21:55.567Z",
+  "generated_at": "2026-07-20T17:23:51.647Z",
   "providers": [
     {
       "key": "deepinfra",
@@ -82,266 +82,23 @@
   ],
   "models": [
     {
-      "id": "openai/gpt-oss-20b",
-      "name": "openai/gpt-oss-20b",
+      "id": "zai-org/GLM-5.2",
+      "name": "zai-org/GLM-5.2",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 131072,
+      "context_length": 1048576,
       "pricing": {
-        "input": 0.030000000000000002,
-        "output": 0.14,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "openai",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-08-05",
-        "knowledge_cutoff": null,
-        "description": "Open-weight GPT model for self-hosted reasoning and instruction-following workloads",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 14.9,
-        "coding_index": 20.7,
-        "agentic_index": 3.1,
-        "design_arena_best": {
-          "category": "dataviz",
-          "elo": 969,
-          "win_rate": 39.7,
-          "rank": 98
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-Max",
-      "name": "Qwen/Qwen3-Max",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
-      "pricing": {
-        "input": 1.2,
-        "output": 5.999999999999999,
-        "cache_read": 0.24,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-09-23",
-        "knowledge_cutoff": "2025-04",
-        "description": "Flagship Qwen3 model for coding agents, complex reasoning, and tool use",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://www.alibabacloud.com/help/en/model-studio/models"
-      },
-      "benchmarks": {
-        "intelligence_index": null,
-        "coding_index": null,
-        "agentic_index": null,
-        "design_arena_best": {
-          "category": "asciiart",
-          "elo": 1170,
-          "win_rate": 47.2,
-          "rank": 36
-        }
-      }
-    },
-    {
-      "id": "anthropic/claude-opus-4-8",
-      "name": "anthropic/claude-opus-4-8",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 5,
-        "output": 25,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-05-28",
-        "knowledge_cutoff": "2026-01",
-        "description": "Top Claude Opus tier for the hardest reasoning, coding, and long-horizon agents",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": false
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
-      }
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V3",
-      "name": "deepseek-ai/DeepSeek-V3",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.32,
-        "output": 0.8899999999999999,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "deepseek",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2024-12-26",
-        "knowledge_cutoff": "2024-07",
-        "description": "DeepSeek chat model for instruction following, coding, and analysis",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.digitalocean.com/products/gradient-ai-platform/details/models/"
-      }
-    },
-    {
-      "id": "tencent/Hy3",
-      "name": "tencent/Hy3",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.14,
-        "output": 0.58,
-        "cache_read": 0.035,
-        "cache_write": null
-      },
-      "org": "tencent",
-      "zdr": true,
-      "benchmarks": {
-        "intelligence_index": 41.2,
-        "coding_index": 58.8,
-        "agentic_index": 30.7,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-      "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.32,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2024-12-06",
-        "knowledge_cutoff": "2023-12",
-        "description": "Compact Llama instruction model for fast chat and local deployment",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.together.ai/docs/serverless-models"
-      },
-      "benchmarks": {
-        "intelligence_index": 9.4,
-        "coding_index": 11.9,
-        "agentic_index": 0.3,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "zai-org/GLM-5.1",
-      "name": "zai-org/GLM-5.1",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 202752,
-      "pricing": {
-        "input": 1.05,
-        "output": 3.5,
-        "cache_read": 0.205000005,
+        "input": 0.9299999999999999,
+        "output": 2.9999999999999996,
+        "cache_read": 0.18000000269999997,
         "cache_write": null
       },
       "org": "z-ai",
       "zdr": true,
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-01",
+        "release_date": "2026-06-16",
         "knowledge_cutoff": null,
         "description": "Flagship GLM model for hybrid reasoning, coding, and agentic engineering",
         "capabilities": {
@@ -363,31 +120,80 @@
         "doc_url": "https://fireworks.ai/docs/"
       },
       "benchmarks": {
-        "intelligence_index": 40.2,
-        "coding_index": 55.8,
-        "agentic_index": 29.9,
+        "intelligence_index": 51.1,
+        "coding_index": 68.8,
+        "agentic_index": 43.1,
         "design_arena_best": {
-          "category": "dataviz",
-          "elo": 1366,
-          "win_rate": 67,
-          "rank": 2
+          "category": "3d",
+          "elo": 1361,
+          "win_rate": 62,
+          "rank": 3
         }
       }
     },
     {
-      "id": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-      "name": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "id": "Qwen/Qwen3.5-122B-A10B",
+      "name": "Qwen/Qwen3.5-122B-A10B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.29,
+        "output": 2.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-02-23",
+        "knowledge_cutoff": null,
+        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://www.alibabacloud.com/help/en/model-studio/models"
+      },
+      "benchmarks": {
+        "intelligence_index": 32.3,
+        "coding_index": 45.7,
+        "agentic_index": 20.7,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "NousResearch/Hermes-3-Llama-3.1-70B",
+      "name": "NousResearch/Hermes-3-Llama-3.1-70B",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
       "context_length": 131072,
       "pricing": {
-        "input": 0.4,
-        "output": 0.4,
+        "input": 0.7,
+        "output": 0.7,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "meta"
+      "org": "nous",
+      "zdr": true
     },
     {
       "id": "google/gemini-2.5-flash",
@@ -458,141 +264,28 @@
       "org": "google"
     },
     {
-      "id": "deepseek-ai/DeepSeek-V3.1",
-      "name": "deepseek-ai/DeepSeek-V3.1",
+      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 163840,
+      "context_length": 327680,
       "pricing": {
-        "input": 0.25,
-        "output": 0.95,
-        "cache_read": 0.13,
-        "cache_write": null
-      },
-      "org": "deepseek",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-08-21",
-        "knowledge_cutoff": null,
-        "description": "A large hybrid model that supports both thinking and non-thinking modes via prompt templates.",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      }
-    },
-    {
-      "id": "Qwen/Qwen3.6-27B",
-      "name": "Qwen/Qwen3.6-27B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.32,
-        "output": 3.2,
+        "input": 0.1,
+        "output": 0.3,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "qwen",
-      "zdr": true,
+      "org": "meta",
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-22",
-        "knowledge_cutoff": null,
-        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
+        "release_date": "2025-04-05",
+        "knowledge_cutoff": "2024-08",
+        "description": "Open multimodal Llama model for long-context analysis and efficient agents",
         "capabilities": {
-          "reasoning": true,
+          "reasoning": false,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": 37.1,
-        "coding_index": 53.7,
-        "agentic_index": 27,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-Max-Thinking",
-      "name": "Qwen/Qwen3-Max-Thinking",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
-      "pricing": {
-        "input": 1.2,
-        "output": 5.999999999999999,
-        "cache_read": 0.24,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "benchmarks": {
-        "intelligence_index": null,
-        "coding_index": null,
-        "agentic_index": null,
-        "design_arena_best": {
-          "category": "asciiart",
-          "elo": 1170,
-          "win_rate": 47.2,
-          "rank": 36
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3.5-35B-A3B",
-      "name": "Qwen/Qwen3.5-35B-A3B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.14,
-        "output": 1,
-        "cache_read": 0.05000000040000001,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-24",
-        "knowledge_cutoff": null,
-        "description": "Qwen3.5-35B-A3B is an open-weights multimodal MoE model built for efficient, high-throughput inference across chat, reasoning, and agentic tasks.",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
+          "structured_output": false,
           "attachment": true,
           "temperature": true
         },
@@ -606,363 +299,7 @@
           ]
         },
         "open_weights": true,
-        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      },
-      "benchmarks": {
-        "intelligence_index": 24,
-        "coding_index": 37,
-        "agentic_index": 11.8,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "Sao10K/L3.1-70B-Euryale-v2.2",
-      "name": "Sao10K/L3.1-70B-Euryale-v2.2",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.85,
-        "output": 0.85,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "sao10k"
-    },
-    {
-      "id": "google/gemini-3.5-flash",
-      "name": "google/gemini-3.5-flash",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 1.4999999999999998,
-        "output": 9,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-05-19",
-        "knowledge_cutoff": "2025-01",
-        "description": "Fast Gemini model balancing multimodal reasoning, tool use, and cost",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
-      },
-      "benchmarks": {
-        "intelligence_index": 50.2,
-        "coding_index": 70.1,
-        "agentic_index": 37.4,
-        "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1319,
-          "win_rate": 57.6,
-          "rank": 11
-        }
-      }
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V4-Flash",
-      "name": "deepseek-ai/DeepSeek-V4-Flash",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1048576,
-      "pricing": {
-        "input": 0.09,
-        "output": 0.18,
-        "cache_read": 0.018,
-        "cache_write": null
-      },
-      "org": "deepseek",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-24",
-        "knowledge_cutoff": "2025-05",
-        "description": "Fast DeepSeek V4 lane for economical reasoning, coding, and long-context work",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 40.3,
-        "coding_index": 56.2,
-        "agentic_index": 31.1,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1256,
-          "win_rate": 49.9,
-          "rank": 34
-        }
-      }
-    },
-    {
-      "id": "google/gemma-3-12b-it",
-      "name": "google/gemma-3-12b-it",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.15,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2024-12-01",
-        "knowledge_cutoff": "2024-12",
-        "description": "Open Gemma instruction model for efficient chat and self-hosted deployments",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": false,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
-      },
-      "benchmarks": {
-        "intelligence_index": 5.5,
-        "coding_index": 5.8,
-        "agentic_index": 0.3,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
-      "name": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 128000,
-      "pricing": {
-        "input": 0.075,
-        "output": 0.2,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "mistral"
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V3.2",
-      "name": "deepseek-ai/DeepSeek-V3.2",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.26,
-        "output": 0.38,
-        "cache_read": 0.13,
-        "cache_write": null
-      },
-      "org": "deepseek",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-07-22",
-        "knowledge_cutoff": null,
-        "description": "DeepSeek chat model for instruction following, coding, and analysis",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": 32,
-        "coding_index": 44.2,
-        "agentic_index": 18.3,
-        "design_arena_best": {
-          "category": "website",
-          "elo": 1204,
-          "win_rate": 50.1,
-          "rank": 54
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-235B-A22B-Thinking-2507",
-      "name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.22999999999999998,
-        "output": 2.3,
-        "cache_read": 0.20000000059999998,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-07-25",
-        "knowledge_cutoff": "2025-04",
-        "description": "High-performance Mixture-of-Experts model optimized for structured reasoning, math, and long-form generation.",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      },
-      "benchmarks": {
-        "intelligence_index": 19.6,
-        "coding_index": 22.1,
-        "agentic_index": 3.8,
-        "design_arena_best": {
-          "category": "website",
-          "elo": 1083,
-          "win_rate": 42.1,
-          "rank": 90
-        }
-      }
-    },
-    {
-      "id": "zai-org/GLM-4.7",
-      "name": "zai-org/GLM-4.7",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 202752,
-      "pricing": {
-        "input": 0.4,
-        "output": 1.75,
-        "cache_read": 0.08000000000000002,
-        "cache_write": null
-      },
-      "org": "z-ai",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-12-22",
-        "knowledge_cutoff": "2025-04",
-        "description": "Mature GLM model for dependable coding, reasoning, and structured agent tasks",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": 33.7,
-        "coding_index": 45.3,
-        "agentic_index": 25.4,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1257,
-          "win_rate": 54.3,
-          "rank": 32
-        }
-      }
-    },
-    {
-      "id": "google/gemma-4-31B-it-turbo",
-      "name": "google/gemma-4-31B-it-turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.12000000000000001,
-        "output": 0.37,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "benchmarks": {
-        "intelligence_index": 29.4,
-        "coding_index": 43.4,
-        "agentic_index": 14.4,
-        "design_arena_best": null
+        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
       }
     },
     {
@@ -1011,289 +348,25 @@
       }
     },
     {
-      "id": "zai-org/GLM-4.7-Flash",
-      "name": "zai-org/GLM-4.7-Flash",
+      "id": "zai-org/GLM-4.6",
+      "name": "zai-org/GLM-4.6",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
       "context_length": 202752,
-      "pricing": {
-        "input": 0.060000000000000005,
-        "output": 0.4,
-        "cache_read": 0.0100000002,
-        "cache_write": null
-      },
-      "org": "z-ai",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-01-19",
-        "knowledge_cutoff": "2025-04",
-        "description": "Budget GLM lane for fast coding help, routing, and everyday automation",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": null,
-        "coding_index": null,
-        "agentic_index": null,
-        "design_arena_best": {
-          "category": "uicomponent",
-          "elo": 1249,
-          "win_rate": 57.6,
-          "rank": 32
-        }
-      }
-    },
-    {
-      "id": "zai-org/GLM-5",
-      "name": "zai-org/GLM-5",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 202752,
-      "pricing": {
-        "input": 0.6,
-        "output": 2.08,
-        "cache_read": 0.12,
-        "cache_write": null
-      },
-      "org": "z-ai",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-12",
-        "knowledge_cutoff": null,
-        "description": "General GLM flagship for coding, analysis, and tool-heavy engineering workflows",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": null,
-        "coding_index": null,
-        "agentic_index": null,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1318,
-          "win_rate": 59.3,
-          "rank": 12
-        }
-      }
-    },
-    {
-      "id": "google/gemini-1.5-flash-8b",
-      "name": "google/gemini-1.5-flash-8b",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 0.0375,
-        "output": 0.15,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "ByteDance/Seed-2.0-code",
-      "name": "ByteDance/Seed-2.0-code",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
       "pricing": {
         "input": 0.5,
-        "output": 2.9999999999999996,
+        "output": 2,
         "cache_read": 0.1,
         "cache_write": null
       },
-      "org": "bytedance"
-    },
-    {
-      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-      "name": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 327680,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.3,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-04-05",
-        "knowledge_cutoff": "2024-08",
-        "description": "Open multimodal Llama model for long-context analysis and efficient agents",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
-      }
-    },
-    {
-      "id": "google/gemma-4-31B-it",
-      "name": "google/gemma-4-31B-it",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.13,
-        "output": 0.38,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
+      "org": "z-ai",
       "zdr": true,
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-02",
-        "knowledge_cutoff": null,
-        "description": "Largest Gemma 4 instruction model for open, self-hosted chat and reasoning",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": 29.4,
-        "coding_index": 43.4,
-        "agentic_index": 14.4,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-V3.1-Terminus",
-      "name": "deepseek-ai/DeepSeek-V3.1-Terminus",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.27,
-        "output": 0.95,
-        "cache_read": 0.12999999960000003,
-        "cache_write": null
-      },
-      "org": "deepseek",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-09-22",
-        "knowledge_cutoff": null,
-        "description": "DeepSeek chat model for instruction following, coding, and analysis",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://novita.ai/docs/guides/introduction"
-      },
-      "benchmarks": {
-        "intelligence_index": 30.4,
-        "coding_index": 43.5,
-        "agentic_index": 18.1,
-        "design_arena_best": {
-          "category": "uicomponent",
-          "elo": 1223,
-          "win_rate": 59.3,
-          "rank": 40
-        }
-      }
-    },
-    {
-      "id": "mistralai/Mistral-Nemo-Instruct-2407",
-      "name": "mistralai/Mistral-Nemo-Instruct-2407",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.019000000000000003,
-        "output": 0.030000000000000002,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "mistral",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2024-07-01",
-        "knowledge_cutoff": "2024-05",
-        "description": "Mistral model for multilingual chat, reasoning, and tool-assisted workflows",
+        "release_date": "2024-11-15",
+        "knowledge_cutoff": "2024-10",
+        "description": "Flagship GLM model for hybrid reasoning, coding, and agentic engineering",
         "capabilities": {
           "reasoning": false,
           "tool_call": true,
@@ -1304,104 +377,36 @@
         "modalities": {
           "input": [
             "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://io.net/docs/guides/intelligence/io-intelligence"
-      }
-    },
-    {
-      "id": "anthropic/claude-opus-4-7",
-      "name": "anthropic/claude-opus-4-7",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 5,
-        "output": 25,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-16",
-        "knowledge_cutoff": "2026-01-31",
-        "description": "Flagship Claude model for deep reasoning, coding, and long-horizon agents",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": false
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
           ],
           "output": [
             "text"
           ]
         },
         "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
-      }
-    },
-    {
-      "id": "microsoft/phi-4",
-      "name": "microsoft/phi-4",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 16384,
-      "pricing": {
-        "input": 0.07,
-        "output": 0.14,
-        "cache_read": null,
-        "cache_write": null
+        "doc_url": "https://io.net/docs/guides/intelligence/io-intelligence"
       },
-      "org": "microsoft",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2024-12-11",
-        "knowledge_cutoff": "2023-10",
-        "description": "Open-weight instruction model for adaptable chat and self-hosted production workloads",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": false,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
+      "benchmarks": {
+        "intelligence_index": 28.7,
+        "coding_index": 45.8,
+        "agentic_index": 17.7,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1208,
+          "win_rate": 54.6,
+          "rank": 44
+        }
       }
     },
     {
-      "id": "Qwen/Qwen3.5-122B-A10B",
-      "name": "Qwen/Qwen3.5-122B-A10B",
+      "id": "Qwen/Qwen3-14B",
+      "name": "Qwen/Qwen3-14B",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 262144,
+      "context_length": 40960,
       "pricing": {
-        "input": 0.29,
-        "output": 2.4,
+        "input": 0.12000000000000001,
+        "output": 0.24000000000000002,
         "cache_read": null,
         "cache_write": null
       },
@@ -1409,22 +414,19 @@
       "zdr": true,
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-23",
-        "knowledge_cutoff": null,
-        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
+        "release_date": "2025-04",
+        "knowledge_cutoff": "2025-04",
+        "description": "Qwen instruction model for multilingual chat, reasoning, and tool use",
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
+          "structured_output": false,
+          "attachment": false,
           "temperature": true
         },
         "modalities": {
           "input": [
-            "text",
-            "image",
-            "video",
-            "audio"
+            "text"
           ],
           "output": [
             "text"
@@ -1434,47 +436,11 @@
         "doc_url": "https://www.alibabacloud.com/help/en/model-studio/models"
       },
       "benchmarks": {
-        "intelligence_index": 32.3,
-        "coding_index": 45.7,
-        "agentic_index": 20.7,
+        "intelligence_index": 10.4,
+        "coding_index": 13.8,
+        "agentic_index": 1.8,
         "design_arena_best": null
       }
-    },
-    {
-      "id": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-      "name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.02,
-        "output": 0.030000000000000002,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta",
-      "benchmarks": {
-        "intelligence_index": 7.6,
-        "coding_index": 5.4,
-        "agentic_index": 0.5,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "Sao10K/L3-8B-Lunaris-v1-Turbo",
-      "name": "Sao10K/L3-8B-Lunaris-v1-Turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 8192,
-      "pricing": {
-        "input": 0.04,
-        "output": 0.05,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "sao10k"
     },
     {
       "id": "google/gemma-3-27b-it",
@@ -1523,79 +489,27 @@
       }
     },
     {
-      "id": "anthropic/claude-fable-5",
-      "name": "anthropic/claude-fable-5",
+      "id": "Qwen/Qwen3.7-Max",
+      "name": "Qwen/Qwen3.7-Max",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 1000000,
+      "context_length": 256000,
       "pricing": {
-        "input": 10,
-        "output": 50,
-        "cache_read": null,
+        "input": 2.5,
+        "output": 7.5,
+        "cache_read": 0.5,
         "cache_write": null
       },
-      "org": "anthropic",
+      "org": "qwen",
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-06-09",
-        "knowledge_cutoff": "2026-01-31",
-        "description": "Claude model for creative writing, analysis, and controlled agent workflows",
+        "release_date": "2026-05-21",
+        "knowledge_cutoff": null,
+        "description": "Flagship model for demanding analysis, coding, and production agent workflows",
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": false
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
-      },
-      "benchmarks": {
-        "intelligence_index": 59.9,
-        "coding_index": 76.5,
-        "agentic_index": 52.8,
-        "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1396,
-          "win_rate": 66.7,
-          "rank": 1
-        }
-      }
-    },
-    {
-      "id": "Gryphe/MythoMax-L2-13b",
-      "name": "Gryphe/MythoMax-L2-13b",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 4096,
-      "pricing": {
-        "input": 0.4,
-        "output": 0.4,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "gryphe",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2024-04-25",
-        "knowledge_cutoff": null,
-        "description": "Open-weight instruction model for adaptable chat and self-hosted production workloads",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": false,
           "structured_output": false,
           "attachment": false,
           "temperature": true
@@ -1608,296 +522,18 @@
             "text"
           ]
         },
-        "open_weights": true,
-        "doc_url": "https://novita.ai/docs/guides/introduction"
-      }
-    },
-    {
-      "id": "anthropic/claude-sonnet-5",
-      "name": "anthropic/claude-sonnet-5",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 2,
-        "output": 10,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-06-30",
-        "knowledge_cutoff": "2026-01-31",
-        "description": "Everyday Claude agent model for coding, planning, browsing, and general work",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": false
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
         "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+        "doc_url": "https://opencode.ai/docs/zen"
       },
       "benchmarks": {
-        "intelligence_index": 53.4,
-        "coding_index": 71.5,
-        "agentic_index": 46.7,
-        "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1345,
-          "win_rate": 59.9,
-          "rank": 3
-        }
-      }
-    },
-    {
-      "id": "google/gemini-3.1-pro",
-      "name": "google/gemini-3.1-pro",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 2,
-        "output": 11.999999999999998,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-19",
-        "knowledge_cutoff": "2025-01",
-        "description": "Reasoning-first Gemini preview for agentic coding and complex problem solving",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
-      },
-      "benchmarks": {
-        "intelligence_index": 46.5,
-        "coding_index": 68.8,
-        "agentic_index": 21.4,
-        "design_arena_best": {
-          "category": "svg",
-          "elo": 1338,
-          "win_rate": 69.8,
-          "rank": 2
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3.5-9B",
-      "name": "Qwen/Qwen3.5-9B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.15,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-03-13",
-        "knowledge_cutoff": null,
-        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": 21.4,
-        "coding_index": 28.7,
-        "agentic_index": 7.4,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "nvidia/Nemotron-Content-Safety-3.5",
-      "name": "nvidia/Nemotron-Content-Safety-3.5",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.2,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia"
-    },
-    {
-      "id": "moonshotai/Kimi-K2.7-Code",
-      "name": "moonshotai/Kimi-K2.7-Code",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.74,
-        "output": 3.5,
-        "cache_read": 0.149999998,
-        "cache_write": null
-      },
-      "org": "moonshot",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-06-12",
-        "knowledge_cutoff": null,
-        "description": "Kimi coding model for software agents, refactors, and repository reasoning",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 41.9,
-        "coding_index": 60.8,
-        "agentic_index": 29.6,
+        "intelligence_index": 46,
+        "coding_index": 66,
+        "agentic_index": 30.6,
         "design_arena_best": {
           "category": "3d",
-          "elo": 1309,
-          "win_rate": 55.7,
-          "rank": 15
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-Next-80B-A3B-Instruct",
-      "name": "Qwen/Qwen3-Next-80B-A3B-Instruct",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.09,
-        "output": 1.1,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-01-10",
-        "knowledge_cutoff": "2024-12",
-        "description": "Qwen instruction model for multilingual chat, reasoning, and tool use",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://io.net/docs/guides/intelligence/io-intelligence"
-      },
-      "benchmarks": {
-        "intelligence_index": 16.7,
-        "coding_index": 17.4,
-        "agentic_index": 2.1,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "openai/gpt-oss-120b-Turbo",
-      "name": "openai/gpt-oss-120b-Turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "openai",
-      "benchmarks": {
-        "intelligence_index": 23.8,
-        "coding_index": 30.4,
-        "agentic_index": 13.2,
-        "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1052,
-          "win_rate": 40.6,
-          "rank": 90
+          "elo": 1319,
+          "win_rate": 58.6,
+          "rank": 10
         }
       }
     },
@@ -1955,20 +591,107 @@
       }
     },
     {
-      "id": "meta-llama/Llama-Guard-4-12B",
-      "name": "meta-llama/Llama-Guard-4-12B",
+      "id": "google/gemini-1.5-flash",
+      "name": "google/gemini-1.5-flash",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 163840,
+      "context_length": 1000000,
       "pricing": {
-        "input": 0.18,
-        "output": 0.18,
+        "input": 0.075,
+        "output": 0.3,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "meta",
-      "zdr": true
+      "org": "google"
+    },
+    {
+      "id": "mistralai/Mistral-Nemo-Instruct-2407",
+      "name": "mistralai/Mistral-Nemo-Instruct-2407",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.019000000000000003,
+        "output": 0.030000000000000002,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "mistral",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2024-07-01",
+        "knowledge_cutoff": "2024-05",
+        "description": "Mistral model for multilingual chat, reasoning, and tool-assisted workflows",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://io.net/docs/guides/intelligence/io-intelligence"
+      }
+    },
+    {
+      "id": "Qwen/Qwen3-235B-A22B-Thinking-2507",
+      "name": "Qwen/Qwen3-235B-A22B-Thinking-2507",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.22999999999999998,
+        "output": 2.3,
+        "cache_read": 0.20000000059999998,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-07-25",
+        "knowledge_cutoff": "2025-04",
+        "description": "High-performance Mixture-of-Experts model optimized for structured reasoning, math, and long-form generation.",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
+      },
+      "benchmarks": {
+        "intelligence_index": 19.6,
+        "coding_index": 22.1,
+        "agentic_index": 3.8,
+        "design_arena_best": {
+          "category": "website",
+          "elo": 1083,
+          "win_rate": 42.1,
+          "rank": 90
+        }
+      }
     },
     {
       "id": "moonshotai/Kimi-K2.6",
@@ -2022,25 +745,121 @@
       }
     },
     {
-      "id": "Qwen/Qwen3.5-397B-A17B",
-      "name": "Qwen/Qwen3.5-397B-A17B",
+      "id": "deepseek-ai/DeepSeek-V4-Pro",
+      "name": "deepseek-ai/DeepSeek-V4-Pro",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1048576,
+      "pricing": {
+        "input": 1.2999999999999998,
+        "output": 2.5999999999999996,
+        "cache_read": 0.10000000399999999,
+        "cache_write": null
+      },
+      "org": "deepseek",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-24",
+        "knowledge_cutoff": "2025-05",
+        "description": "Open MoE flagship with million-token context for coding and long agent runs",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://fireworks.ai/docs/"
+      },
+      "benchmarks": {
+        "intelligence_index": 44.3,
+        "coding_index": 59.4,
+        "agentic_index": 36.4,
+        "design_arena_best": {
+          "category": "3d",
+          "elo": 1318,
+          "win_rate": 59.2,
+          "rank": 11
+        }
+      }
+    },
+    {
+      "id": "Qwen/Qwen3.5-35B-A3B",
+      "name": "Qwen/Qwen3.5-35B-A3B",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
       "context_length": 262144,
       "pricing": {
-        "input": 0.45,
-        "output": 2.9999999999999996,
-        "cache_read": 0.22000000050000001,
+        "input": 0.14,
+        "output": 1,
+        "cache_read": 0.05000000040000001,
         "cache_write": null
       },
       "org": "qwen",
       "zdr": true,
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-15",
+        "release_date": "2026-02-24",
         "knowledge_cutoff": null,
-        "description": "Large open Qwen multimodal MoE for visual agents and long technical tasks",
+        "description": "Qwen3.5-35B-A3B is an open-weights multimodal MoE model built for efficient, high-throughput inference across chat, reasoning, and agentic tasks.",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
+      },
+      "benchmarks": {
+        "intelligence_index": 24,
+        "coding_index": 37,
+        "agentic_index": 11.8,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "Qwen/Qwen3.5-9B",
+      "name": "Qwen/Qwen3.5-9B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.15,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-03-13",
+        "knowledge_cutoff": null,
+        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
@@ -2063,185 +882,10 @@
         "doc_url": "https://crof.ai/docs"
       },
       "benchmarks": {
-        "intelligence_index": 33.7,
-        "coding_index": 48.2,
-        "agentic_index": 19.8,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1227,
-          "win_rate": 56.7,
-          "rank": 39
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-14B",
-      "name": "Qwen/Qwen3-14B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 40960,
-      "pricing": {
-        "input": 0.12000000000000001,
-        "output": 0.24000000000000002,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-04",
-        "knowledge_cutoff": "2025-04",
-        "description": "Qwen instruction model for multilingual chat, reasoning, and tool use",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://www.alibabacloud.com/help/en/model-studio/models"
-      },
-      "benchmarks": {
-        "intelligence_index": 10.4,
-        "coding_index": 13.8,
-        "agentic_index": 1.8,
+        "intelligence_index": 21.4,
+        "coding_index": 28.7,
+        "agentic_index": 7.4,
         "design_arena_best": null
-      }
-    },
-    {
-      "id": "google/gemini-1.5-flash",
-      "name": "google/gemini-1.5-flash",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 0.075,
-        "output": 0.3,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google"
-    },
-    {
-      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
-      "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.08499999999999999,
-        "output": 0.4,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nvidia",
-      "benchmarks": {
-        "intelligence_index": 25.4,
-        "coding_index": 37.7,
-        "agentic_index": 8.7,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-      "name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1048576,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.8,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "meta",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-04-05",
-        "knowledge_cutoff": "2024-08",
-        "description": "Open multimodal Llama model for strong reasoning and fast responses",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
-      }
-    },
-    {
-      "id": "openai/gpt-oss-120b",
-      "name": "openai/gpt-oss-120b",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.037,
-        "output": 0.16999999999999998,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "openai",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-08-05",
-        "knowledge_cutoff": null,
-        "description": "Open-weight GPT model for self-hosted reasoning and instruction-following workloads",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 23.8,
-        "coding_index": 30.4,
-        "agentic_index": 13.2,
-        "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1052,
-          "win_rate": 40.6,
-          "rank": 90
-        }
       }
     },
     {
@@ -2283,40 +927,24 @@
       }
     },
     {
-      "id": "Qwen/Qwen2.5-72B-Instruct",
-      "name": "Qwen/Qwen2.5-72B-Instruct",
+      "id": "Qwen/Qwen3-Max",
+      "name": "Qwen/Qwen3-Max",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 32768,
+      "context_length": 256000,
       "pricing": {
-        "input": 0.36,
-        "output": 0.4,
-        "cache_read": null,
+        "input": 1.2,
+        "output": 5.999999999999999,
+        "cache_read": 0.24,
         "cache_write": null
       },
-      "org": "qwen"
-    },
-    {
-      "id": "zai-org/GLM-4.6",
-      "name": "zai-org/GLM-4.6",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 202752,
-      "pricing": {
-        "input": 0.5,
-        "output": 2,
-        "cache_read": 0.1,
-        "cache_write": null
-      },
-      "org": "z-ai",
-      "zdr": true,
+      "org": "qwen",
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2024-11-15",
-        "knowledge_cutoff": "2024-10",
-        "description": "Flagship GLM model for hybrid reasoning, coding, and agentic engineering",
+        "release_date": "2025-09-23",
+        "knowledge_cutoff": "2025-04",
+        "description": "Flagship Qwen3 model for coding agents, complex reasoning, and tool use",
         "capabilities": {
           "reasoning": false,
           "tool_call": true,
@@ -2333,50 +961,99 @@
           ]
         },
         "open_weights": false,
-        "doc_url": "https://io.net/docs/guides/intelligence/io-intelligence"
+        "doc_url": "https://www.alibabacloud.com/help/en/model-studio/models"
       },
       "benchmarks": {
-        "intelligence_index": 28.7,
-        "coding_index": 45.8,
-        "agentic_index": 17.7,
+        "intelligence_index": null,
+        "coding_index": null,
+        "agentic_index": null,
         "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1208,
-          "win_rate": 54.6,
-          "rank": 44
+          "category": "asciiart",
+          "elo": 1170,
+          "win_rate": 47.2,
+          "rank": 36
         }
       }
     },
     {
-      "id": "Qwen/Qwen3.6-35B-A3B",
-      "name": "Qwen/Qwen3.6-35B-A3B",
+      "id": "deepseek-ai/DeepSeek-V3.2",
+      "name": "deepseek-ai/DeepSeek-V3.2",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 262144,
+      "context_length": 163840,
       "pricing": {
-        "input": 0.15,
-        "output": 0.95,
-        "cache_read": null,
+        "input": 0.26,
+        "output": 0.38,
+        "cache_read": 0.13,
         "cache_write": null
       },
-      "org": "qwen",
+      "org": "deepseek",
+      "zdr": true,
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-15",
+        "release_date": "2025-07-22",
         "knowledge_cutoff": null,
-        "description": "Qwen3.6-35B-A3B is an MoE multimodal model with 262K context optimized for agentic coding workflows.",
+        "description": "DeepSeek chat model for instruction following, coding, and analysis",
         "capabilities": {
-          "reasoning": true,
+          "reasoning": false,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
+          "structured_output": false,
+          "attachment": false,
           "temperature": true
         },
         "modalities": {
           "input": [
-            "text",
-            "image"
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 32,
+        "coding_index": 44.2,
+        "agentic_index": 18.3,
+        "design_arena_best": {
+          "category": "website",
+          "elo": 1204,
+          "win_rate": 50.1,
+          "rank": 54
+        }
+      }
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3.1",
+      "name": "deepseek-ai/DeepSeek-V3.1",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 163840,
+      "pricing": {
+        "input": 0.25,
+        "output": 0.95,
+        "cache_read": 0.13,
+        "cache_write": null
+      },
+      "org": "deepseek",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-08-21",
+        "knowledge_cutoff": null,
+        "description": "A large hybrid model that supports both thinking and non-thinking modes via prompt templates.",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
           ],
           "output": [
             "text"
@@ -2384,65 +1061,6 @@
         },
         "open_weights": true,
         "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      },
-      "benchmarks": {
-        "intelligence_index": 31.6,
-        "coding_index": 41.9,
-        "agentic_index": 21.4,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "google/gemini-2.5-pro",
-      "name": "google/gemini-2.5-pro",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 1.25,
-        "output": 10,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-06-17",
-        "knowledge_cutoff": "2025-01",
-        "description": "Google's proven reasoning model for coding, math, and multimodal analysis",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "audio",
-            "video",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
-      },
-      "benchmarks": {
-        "intelligence_index": 25.8,
-        "coding_index": 33.3,
-        "agentic_index": 7.1,
-        "design_arena_best": {
-          "category": "dataviz",
-          "elo": 1282,
-          "win_rate": 71.8,
-          "rank": 14
-        }
       }
     },
     {
@@ -2485,932 +1103,94 @@
       }
     },
     {
-      "id": "MiniMaxAI/MiniMax-M2.7",
-      "name": "MiniMaxAI/MiniMax-M2.7",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 196608,
-      "pricing": {
-        "input": 0.25,
-        "output": 1,
-        "cache_read": 0.05,
-        "cache_write": null
-      },
-      "org": "minimax",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-12",
-        "knowledge_cutoff": null,
-        "description": "MiniMax model for chat, coding, office work, and agentic tasks",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 38.1,
-        "coding_index": 52.6,
-        "agentic_index": 25.6,
-        "design_arena_best": {
-          "category": "website",
-          "elo": 1275,
-          "win_rate": 54.2,
-          "rank": 25
-        }
-      }
-    },
-    {
-      "id": "anthropic/claude-sonnet-4-6",
-      "name": "anthropic/claude-sonnet-4-6",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 2.9999999999999996,
-        "output": 15,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-17",
-        "knowledge_cutoff": "2025-08-31",
-        "description": "Claude workhorse for coding agents, careful analysis, and production cost control",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
-      }
-    },
-    {
-      "id": "google/gemma-4-26B-A4B-it",
-      "name": "google/gemma-4-26B-A4B-it",
+      "id": "moonshotai/Kimi-K2.7-Code",
+      "name": "moonshotai/Kimi-K2.7-Code",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
       "context_length": 262144,
       "pricing": {
-        "input": 0.07,
-        "output": 0.33999999999999997,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-02",
-        "knowledge_cutoff": null,
-        "description": "Open Gemma instruction model for efficient chat and self-hosted deployments",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://developers.cloudflare.com/workers-ai/models/"
-      },
-      "benchmarks": {
-        "intelligence_index": 25.7,
-        "coding_index": 39.3,
-        "agentic_index": 11,
-        "design_arena_best": null
-      }
-    },
-    {
-      "id": "NousResearch/Hermes-3-Llama-3.1-70B",
-      "name": "NousResearch/Hermes-3-Llama-3.1-70B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 131072,
-      "pricing": {
-        "input": 0.7,
-        "output": 0.7,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "nous",
-      "zdr": true
-    },
-    {
-      "id": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
-      "name": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.2,
-        "cache_read": 0.1,
-        "cache_write": null
-      },
-      "org": "nvidia",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-06-04",
-        "knowledge_cutoff": null,
-        "description": "Nemotron 3 Ultra is a powerful MoE model designed for long-running agents across coding, deep research, and enterprise automation.",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      },
-      "benchmarks": {
-        "intelligence_index": 37.8,
-        "coding_index": 49.3,
-        "agentic_index": 27.4,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1199,
-          "win_rate": 42.5,
-          "rank": 47
-        }
-      }
-    },
-    {
-      "id": "ByteDance/Seed-1.8",
-      "name": "ByteDance/Seed-1.8",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
-      "pricing": {
-        "input": 0.25,
-        "output": 2,
-        "cache_read": 0.05,
-        "cache_write": null
-      },
-      "org": "bytedance"
-    },
-    {
-      "id": "ByteDance/Seed-2.0-pro",
-      "name": "ByteDance/Seed-2.0-pro",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.9999999999999996,
-        "cache_read": 0.1,
-        "cache_write": null
-      },
-      "org": "bytedance"
-    },
-    {
-      "id": "Qwen/Qwen3-VL-235B-A22B-Instruct",
-      "name": "Qwen/Qwen3-VL-235B-A22B-Instruct",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.2,
-        "output": 0.8799999999999999,
-        "cache_read": 0.11000000000000001,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-09-24",
-        "knowledge_cutoff": null,
-        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://novita.ai/docs/guides/introduction"
-      }
-    },
-    {
-      "id": "MiniMaxAI/MiniMax-M3",
-      "name": "MiniMaxAI/MiniMax-M3",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 524288,
-      "pricing": {
-        "input": 0.3,
-        "output": 1.2,
-        "cache_read": 0.06,
-        "cache_write": null
-      },
-      "org": "minimax",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-06-12",
-        "knowledge_cutoff": null,
-        "description": "MiniMax multimodal coding model for long-context reasoning and agent tasks",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 44.4,
-        "coding_index": 58.6,
-        "agentic_index": 35.4,
-        "design_arena_best": {
-          "category": "codecategories",
-          "elo": 1290,
-          "win_rate": 55,
-          "rank": 16
-        }
-      }
-    },
-    {
-      "id": "google/gemini-3.1-flash-lite",
-      "name": "google/gemini-3.1-flash-lite",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1000000,
-      "pricing": {
-        "input": 0.25,
-        "output": 1.4999999999999998,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "google",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-05-07",
-        "knowledge_cutoff": "2025-01",
-        "description": "Low-latency Gemini model for high-volume multimodal and agent workloads",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "video",
-            "audio",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
-      },
-      "benchmarks": {
-        "intelligence_index": 25,
-        "coding_index": 34.7,
-        "agentic_index": 6.2,
-        "design_arena_best": {
-          "category": "asciiart",
-          "elo": 1209,
-          "win_rate": 50.7,
-          "rank": 17
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3.5-27B",
-      "name": "Qwen/Qwen3.5-27B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.26,
-        "output": 2.5999999999999996,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-02-24",
-        "knowledge_cutoff": null,
-        "description": "Qwen3.5-27B is a dense model from the Qwen3.5 family built for high performance across a large range of benchmarks.",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-30B-A3B",
-      "name": "Qwen/Qwen3-30B-A3B",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 40960,
-      "pricing": {
-        "input": 0.12000000000000001,
-        "output": 0.5,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "benchmarks": {
-        "intelligence_index": null,
-        "coding_index": null,
-        "agentic_index": null,
-        "design_arena_best": {
-          "category": "dataviz",
-          "elo": 1003,
-          "win_rate": 39,
-          "rank": 95
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
-      "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.3,
-        "output": 1,
-        "cache_read": 0.09999999899999999,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-01-27",
-        "knowledge_cutoff": null,
-        "description": "Qwen coding model for software agents, repository edits, and code reasoning",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": false
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.venice.ai"
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
-      "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.09,
-        "output": 0.55,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-07-22",
-        "knowledge_cutoff": "2025-04",
-        "description": "Efficient multilingual, Mixture-of-Experts, instruction-tuned model, optimized for logical reasoning.",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
-      }
-    },
-    {
-      "id": "MiniMaxAI/MiniMax-M2.7-Turbo",
-      "name": "MiniMaxAI/MiniMax-M2.7-Turbo",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 196608,
-      "pricing": {
-        "input": 0.38,
-        "output": 1.7,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "minimax",
-      "benchmarks": {
-        "intelligence_index": 38.1,
-        "coding_index": 52.6,
-        "agentic_index": 25.6,
-        "design_arena_best": {
-          "category": "website",
-          "elo": 1275,
-          "win_rate": 54.2,
-          "rank": 25
-        }
-      }
-    },
-    {
-      "id": "mistralai/Mistral-Small-24B-Instruct-2501",
-      "name": "mistralai/Mistral-Small-24B-Instruct-2501",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 32768,
-      "pricing": {
-        "input": 0.05,
-        "output": 0.08,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "mistral",
-      "zdr": true
-    },
-    {
-      "id": "XiaomiMiMo/MiMo-V2.5-Pro",
-      "name": "XiaomiMiMo/MiMo-V2.5-Pro",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1048576,
-      "pricing": {
-        "input": 1,
-        "output": 2.9999999999999996,
-        "cache_read": 0.2,
-        "cache_write": null
-      },
-      "org": "xiaomi",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-04-22",
-        "knowledge_cutoff": "2024-12",
-        "description": "Stronger MiMo Pro tier for multimodal reasoning and coding-agent execution",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
-      },
-      "benchmarks": {
-        "intelligence_index": 42.2,
-        "coding_index": 60.2,
-        "agentic_index": 29.1,
-        "design_arena_best": {
-          "category": "gamedev",
-          "elo": 1331,
-          "win_rate": 61,
-          "rank": 7
-        }
-      }
-    },
-    {
-      "id": "deepseek-ai/DeepSeek-R1-0528",
-      "name": "deepseek-ai/DeepSeek-R1-0528",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 163840,
-      "pricing": {
-        "input": 0.5,
-        "output": 2.15,
-        "cache_read": 0.35,
-        "cache_write": null
-      },
-      "org": "deepseek",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-05-28",
-        "knowledge_cutoff": "2024-07",
-        "description": "DeepSeek reasoning model for multi-step analysis, math, coding, and tools",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
-      },
-      "benchmarks": {
-        "intelligence_index": null,
-        "coding_index": null,
-        "agentic_index": null,
-        "design_arena_best": {
-          "category": "dataviz",
-          "elo": 1214,
-          "win_rate": 60.7,
-          "rank": 41
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
-      "name": "Qwen/Qwen3-VL-30B-A3B-Instruct",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.15,
-        "output": 0.6,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-10-11",
-        "knowledge_cutoff": null,
-        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
-        "capabilities": {
-          "reasoning": false,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "video",
-            "image"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://novita.ai/docs/guides/introduction"
-      }
-    },
-    {
-      "id": "ByteDance/Seed-2.0-mini",
-      "name": "ByteDance/Seed-2.0-mini",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
-      "pricing": {
-        "input": 0.1,
-        "output": 0.4,
-        "cache_read": 0.020000000000000004,
-        "cache_write": null
-      },
-      "org": "bytedance"
-    },
-    {
-      "id": "zai-org/GLM-5.2",
-      "name": "zai-org/GLM-5.2",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 1048576,
-      "pricing": {
-        "input": 0.9299999999999999,
-        "output": 2.9999999999999996,
-        "cache_read": 0.18000000269999997,
-        "cache_write": null
-      },
-      "org": "z-ai",
-      "zdr": true,
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-06-16",
-        "knowledge_cutoff": null,
-        "description": "Flagship GLM model for hybrid reasoning, coding, and agentic engineering",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": true,
-        "doc_url": "https://fireworks.ai/docs/"
-      },
-      "benchmarks": {
-        "intelligence_index": 51.1,
-        "coding_index": 68.8,
-        "agentic_index": 43.1,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1361,
-          "win_rate": 62,
-          "rank": 3
-        }
-      }
-    },
-    {
-      "id": "Qwen/Qwen3.7-Max",
-      "name": "Qwen/Qwen3.7-Max",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 256000,
-      "pricing": {
-        "input": 2.5,
-        "output": 7.5,
-        "cache_read": 0.5,
-        "cache_write": null
-      },
-      "org": "qwen",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2026-05-21",
-        "knowledge_cutoff": null,
-        "description": "Flagship model for demanding analysis, coding, and production agent workflows",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": false,
-          "attachment": false,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://opencode.ai/docs/zen"
-      },
-      "benchmarks": {
-        "intelligence_index": 46,
-        "coding_index": 66,
-        "agentic_index": 30.6,
-        "design_arena_best": {
-          "category": "3d",
-          "elo": 1319,
-          "win_rate": 58.6,
-          "rank": 10
-        }
-      }
-    },
-    {
-      "id": "anthropic/claude-haiku-4-5",
-      "name": "anthropic/claude-haiku-4-5",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 200000,
-      "pricing": {
-        "input": 1,
-        "output": 5,
-        "cache_read": null,
-        "cache_write": null
-      },
-      "org": "anthropic",
-      "modelsdev_model": {
-        "source": "models.dev (model-level fallback)",
-        "release_date": "2025-10-15",
-        "knowledge_cutoff": "2025-02-28",
-        "description": "Fast Claude model for responsive assistance, classification, and lightweight agents",
-        "capabilities": {
-          "reasoning": true,
-          "tool_call": true,
-          "structured_output": true,
-          "attachment": true,
-          "temperature": true
-        },
-        "modalities": {
-          "input": [
-            "text",
-            "image",
-            "pdf"
-          ],
-          "output": [
-            "text"
-          ]
-        },
-        "open_weights": false,
-        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
-      }
-    },
-    {
-      "id": "moonshotai/Kimi-K2.5",
-      "name": "moonshotai/Kimi-K2.5",
-      "provider": "deepinfra",
-      "quantization": null,
-      "discount": 0,
-      "context_length": 262144,
-      "pricing": {
-        "input": 0.45,
-        "output": 2.25,
-        "cache_read": 0.070000002,
+        "input": 0.74,
+        "output": 3.5,
+        "cache_read": 0.149999998,
         "cache_write": null
       },
       "org": "moonshot",
       "zdr": true,
       "modelsdev_model": {
         "source": "models.dev (model-level fallback)",
-        "release_date": "2026-01",
-        "knowledge_cutoff": "2025-01",
-        "description": "Earlier Kimi frontier model for long-context agents, coding, and multimodal work",
+        "release_date": "2026-06-12",
+        "knowledge_cutoff": null,
+        "description": "Kimi coding model for software agents, refactors, and repository reasoning",
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
-          "structured_output": true,
-          "attachment": false,
-          "temperature": false
+          "structured_output": false,
+          "attachment": true,
+          "temperature": true
         },
         "modalities": {
           "input": [
             "text",
-            "image",
-            "video"
+            "image"
           ],
           "output": [
             "text"
           ]
         },
         "open_weights": true,
-        "doc_url": "https://crof.ai/docs"
+        "doc_url": "https://fireworks.ai/docs/"
       },
       "benchmarks": {
-        "intelligence_index": 35.4,
-        "coding_index": 46.8,
-        "agentic_index": 21.7,
+        "intelligence_index": 41.9,
+        "coding_index": 60.8,
+        "agentic_index": 29.6,
         "design_arena_best": {
-          "category": "website",
-          "elo": 1280,
-          "win_rate": 55.8,
-          "rank": 22
+          "category": "3d",
+          "elo": 1309,
+          "win_rate": 55.7,
+          "rank": 15
         }
       }
     },
     {
-      "id": "nvidia/Nemotron-3-Nano-30B-A3B",
-      "name": "nvidia/Nemotron-3-Nano-30B-A3B",
+      "id": "anthropic/claude-opus-4-7",
+      "name": "anthropic/claude-opus-4-7",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
-      "context_length": 262144,
+      "context_length": 1000000,
       "pricing": {
-        "input": 0.05,
-        "output": 0.2,
+        "input": 5,
+        "output": 25,
         "cache_read": null,
         "cache_write": null
       },
-      "org": "nvidia",
-      "zdr": true,
-      "benchmarks": {
-        "intelligence_index": 14.2,
-        "coding_index": 14.4,
-        "agentic_index": 2,
-        "design_arena_best": null
+      "org": "anthropic",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-16",
+        "knowledge_cutoff": "2026-01-31",
+        "description": "Flagship Claude model for deep reasoning, coding, and long-horizon agents",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": true,
+          "temperature": false
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
       }
     },
     {
@@ -3512,16 +1292,246 @@
       }
     },
     {
-      "id": "deepseek-ai/DeepSeek-V4-Pro",
-      "name": "deepseek-ai/DeepSeek-V4-Pro",
+      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+      "name": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.08499999999999999,
+        "output": 0.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nvidia",
+      "benchmarks": {
+        "intelligence_index": 25.4,
+        "coding_index": 37.7,
+        "agentic_index": 8.7,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "google/gemini-3.1-pro",
+      "name": "google/gemini-3.1-pro",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 11.999999999999998,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-02-19",
+        "knowledge_cutoff": "2025-01",
+        "description": "Reasoning-first Gemini preview for agentic coding and complex problem solving",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
+      },
+      "benchmarks": {
+        "intelligence_index": 46.5,
+        "coding_index": 68.8,
+        "agentic_index": 21.4,
+        "design_arena_best": {
+          "category": "svg",
+          "elo": 1338,
+          "win_rate": 69.8,
+          "rank": 2
+        }
+      }
+    },
+    {
+      "id": "ByteDance/Seed-2.0-code",
+      "name": "ByteDance/Seed-2.0-code",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.9999999999999996,
+        "cache_read": 0.1,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
+      "id": "meta-llama/Llama-Guard-4-12B",
+      "name": "meta-llama/Llama-Guard-4-12B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 163840,
+      "pricing": {
+        "input": 0.18,
+        "output": 0.18,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta",
+      "zdr": true
+    },
+    {
+      "id": "google/gemma-4-31B-it",
+      "name": "google/gemma-4-31B-it",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.13,
+        "output": 0.38,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-02",
+        "knowledge_cutoff": null,
+        "description": "Largest Gemma 4 instruction model for open, self-hosted chat and reasoning",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 29.4,
+        "coding_index": 43.4,
+        "agentic_index": 14.4,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "Qwen/Qwen3-Max-Thinking",
+      "name": "Qwen/Qwen3-Max-Thinking",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 256000,
+      "pricing": {
+        "input": 1.2,
+        "output": 5.999999999999999,
+        "cache_read": 0.24,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "benchmarks": {
+        "intelligence_index": null,
+        "coding_index": null,
+        "agentic_index": null,
+        "design_arena_best": {
+          "category": "asciiart",
+          "elo": 1170,
+          "win_rate": 47.2,
+          "rank": 36
+        }
+      }
+    },
+    {
+      "id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "name": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 128000,
+      "pricing": {
+        "input": 0.075,
+        "output": 0.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "mistral"
+    },
+    {
+      "id": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+      "name": "Qwen/Qwen3-Coder-480B-A35B-Instruct-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.3,
+        "output": 1,
+        "cache_read": 0.09999999899999999,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-01-27",
+        "knowledge_cutoff": null,
+        "description": "Qwen coding model for software agents, repository edits, and code reasoning",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": false
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.venice.ai"
+      }
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4-Flash",
+      "name": "deepseek-ai/DeepSeek-V4-Flash",
       "provider": "deepinfra",
       "quantization": null,
       "discount": 0,
       "context_length": 1048576,
       "pricing": {
-        "input": 1.2999999999999998,
-        "output": 2.5999999999999996,
-        "cache_read": 0.10000000399999999,
+        "input": 0.09,
+        "output": 0.18,
+        "cache_read": 0.018,
         "cache_write": null
       },
       "org": "deepseek",
@@ -3530,7 +1540,7 @@
         "source": "models.dev (model-level fallback)",
         "release_date": "2026-04-24",
         "knowledge_cutoff": "2025-05",
-        "description": "Open MoE flagship with million-token context for coding and long agent runs",
+        "description": "Fast DeepSeek V4 lane for economical reasoning, coding, and long-context work",
         "capabilities": {
           "reasoning": true,
           "tool_call": true,
@@ -3550,14 +1560,2004 @@
         "doc_url": "https://fireworks.ai/docs/"
       },
       "benchmarks": {
-        "intelligence_index": 44.3,
-        "coding_index": 59.4,
-        "agentic_index": 36.4,
+        "intelligence_index": 40.3,
+        "coding_index": 56.2,
+        "agentic_index": 31.1,
+        "design_arena_best": {
+          "category": "3d",
+          "elo": 1256,
+          "win_rate": 49.9,
+          "rank": 34
+        }
+      }
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3.1-Terminus",
+      "name": "deepseek-ai/DeepSeek-V3.1-Terminus",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 163840,
+      "pricing": {
+        "input": 0.27,
+        "output": 0.95,
+        "cache_read": 0.12999999960000003,
+        "cache_write": null
+      },
+      "org": "deepseek",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-09-22",
+        "knowledge_cutoff": null,
+        "description": "DeepSeek chat model for instruction following, coding, and analysis",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://novita.ai/docs/guides/introduction"
+      },
+      "benchmarks": {
+        "intelligence_index": 30.4,
+        "coding_index": 43.5,
+        "agentic_index": 18.1,
+        "design_arena_best": {
+          "category": "uicomponent",
+          "elo": 1223,
+          "win_rate": 59.3,
+          "rank": 40
+        }
+      }
+    },
+    {
+      "id": "google/gemini-1.5-flash-8b",
+      "name": "google/gemini-1.5-flash-8b",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 0.0375,
+        "output": 0.15,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google"
+    },
+    {
+      "id": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "name": "Qwen/Qwen3-235B-A22B-Instruct-2507",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.09,
+        "output": 0.55,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-07-22",
+        "knowledge_cutoff": "2025-04",
+        "description": "Efficient multilingual, Mixture-of-Experts, instruction-tuned model, optimized for logical reasoning.",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
+      }
+    },
+    {
+      "id": "google/gemini-3.5-flash",
+      "name": "google/gemini-3.5-flash",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 1.4999999999999998,
+        "output": 9,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-05-19",
+        "knowledge_cutoff": "2025-01",
+        "description": "Fast Gemini model balancing multimodal reasoning, tool use, and cost",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
+      },
+      "benchmarks": {
+        "intelligence_index": 50.2,
+        "coding_index": 70.1,
+        "agentic_index": 37.4,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1319,
+          "win_rate": 57.6,
+          "rank": 11
+        }
+      }
+    },
+    {
+      "id": "anthropic/claude-opus-4-8",
+      "name": "anthropic/claude-opus-4-8",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 5,
+        "output": 25,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-05-28",
+        "knowledge_cutoff": "2026-01",
+        "description": "Top Claude Opus tier for the hardest reasoning, coding, and long-horizon agents",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": true,
+          "temperature": false
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+      }
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite",
+      "name": "google/gemini-3.1-flash-lite",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 0.25,
+        "output": 1.4999999999999998,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-05-07",
+        "knowledge_cutoff": "2025-01",
+        "description": "Low-latency Gemini model for high-volume multimodal and agent workloads",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
+      },
+      "benchmarks": {
+        "intelligence_index": 25,
+        "coding_index": 34.7,
+        "agentic_index": 6.2,
+        "design_arena_best": {
+          "category": "asciiart",
+          "elo": 1209,
+          "win_rate": 50.7,
+          "rank": 17
+        }
+      }
+    },
+    {
+      "id": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+      "name": "Qwen/Qwen3-VL-235B-A22B-Instruct",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8799999999999999,
+        "cache_read": 0.11000000000000001,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-09-24",
+        "knowledge_cutoff": null,
+        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://novita.ai/docs/guides/introduction"
+      }
+    },
+    {
+      "id": "Sao10K/L3.1-70B-Euryale-v2.2",
+      "name": "Sao10K/L3.1-70B-Euryale-v2.2",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.85,
+        "output": 0.85,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "sao10k"
+    },
+    {
+      "id": "nvidia/Nemotron-3-Nano-30B-A3B",
+      "name": "nvidia/Nemotron-3-Nano-30B-A3B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nvidia",
+      "zdr": true,
+      "benchmarks": {
+        "intelligence_index": 14.2,
+        "coding_index": 14.4,
+        "agentic_index": 2,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "name": "Qwen/Qwen3-VL-30B-A3B-Instruct",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-10-11",
+        "knowledge_cutoff": null,
+        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "video",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://novita.ai/docs/guides/introduction"
+      }
+    },
+    {
+      "id": "nvidia/Nemotron-Content-Safety-3.5",
+      "name": "nvidia/Nemotron-Content-Safety-3.5",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "nvidia"
+    },
+    {
+      "id": "google/gemma-3-12b-it",
+      "name": "google/gemma-3-12b-it",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.15,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2024-12-01",
+        "knowledge_cutoff": "2024-12",
+        "description": "Open Gemma instruction model for efficient chat and self-hosted deployments",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": false,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+      },
+      "benchmarks": {
+        "intelligence_index": 5.5,
+        "coding_index": 5.8,
+        "agentic_index": 0.3,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "name": "Qwen/Qwen3.5-397B-A17B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.45,
+        "output": 2.9999999999999996,
+        "cache_read": 0.22000000050000001,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-02-15",
+        "knowledge_cutoff": null,
+        "description": "Large open Qwen multimodal MoE for visual agents and long technical tasks",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 33.7,
+        "coding_index": 48.2,
+        "agentic_index": 19.8,
+        "design_arena_best": {
+          "category": "3d",
+          "elo": 1227,
+          "win_rate": 56.7,
+          "rank": 39
+        }
+      }
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M3",
+      "name": "MiniMaxAI/MiniMax-M3",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 524288,
+      "pricing": {
+        "input": 0.3,
+        "output": 1.2,
+        "cache_read": 0.06,
+        "cache_write": null
+      },
+      "org": "minimax",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-06-12",
+        "knowledge_cutoff": null,
+        "description": "MiniMax multimodal coding model for long-context reasoning and agent tasks",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://fireworks.ai/docs/"
+      },
+      "benchmarks": {
+        "intelligence_index": 44.4,
+        "coding_index": 58.6,
+        "agentic_index": 35.4,
+        "design_arena_best": {
+          "category": "codecategories",
+          "elo": 1290,
+          "win_rate": 55,
+          "rank": 16
+        }
+      }
+    },
+    {
+      "id": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "name": "meta-llama/Llama-3.3-70B-Instruct-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.32,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2024-12-06",
+        "knowledge_cutoff": "2023-12",
+        "description": "Compact Llama instruction model for fast chat and local deployment",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.together.ai/docs/serverless-models"
+      },
+      "benchmarks": {
+        "intelligence_index": 9.4,
+        "coding_index": 11.9,
+        "agentic_index": 0.3,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B",
+      "name": "Qwen/Qwen3.6-35B-A3B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.95,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-15",
+        "knowledge_cutoff": null,
+        "description": "Qwen3.6-35B-A3B is an MoE multimodal model with 262K context optimized for agentic coding workflows.",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
+      },
+      "benchmarks": {
+        "intelligence_index": 31.6,
+        "coding_index": 41.9,
+        "agentic_index": 21.4,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "anthropic/claude-fable-5",
+      "name": "anthropic/claude-fable-5",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 10,
+        "output": 50,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-06-09",
+        "knowledge_cutoff": "2026-01-31",
+        "description": "Claude model for creative writing, analysis, and controlled agent workflows",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": true,
+          "temperature": false
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+      },
+      "benchmarks": {
+        "intelligence_index": 59.9,
+        "coding_index": 76.5,
+        "agentic_index": 52.8,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1396,
+          "win_rate": 66.7,
+          "rank": 1
+        }
+      }
+    },
+    {
+      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "name": "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1048576,
+      "pricing": {
+        "input": 0.2,
+        "output": 0.8,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-04-05",
+        "knowledge_cutoff": "2024-08",
+        "description": "Open multimodal Llama model for strong reasoning and fast responses",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
+      }
+    },
+    {
+      "id": "zai-org/GLM-5.1",
+      "name": "zai-org/GLM-5.1",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 202752,
+      "pricing": {
+        "input": 1.05,
+        "output": 3.5,
+        "cache_read": 0.205000005,
+        "cache_write": null
+      },
+      "org": "z-ai",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-01",
+        "knowledge_cutoff": null,
+        "description": "Flagship GLM model for hybrid reasoning, coding, and agentic engineering",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://fireworks.ai/docs/"
+      },
+      "benchmarks": {
+        "intelligence_index": 40.2,
+        "coding_index": 55.8,
+        "agentic_index": 29.9,
+        "design_arena_best": {
+          "category": "dataviz",
+          "elo": 1366,
+          "win_rate": 67,
+          "rank": 2
+        }
+      }
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-0528",
+      "name": "deepseek-ai/DeepSeek-R1-0528",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 163840,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.15,
+        "cache_read": 0.35,
+        "cache_write": null
+      },
+      "org": "deepseek",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-05-28",
+        "knowledge_cutoff": "2024-07",
+        "description": "DeepSeek reasoning model for multi-step analysis, math, coding, and tools",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
+      },
+      "benchmarks": {
+        "intelligence_index": null,
+        "coding_index": null,
+        "agentic_index": null,
+        "design_arena_best": {
+          "category": "dataviz",
+          "elo": 1214,
+          "win_rate": 60.7,
+          "rank": 41
+        }
+      }
+    },
+    {
+      "id": "ByteDance/Seed-2.0-mini",
+      "name": "ByteDance/Seed-2.0-mini",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.1,
+        "output": 0.4,
+        "cache_read": 0.020000000000000004,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
+      "id": "google/gemma-4-31B-it-turbo",
+      "name": "google/gemma-4-31B-it-turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.12000000000000001,
+        "output": 0.37,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "benchmarks": {
+        "intelligence_index": 29.4,
+        "coding_index": 43.4,
+        "agentic_index": 14.4,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "XiaomiMiMo/MiMo-V2.5-Pro",
+      "name": "XiaomiMiMo/MiMo-V2.5-Pro",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1048576,
+      "pricing": {
+        "input": 1,
+        "output": 2.9999999999999996,
+        "cache_read": 0.2,
+        "cache_write": null
+      },
+      "org": "xiaomi",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-22",
+        "knowledge_cutoff": "2024-12",
+        "description": "Stronger MiMo Pro tier for multimodal reasoning and coding-agent execution",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 42.2,
+        "coding_index": 60.2,
+        "agentic_index": 29.1,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1331,
+          "win_rate": 61,
+          "rank": 7
+        }
+      }
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.7",
+      "name": "MiniMaxAI/MiniMax-M2.7",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 196608,
+      "pricing": {
+        "input": 0.25,
+        "output": 1,
+        "cache_read": 0.05,
+        "cache_write": null
+      },
+      "org": "minimax",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-12",
+        "knowledge_cutoff": null,
+        "description": "MiniMax model for chat, coding, office work, and agentic tasks",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://fireworks.ai/docs/"
+      },
+      "benchmarks": {
+        "intelligence_index": 38.1,
+        "coding_index": 52.6,
+        "agentic_index": 25.6,
+        "design_arena_best": {
+          "category": "website",
+          "elo": 1275,
+          "win_rate": 54.2,
+          "rank": 25
+        }
+      }
+    },
+    {
+      "id": "microsoft/phi-4",
+      "name": "microsoft/phi-4",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 16384,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.14,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "microsoft",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2024-12-11",
+        "knowledge_cutoff": "2023-10",
+        "description": "Open-weight instruction model for adaptable chat and self-hosted production workloads",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": false,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models"
+      }
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "name": "openai/gpt-oss-120b",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.037,
+        "output": 0.16999999999999998,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "openai",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-08-05",
+        "knowledge_cutoff": null,
+        "description": "Open-weight GPT model for self-hosted reasoning and instruction-following workloads",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://fireworks.ai/docs/"
+      },
+      "benchmarks": {
+        "intelligence_index": 23.8,
+        "coding_index": 30.4,
+        "agentic_index": 13.2,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1052,
+          "win_rate": 40.6,
+          "rank": 90
+        }
+      }
+    },
+    {
+      "id": "ByteDance/Seed-1.8",
+      "name": "ByteDance/Seed-1.8",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.25,
+        "output": 2,
+        "cache_read": 0.05,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
+      "id": "Gryphe/MythoMax-L2-13b",
+      "name": "Gryphe/MythoMax-L2-13b",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 4096,
+      "pricing": {
+        "input": 0.4,
+        "output": 0.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "gryphe",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2024-04-25",
+        "knowledge_cutoff": null,
+        "description": "Open-weight instruction model for adaptable chat and self-hosted production workloads",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": false,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://novita.ai/docs/guides/introduction"
+      }
+    },
+    {
+      "id": "zai-org/GLM-4.7-Flash",
+      "name": "zai-org/GLM-4.7-Flash",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 202752,
+      "pricing": {
+        "input": 0.060000000000000005,
+        "output": 0.4,
+        "cache_read": 0.0100000002,
+        "cache_write": null
+      },
+      "org": "z-ai",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-01-19",
+        "knowledge_cutoff": "2025-04",
+        "description": "Budget GLM lane for fast coding help, routing, and everyday automation",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": null,
+        "coding_index": null,
+        "agentic_index": null,
+        "design_arena_best": {
+          "category": "uicomponent",
+          "elo": 1249,
+          "win_rate": 57.6,
+          "rank": 32
+        }
+      }
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3",
+      "name": "deepseek-ai/DeepSeek-V3",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 163840,
+      "pricing": {
+        "input": 0.32,
+        "output": 0.8899999999999999,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "deepseek",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2024-12-26",
+        "knowledge_cutoff": "2024-07",
+        "description": "DeepSeek chat model for instruction following, coding, and analysis",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.digitalocean.com/products/gradient-ai-platform/details/models/"
+      }
+    },
+    {
+      "id": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "name": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.09,
+        "output": 1.1,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-01-10",
+        "knowledge_cutoff": "2024-12",
+        "description": "Qwen instruction model for multilingual chat, reasoning, and tool use",
+        "capabilities": {
+          "reasoning": false,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://io.net/docs/guides/intelligence/io-intelligence"
+      },
+      "benchmarks": {
+        "intelligence_index": 16.7,
+        "coding_index": 17.4,
+        "agentic_index": 2.1,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "tencent/Hy3",
+      "name": "tencent/Hy3",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.14,
+        "output": 0.58,
+        "cache_read": 0.035,
+        "cache_write": null
+      },
+      "org": "tencent",
+      "zdr": true,
+      "benchmarks": {
+        "intelligence_index": 41.2,
+        "coding_index": 58.8,
+        "agentic_index": 30.7,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      "name": "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.02,
+        "output": 0.030000000000000002,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta",
+      "benchmarks": {
+        "intelligence_index": 7.6,
+        "coding_index": 5.4,
+        "agentic_index": 0.5,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "Qwen/Qwen3-30B-A3B",
+      "name": "Qwen/Qwen3-30B-A3B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 40960,
+      "pricing": {
+        "input": 0.12000000000000001,
+        "output": 0.5,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "benchmarks": {
+        "intelligence_index": null,
+        "coding_index": null,
+        "agentic_index": null,
+        "design_arena_best": {
+          "category": "dataviz",
+          "elo": 1003,
+          "win_rate": 39,
+          "rank": 95
+        }
+      }
+    },
+    {
+      "id": "Qwen/Qwen2.5-72B-Instruct",
+      "name": "Qwen/Qwen2.5-72B-Instruct",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 32768,
+      "pricing": {
+        "input": 0.36,
+        "output": 0.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen"
+    },
+    {
+      "id": "Qwen/Qwen3.5-27B",
+      "name": "Qwen/Qwen3.5-27B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.26,
+        "output": 2.5999999999999996,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-02-24",
+        "knowledge_cutoff": null,
+        "description": "Qwen3.5-27B is a dense model from the Qwen3.5 family built for high performance across a large range of benchmarks.",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
+      }
+    },
+    {
+      "id": "anthropic/claude-sonnet-4-6",
+      "name": "anthropic/claude-sonnet-4-6",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 2.9999999999999996,
+        "output": 15,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-02-17",
+        "knowledge_cutoff": "2025-08-31",
+        "description": "Claude workhorse for coding agents, careful analysis, and production cost control",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+      }
+    },
+    {
+      "id": "google/gemini-2.5-pro",
+      "name": "google/gemini-2.5-pro",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 1.25,
+        "output": 10,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-06-17",
+        "knowledge_cutoff": "2025-01",
+        "description": "Google's proven reasoning model for coding, math, and multimodal analysis",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "audio",
+            "video",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://ai.google.dev/gemini-api/docs/models"
+      },
+      "benchmarks": {
+        "intelligence_index": 25.8,
+        "coding_index": 33.3,
+        "agentic_index": 7.1,
+        "design_arena_best": {
+          "category": "dataviz",
+          "elo": 1282,
+          "win_rate": 71.8,
+          "rank": 14
+        }
+      }
+    },
+    {
+      "id": "zai-org/GLM-4.7",
+      "name": "zai-org/GLM-4.7",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 202752,
+      "pricing": {
+        "input": 0.4,
+        "output": 1.75,
+        "cache_read": 0.08000000000000002,
+        "cache_write": null
+      },
+      "org": "z-ai",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-12-22",
+        "knowledge_cutoff": "2025-04",
+        "description": "Mature GLM model for dependable coding, reasoning, and structured agent tasks",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 33.7,
+        "coding_index": 45.3,
+        "agentic_index": 25.4,
+        "design_arena_best": {
+          "category": "3d",
+          "elo": 1257,
+          "win_rate": 54.3,
+          "rank": 32
+        }
+      }
+    },
+    {
+      "id": "openai/gpt-oss-120b-Turbo",
+      "name": "openai/gpt-oss-120b-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.15,
+        "output": 0.6,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "openai",
+      "benchmarks": {
+        "intelligence_index": 23.8,
+        "coding_index": 30.4,
+        "agentic_index": 13.2,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1052,
+          "win_rate": 40.6,
+          "rank": 90
+        }
+      }
+    },
+    {
+      "id": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "name": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 32768,
+      "pricing": {
+        "input": 0.05,
+        "output": 0.08,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "mistral",
+      "zdr": true
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+      "name": "nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.2,
+        "cache_read": 0.1,
+        "cache_write": null
+      },
+      "org": "nvidia",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-06-04",
+        "knowledge_cutoff": null,
+        "description": "Nemotron 3 Ultra is a powerful MoE model designed for long-running agents across coding, deep research, and enterprise automation.",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://docs.wandb.ai/guides/integrations/inference/"
+      },
+      "benchmarks": {
+        "intelligence_index": 37.8,
+        "coding_index": 49.3,
+        "agentic_index": 27.4,
+        "design_arena_best": {
+          "category": "3d",
+          "elo": 1199,
+          "win_rate": 42.5,
+          "rank": 47
+        }
+      }
+    },
+    {
+      "id": "Sao10K/L3-8B-Lunaris-v1-Turbo",
+      "name": "Sao10K/L3-8B-Lunaris-v1-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 8192,
+      "pricing": {
+        "input": 0.04,
+        "output": 0.05,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "sao10k"
+    },
+    {
+      "id": "ByteDance/Seed-2.0-pro",
+      "name": "ByteDance/Seed-2.0-pro",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 256000,
+      "pricing": {
+        "input": 0.5,
+        "output": 2.9999999999999996,
+        "cache_read": 0.1,
+        "cache_write": null
+      },
+      "org": "bytedance"
+    },
+    {
+      "id": "openai/gpt-oss-20b",
+      "name": "openai/gpt-oss-20b",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.030000000000000002,
+        "output": 0.14,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "openai",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-08-05",
+        "knowledge_cutoff": null,
+        "description": "Open-weight GPT model for self-hosted reasoning and instruction-following workloads",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://fireworks.ai/docs/"
+      },
+      "benchmarks": {
+        "intelligence_index": 14.9,
+        "coding_index": 20.7,
+        "agentic_index": 3.1,
+        "design_arena_best": {
+          "category": "dataviz",
+          "elo": 969,
+          "win_rate": 39.7,
+          "rank": 98
+        }
+      }
+    },
+    {
+      "id": "Qwen/Qwen3.6-27B",
+      "name": "Qwen/Qwen3.6-27B",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.32,
+        "output": 3.2,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "qwen",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-22",
+        "knowledge_cutoff": null,
+        "description": "Qwen vision-language model for visual reasoning, documents, and agent tasks",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video",
+            "audio"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 37.1,
+        "coding_index": 53.7,
+        "agentic_index": 27,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "zai-org/GLM-5",
+      "name": "zai-org/GLM-5",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 202752,
+      "pricing": {
+        "input": 0.6,
+        "output": 2.08,
+        "cache_read": 0.12,
+        "cache_write": null
+      },
+      "org": "z-ai",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-02-12",
+        "knowledge_cutoff": null,
+        "description": "General GLM flagship for coding, analysis, and tool-heavy engineering workflows",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": false,
+          "attachment": false,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": null,
+        "coding_index": null,
+        "agentic_index": null,
         "design_arena_best": {
           "category": "3d",
           "elo": 1318,
-          "win_rate": 59.2,
-          "rank": 11
+          "win_rate": 59.3,
+          "rank": 12
+        }
+      }
+    },
+    {
+      "id": "anthropic/claude-haiku-4-5",
+      "name": "anthropic/claude-haiku-4-5",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 200000,
+      "pricing": {
+        "input": 1,
+        "output": 5,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2025-10-15",
+        "knowledge_cutoff": "2025-02-28",
+        "description": "Fast Claude model for responsive assistance, classification, and lightweight agents",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+      }
+    },
+    {
+      "id": "anthropic/claude-sonnet-5",
+      "name": "anthropic/claude-sonnet-5",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 1000000,
+      "pricing": {
+        "input": 2,
+        "output": 10,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "anthropic",
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-06-30",
+        "knowledge_cutoff": "2026-01-31",
+        "description": "Everyday Claude agent model for coding, planning, browsing, and general work",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": false
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "pdf"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": false,
+        "doc_url": "https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html"
+      },
+      "benchmarks": {
+        "intelligence_index": 53.4,
+        "coding_index": 71.5,
+        "agentic_index": 46.7,
+        "design_arena_best": {
+          "category": "gamedev",
+          "elo": 1345,
+          "win_rate": 59.9,
+          "rank": 3
+        }
+      }
+    },
+    {
+      "id": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "name": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 131072,
+      "pricing": {
+        "input": 0.4,
+        "output": 0.4,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "meta"
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.7-Turbo",
+      "name": "MiniMaxAI/MiniMax-M2.7-Turbo",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 196608,
+      "pricing": {
+        "input": 0.38,
+        "output": 1.7,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "minimax",
+      "benchmarks": {
+        "intelligence_index": 38.1,
+        "coding_index": 52.6,
+        "agentic_index": 25.6,
+        "design_arena_best": {
+          "category": "website",
+          "elo": 1275,
+          "win_rate": 54.2,
+          "rank": 25
+        }
+      }
+    },
+    {
+      "id": "google/gemma-4-26B-A4B-it",
+      "name": "google/gemma-4-26B-A4B-it",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.07,
+        "output": 0.33999999999999997,
+        "cache_read": null,
+        "cache_write": null
+      },
+      "org": "google",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-04-02",
+        "knowledge_cutoff": null,
+        "description": "Open Gemma instruction model for efficient chat and self-hosted deployments",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": true,
+          "temperature": true
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://developers.cloudflare.com/workers-ai/models/"
+      },
+      "benchmarks": {
+        "intelligence_index": 25.7,
+        "coding_index": 39.3,
+        "agentic_index": 11,
+        "design_arena_best": null
+      }
+    },
+    {
+      "id": "moonshotai/Kimi-K2.5",
+      "name": "moonshotai/Kimi-K2.5",
+      "provider": "deepinfra",
+      "quantization": null,
+      "discount": 0,
+      "context_length": 262144,
+      "pricing": {
+        "input": 0.45,
+        "output": 2.25,
+        "cache_read": 0.070000002,
+        "cache_write": null
+      },
+      "org": "moonshot",
+      "zdr": true,
+      "modelsdev_model": {
+        "source": "models.dev (model-level fallback)",
+        "release_date": "2026-01",
+        "knowledge_cutoff": "2025-01",
+        "description": "Earlier Kimi frontier model for long-context agents, coding, and multimodal work",
+        "capabilities": {
+          "reasoning": true,
+          "tool_call": true,
+          "structured_output": true,
+          "attachment": false,
+          "temperature": false
+        },
+        "modalities": {
+          "input": [
+            "text",
+            "image",
+            "video"
+          ],
+          "output": [
+            "text"
+          ]
+        },
+        "open_weights": true,
+        "doc_url": "https://crof.ai/docs"
+      },
+      "benchmarks": {
+        "intelligence_index": 35.4,
+        "coding_index": 46.8,
+        "agentic_index": 21.7,
+        "design_arena_best": {
+          "category": "website",
+          "elo": 1280,
+          "win_rate": 55.8,
+          "rank": 22
         }
       }
     },
@@ -8174,7 +8174,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 128000,
-      "uptime_30m": 89.80169971671388,
+      "uptime_30m": 95.46436285097192,
       "pricing": {
         "input": 0.13199999999999998,
         "output": 0.5279999999999999,
@@ -8199,7 +8199,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": null,
-      "uptime_30m": 99.44547134935306,
+      "uptime_30m": 99.43330427201394,
       "pricing": {
         "input": 0.14,
         "output": 0.58,
@@ -8223,7 +8223,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.17312661498708,
+      "uptime_30m": 99.16186485070718,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.7999999999999999,
@@ -8583,7 +8583,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 1048576,
-      "uptime_30m": 97.09677419354838,
+      "uptime_30m": 95.69681083442552,
       "pricing": {
         "input": 0.94,
         "output": 2.9000000000000004,
@@ -8636,7 +8636,7 @@
       "discount": 0.3185,
       "context_length": 1024000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 99.8803727917652,
+      "uptime_30m": 99.87831107086258,
       "pricing": {
         "input": 0.9541,
         "output": 2.9986,
@@ -8688,7 +8688,7 @@
       "discount": 0.318,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.87638483965014,
+      "uptime_30m": 99.90940301354186,
       "pricing": {
         "input": 0.9548,
         "output": 3.0008000000000004,
@@ -8744,7 +8744,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 131072,
-      "uptime_30m": 97.65351972041937,
+      "uptime_30m": 97.8670634920635,
       "pricing": {
         "input": 1.0499999999999998,
         "output": 4.4,
@@ -8800,7 +8800,7 @@
       "discount": 0,
       "context_length": 101376,
       "max_completion_tokens": 101376,
-      "uptime_30m": 99.51778179626281,
+      "uptime_30m": 98.66327180140038,
       "pricing": {
         "input": 1.0499999999999998,
         "output": 4.4,
@@ -8852,7 +8852,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 1048576,
-      "uptime_30m": 99.27536231884058,
+      "uptime_30m": 99.28909952606635,
       "pricing": {
         "input": 1.1,
         "output": 4.1,
@@ -8905,7 +8905,7 @@
       "discount": 0.175,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.90304440566221,
+      "uptime_30m": 99.93723849372384,
       "pricing": {
         "input": 1.155,
         "output": 3.63,
@@ -8958,7 +8958,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 1048576,
-      "uptime_30m": 99.42003122908767,
+      "uptime_30m": 97.46053534660261,
       "pricing": {
         "input": 1.2,
         "output": 3,
@@ -9011,7 +9011,7 @@
       "discount": 0.1,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.98061264055835,
+      "uptime_30m": 99.98213009292351,
       "pricing": {
         "input": 1.26,
         "output": 3.9600000000000004,
@@ -9063,7 +9063,7 @@
       "discount": 0.1,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.9656946826758,
+      "uptime_30m": 99.96378123868163,
       "pricing": {
         "input": 1.26,
         "output": 3.9600000000000004,
@@ -9116,7 +9116,7 @@
       "discount": 0,
       "context_length": 96890,
       "max_completion_tokens": 96890,
-      "uptime_30m": 97.78830963665087,
+      "uptime_30m": 98.00995024875621,
       "pricing": {
         "input": 1.3,
         "output": 4.4,
@@ -9222,7 +9222,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 99.91924086412276,
+      "uptime_30m": 99.93652137113838,
       "pricing": {
         "input": 1.3900000000000001,
         "output": 4.4,
@@ -9278,7 +9278,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.81983605080623,
+      "uptime_30m": 99.85577789796287,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9335,7 +9335,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 65535,
-      "uptime_30m": 97.57639620653319,
+      "uptime_30m": 97.60765550239235,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9391,7 +9391,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.5643259866735,
+      "uptime_30m": 99.45539419087137,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9447,7 +9447,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 99.38524590163934,
+      "uptime_30m": 99.80952380952381,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9502,7 +9502,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 1048576,
-      "uptime_30m": 99.45010183299388,
+      "uptime_30m": 99.49967370023928,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9557,7 +9557,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 98.3983286908078,
+      "uptime_30m": 98.42070629524018,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9610,7 +9610,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 98.61367837338263,
+      "uptime_30m": 98.59154929577466,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9665,7 +9665,7 @@
       "discount": 0,
       "context_length": 1000000,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.20634920634922,
+      "uptime_30m": 99.14529914529915,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9718,7 +9718,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 164000,
-      "uptime_30m": 99.79287489643744,
+      "uptime_30m": 99.70451667370199,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9774,7 +9774,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.70559371933267,
+      "uptime_30m": 99.70972423802613,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9827,7 +9827,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 131072,
-      "uptime_30m": 98.98989898989899,
+      "uptime_30m": 98.52216748768473,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9880,7 +9880,7 @@
       "discount": 0,
       "context_length": 256000,
       "max_completion_tokens": 256000,
-      "uptime_30m": 99.79409746053534,
+      "uptime_30m": 99.92867332382312,
       "pricing": {
         "input": 1.4,
         "output": 4.4,
@@ -9936,7 +9936,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 65536,
-      "uptime_30m": 99.66887417218543,
+      "uptime_30m": 99.63768115942028,
       "pricing": {
         "input": 2.576816,
         "output": 5.636785,
@@ -11218,7 +11218,7 @@
       "discount": 0,
       "context_length": 1000000,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.02025905014945,
+      "uptime_30m": 99.05309161540951,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11271,7 +11271,7 @@
       "discount": 0,
       "context_length": 524288,
       "max_completion_tokens": 65536,
-      "uptime_30m": 96.87848383500557,
+      "uptime_30m": 96.19047619047619,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11329,7 +11329,7 @@
       "discount": 0.5,
       "context_length": 1048576,
       "max_completion_tokens": null,
-      "uptime_30m": 95.89302769818529,
+      "uptime_30m": 95.65656565656566,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11381,7 +11381,7 @@
       "discount": 0,
       "context_length": 524288,
       "max_completion_tokens": 512000,
-      "uptime_30m": 99.86130975599185,
+      "uptime_30m": 99.85623070742949,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11434,7 +11434,7 @@
       "discount": 0,
       "context_length": 524300,
       "max_completion_tokens": 524288,
-      "uptime_30m": 94.61474730737366,
+      "uptime_30m": 94.67408585055644,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11487,7 +11487,7 @@
       "discount": 0,
       "context_length": 524288,
       "max_completion_tokens": 250000,
-      "uptime_30m": 85.53608553608554,
+      "uptime_30m": 84.4754615038271,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11544,7 +11544,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": 1048576,
-      "uptime_30m": 97.17813051146385,
+      "uptime_30m": 98.76750700280112,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -11597,7 +11597,7 @@
       "discount": 0,
       "context_length": 256000,
       "max_completion_tokens": 256000,
-      "uptime_30m": 74.81226533166459,
+      "uptime_30m": 78.93673577884104,
       "pricing": {
         "input": 0.6,
         "output": 2.4,
@@ -19594,7 +19594,7 @@
       "discount": 0.6,
       "context_length": 196608,
       "max_completion_tokens": 196608,
-      "uptime_30m": 77.40112994350282,
+      "uptime_30m": 92.85714285714286,
       "pricing": {
         "input": 0.24,
         "output": 0.96,
@@ -19647,7 +19647,7 @@
       "discount": 0.1,
       "context_length": 204800,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.14821124361158,
+      "uptime_30m": 99.24446842957366,
       "pricing": {
         "input": 0.27,
         "output": 1.08,
@@ -19703,7 +19703,7 @@
       "discount": 0,
       "context_length": 196608,
       "max_completion_tokens": 196608,
-      "uptime_30m": 94.97206703910615,
+      "uptime_30m": 87.7659574468085,
       "pricing": {
         "input": 0.27899999999999997,
         "output": 1.2,
@@ -19756,7 +19756,7 @@
       "discount": 0,
       "context_length": 196608,
       "max_completion_tokens": null,
-      "uptime_30m": 99.30795847750865,
+      "uptime_30m": 99.37434827945776,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -19808,7 +19808,7 @@
       "discount": 0,
       "context_length": 204800,
       "max_completion_tokens": 131072,
-      "uptime_30m": 98.18325434439178,
+      "uptime_30m": 98.1081081081081,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -19862,7 +19862,7 @@
       "discount": 0,
       "context_length": 196608,
       "max_completion_tokens": 196608,
-      "uptime_30m": 98.25090470446321,
+      "uptime_30m": 98.33531510107015,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -19971,7 +19971,7 @@
       "discount": 0,
       "context_length": 196608,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.02379499694935,
+      "uptime_30m": 96.11708482676224,
       "pricing": {
         "input": 0.3,
         "output": 1.2,
@@ -24603,7 +24603,7 @@
       "discount": 0,
       "context_length": 1000000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 94.10548086866598,
+      "uptime_30m": 96.32802937576498,
       "pricing": {
         "input": 5,
         "output": 25,
@@ -24685,7 +24685,7 @@
       "discount": 0,
       "context_length": 1000000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 99.53907815631263,
+      "uptime_30m": 99.96293207302381,
       "pricing": {
         "input": 5,
         "output": 25,
@@ -25667,7 +25667,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 131072,
-      "uptime_30m": 98.91083625623038,
+      "uptime_30m": 98.50434782608696,
       "pricing": {
         "input": 0.060500000000000005,
         "output": 0.39999999999999997,
@@ -25722,7 +25722,7 @@
       "discount": 0,
       "context_length": 200000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 85.75851393188854,
+      "uptime_30m": 87.42554599602911,
       "pricing": {
         "input": 0.07,
         "output": 0.39999999999999997,
@@ -25778,7 +25778,7 @@
       "discount": 0,
       "context_length": 128000,
       "max_completion_tokens": 16384,
-      "uptime_30m": 97.50889679715303,
+      "uptime_30m": 99.62121212121212,
       "pricing": {
         "input": 0.125,
         "output": 0.5,
@@ -26933,7 +26933,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 99.4,
+      "uptime_30m": 99.06976744186046,
       "pricing": {
         "input": 0.39999999999999997,
         "output": 2,
@@ -27241,7 +27241,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": null,
-      "uptime_30m": 99.95355318160706,
+      "uptime_30m": 99.95192307692308,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.19999999999999998,
@@ -27300,7 +27300,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": null,
-      "uptime_30m": 99.43657437218287,
+      "uptime_30m": 99.6321969161126,
       "pricing": {
         "input": 0.15,
         "output": 0.15,
@@ -27329,7 +27329,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 99.78517722878625,
+      "uptime_30m": 100,
       "pricing": {
         "input": 0.3,
         "output": 0.3,
@@ -27359,7 +27359,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": null,
-      "uptime_30m": 99.8963998963999,
+      "uptime_30m": 99.8916282850176,
       "pricing": {
         "input": 0.09999999999999999,
         "output": 0.09999999999999999,
@@ -27418,7 +27418,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 99.97367728349566,
+      "uptime_30m": 99.97375672483926,
       "pricing": {
         "input": 0.5,
         "output": 1.5,
@@ -29650,7 +29650,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 32768,
-      "uptime_30m": 95.74126155082362,
+      "uptime_30m": 95.58398679323153,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.7,
@@ -29741,7 +29741,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 97.27272727272728,
+      "uptime_30m": 96.97525206232814,
       "pricing": {
         "input": 0.29,
         "output": 1,
@@ -30461,7 +30461,7 @@
       "discount": 0,
       "context_length": 128000,
       "max_completion_tokens": 16384,
-      "uptime_30m": 93.35083114610674,
+      "uptime_30m": 93.4762348555452,
       "pricing": {
         "input": 0.21,
         "output": 1.9,
@@ -30505,7 +30505,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 32768,
-      "uptime_30m": 98.1078967943706,
+      "uptime_30m": 98.046875,
       "pricing": {
         "input": 0.21,
         "output": 1.9,
@@ -30549,7 +30549,7 @@
       "discount": 0.35,
       "context_length": 131072,
       "max_completion_tokens": 32768,
-      "uptime_30m": 99.96312684365782,
+      "uptime_30m": 99.96110462854921,
       "pricing": {
         "input": 0.26,
         "output": 1.04,
@@ -30593,7 +30593,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 32768,
-      "uptime_30m": 86.8289983397897,
+      "uptime_30m": 86.25954198473282,
       "pricing": {
         "input": 0.3,
         "output": 1.5,
@@ -30797,7 +30797,7 @@
       "discount": 0,
       "context_length": 163840,
       "max_completion_tokens": 163840,
-      "uptime_30m": 98.33333333333333,
+      "uptime_30m": 97.86324786324786,
       "pricing": {
         "input": 0.27,
         "output": 1,
@@ -31398,7 +31398,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 100352,
-      "uptime_30m": 98.68182993021452,
+      "uptime_30m": 98.5937914566198,
       "pricing": {
         "input": 0.6,
         "output": 2.5,
@@ -31454,7 +31454,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.9716151007664,
+      "uptime_30m": 99.97034400948992,
       "pricing": {
         "input": 1,
         "output": 3,
@@ -31919,7 +31919,7 @@
       "discount": 0,
       "context_length": 65536,
       "max_completion_tokens": 16384,
-      "uptime_30m": 97.5609756097561,
+      "uptime_30m": 97.70992366412213,
       "pricing": {
         "input": 0.6,
         "output": 1.7999999999999998,
@@ -34023,7 +34023,7 @@
       "discount": 0,
       "context_length": 256000,
       "max_completion_tokens": null,
-      "uptime_30m": 99.76905311778292,
+      "uptime_30m": 99.38650306748467,
       "pricing": {
         "input": 0.3,
         "output": 0.8999999999999999,
@@ -34323,7 +34323,7 @@
       "discount": 0.55,
       "context_length": 128000,
       "max_completion_tokens": 32000,
-      "uptime_30m": 99.8483556061037,
+      "uptime_30m": 99.87645605365337,
       "pricing": {
         "input": 0.04815,
         "output": 0.19305,
@@ -34364,7 +34364,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 94.62058212058211,
+      "uptime_30m": 91.98406771222305,
       "pricing": {
         "input": 0.09,
         "output": 0.3,
@@ -34406,7 +34406,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": null,
-      "uptime_30m": 98.64253393665159,
+      "uptime_30m": 97.23502304147466,
       "pricing": {
         "input": 0.09,
         "output": 0.3,
@@ -34448,7 +34448,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 8192,
-      "uptime_30m": 99.22720247295209,
+      "uptime_30m": 98.63874345549738,
       "pricing": {
         "input": 0.09999999999999999,
         "output": 0.3,
@@ -35310,7 +35310,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.74071940077373,
+      "uptime_30m": 99.27332993370729,
       "pricing": {
         "input": 0.09,
         "output": 0.55,
@@ -35363,7 +35363,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.18667996623954,
+      "uptime_30m": 99.10752595898053,
       "pricing": {
         "input": 0.09,
         "output": 0.58,
@@ -35416,7 +35416,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.88978692138134,
+      "uptime_30m": 100,
       "pricing": {
         "input": 0.14,
         "output": 0.7999999999999999,
@@ -35522,7 +35522,7 @@
       "discount": 0,
       "context_length": 128000,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.28983577452286,
+      "uptime_30m": 99.16230366492147,
       "pricing": {
         "input": 0.15,
         "output": 0.75,
@@ -35575,7 +35575,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": null,
-      "uptime_30m": 65.78645235361653,
+      "uptime_30m": 69.77272727272728,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.6,
@@ -35628,7 +35628,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": 98.76977152899823,
+      "uptime_30m": 98.28982898289829,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.7999999999999999,
@@ -35683,7 +35683,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 131072,
-      "uptime_30m": 97.56455399061032,
+      "uptime_30m": 97.21561969439728,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.88,
@@ -35736,7 +35736,7 @@
       "discount": 0.4,
       "context_length": 128000,
       "max_completion_tokens": 32000,
-      "uptime_30m": 99.08440629470672,
+      "uptime_30m": 98.99481193255512,
       "pricing": {
         "input": 0.21,
         "output": 0.84,
@@ -35788,7 +35788,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.81268397109982,
+      "uptime_30m": 99.776,
       "pricing": {
         "input": 0.22,
         "output": 0.88,
@@ -36743,7 +36743,7 @@
       "discount": 0,
       "context_length": 1048576,
       "max_completion_tokens": null,
-      "uptime_30m": 99.97997997997999,
+      "uptime_30m": 99.97795900374697,
       "pricing": {
         "input": 0.19999999999999998,
         "output": 0.19999999999999998,
@@ -36972,7 +36972,7 @@
       "discount": 0,
       "context_length": 40960,
       "max_completion_tokens": 8192,
-      "uptime_30m": 96.94232105628909,
+      "uptime_30m": 97.11128132180764,
       "pricing": {
         "input": 0.09999999999999999,
         "output": 0.3,
@@ -37074,7 +37074,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 131072,
-      "uptime_30m": 81.52461619904712,
+      "uptime_30m": 79.63576158940397,
       "pricing": {
         "input": 0.14,
         "output": 0.5700000000000001,
@@ -37304,7 +37304,7 @@
       "discount": 0,
       "context_length": 200000,
       "max_completion_tokens": 100000,
-      "uptime_30m": 99.47540983606558,
+      "uptime_30m": 99.68789013732834,
       "pricing": {
         "input": 1.1,
         "output": 4.4,
@@ -37977,7 +37977,7 @@
       "discount": 0,
       "context_length": 327680,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.99336341916644,
+      "uptime_30m": 99.99298344092057,
       "pricing": {
         "input": 0.09999999999999999,
         "output": 0.3,
@@ -38007,7 +38007,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 8192,
-      "uptime_30m": 99.82804439581054,
+      "uptime_30m": 99.72598047610892,
       "pricing": {
         "input": 0.11,
         "output": 0.33999999999999997,
@@ -38271,7 +38271,7 @@
       "discount": 0,
       "context_length": 128000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 99.92657856093979,
+      "uptime_30m": 99.93377483443709,
       "pricing": {
         "input": 0.351,
         "output": 0.5549999999999999,
@@ -38394,7 +38394,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 131072,
-      "uptime_30m": 99.99501246882792,
+      "uptime_30m": 99.96009377961789,
       "pricing": {
         "input": 0.08,
         "output": 0.44999999999999996,
@@ -38443,7 +38443,7 @@
       "discount": 0,
       "context_length": 110000,
       "max_completion_tokens": 8192,
-      "uptime_30m": 99.5291095890411,
+      "uptime_30m": 93.45380156836003,
       "pricing": {
         "input": 0.09999999999999999,
         "output": 0.3,
@@ -38495,7 +38495,7 @@
       "discount": 0,
       "context_length": 98304,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.86374784267417,
+      "uptime_30m": 99.86082761180182,
       "pricing": {
         "input": 0.119,
         "output": 0.19999999999999998,
@@ -38547,7 +38547,7 @@
       "discount": 0,
       "context_length": 262144,
       "max_completion_tokens": 262144,
-      "uptime_30m": null,
+      "uptime_30m": 96.42857142857143,
       "pricing": {
         "input": 0.15,
         "output": 0.45999999999999996,
@@ -38812,7 +38812,7 @@
       "discount": 0,
       "context_length": 32000,
       "max_completion_tokens": 8192,
-      "uptime_30m": 86.30424988737047,
+      "uptime_30m": 84.55143747835123,
       "pricing": {
         "input": 0.25,
         "output": 0.75,
@@ -38858,7 +38858,7 @@
       "discount": 0,
       "context_length": 128000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 99.97771538084415,
+      "uptime_30m": 99.99052940619377,
       "pricing": {
         "input": 0.7999999999999999,
         "output": 1,
@@ -39035,7 +39035,7 @@
       "discount": 0,
       "context_length": 64000,
       "max_completion_tokens": 16000,
-      "uptime_30m": 99.89247311827957,
+      "uptime_30m": 99.89528795811519,
       "pricing": {
         "input": 0.7,
         "output": 2.5,
@@ -39426,7 +39426,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 16384,
-      "uptime_30m": 96.68147051566741,
+      "uptime_30m": 96.36406286652593,
       "pricing": {
         "input": 0.09999999999999999,
         "output": 0.32,
@@ -39474,7 +39474,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 8192,
-      "uptime_30m": 91.62686147794325,
+      "uptime_30m": 92.9350330210413,
       "pricing": {
         "input": 0.13,
         "output": 0.39999999999999997,
@@ -39525,7 +39525,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 128000,
-      "uptime_30m": 94.78624630139781,
+      "uptime_30m": 95.21711768407803,
       "pricing": {
         "input": 0.13,
         "output": 0.39999999999999997,
@@ -39573,7 +39573,7 @@
       "discount": 0,
       "context_length": 6000,
       "max_completion_tokens": 120000,
-      "uptime_30m": 96.76125848241826,
+      "uptime_30m": 96.55275779376498,
       "pricing": {
         "input": 0.135,
         "output": 0.39999999999999997,
@@ -39624,7 +39624,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 16384,
-      "uptime_30m": 96.28566301812309,
+      "uptime_30m": 95.52158273381295,
       "pricing": {
         "input": 0.22,
         "output": 0.5,
@@ -39672,7 +39672,7 @@
       "discount": 0,
       "context_length": 24000,
       "max_completion_tokens": 24000,
-      "uptime_30m": 88.33652007648183,
+      "uptime_30m": 88.24593128390596,
       "pricing": {
         "input": 0.293,
         "output": 2.2529999999999997,
@@ -39722,7 +39722,7 @@
       "discount": 0.25,
       "context_length": 16000,
       "max_completion_tokens": 3072,
-      "uptime_30m": 94.42231075697211,
+      "uptime_30m": 95.40122008446738,
       "pricing": {
         "input": 0.44999999999999996,
         "output": 0.8999999999999999,
@@ -39770,7 +39770,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 32768,
-      "uptime_30m": 99.99005667694144,
+      "uptime_30m": 100,
       "pricing": {
         "input": 0.59,
         "output": 0.7899999999999999,
@@ -39818,7 +39818,7 @@
       "discount": 0,
       "context_length": 128000,
       "max_completion_tokens": 128000,
-      "uptime_30m": 99.80753368160572,
+      "uptime_30m": 99.91241515217867,
       "pricing": {
         "input": 0.71,
         "output": 0.71,
@@ -39917,7 +39917,7 @@
       "discount": 0,
       "context_length": 131072,
       "max_completion_tokens": 2048,
-      "uptime_30m": 98.34905660377359,
+      "uptime_30m": 98.38337182448036,
       "pricing": {
         "input": 1.04,
         "output": 1.04,
@@ -40248,7 +40248,7 @@
       "discount": 0,
       "context_length": 32768,
       "max_completion_tokens": 32768,
-      "uptime_30m": 98.56279029007099,
+      "uptime_30m": 98.5444657709533,
       "pricing": {
         "input": 0.04,
         "output": 0.09999999999999999,
@@ -40267,7 +40267,7 @@
       "discount": 0,
       "context_length": 32768,
       "max_completion_tokens": 2048,
-      "uptime_30m": 99.99245283018868,
+      "uptime_30m": 99.99563997849056,
       "pricing": {
         "input": 0.3,
         "output": 0.3,
@@ -40427,7 +40427,7 @@
       "discount": 0,
       "context_length": 80000,
       "max_completion_tokens": 80000,
-      "uptime_30m": 99.49874686716792,
+      "uptime_30m": 99.44794952681389,
       "pricing": {
         "input": 0.0509,
         "output": 0.335,
@@ -40471,7 +40471,7 @@
       "discount": 0,
       "context_length": 32768,
       "max_completion_tokens": 16384,
-      "uptime_30m": 99.59636730575177,
+      "uptime_30m": 99.68586387434554,
       "pricing": {
         "input": 0.36,
         "output": 0.39999999999999997,
