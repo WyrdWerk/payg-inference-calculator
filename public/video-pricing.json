@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-20T22:46:03.844Z",
+  "generated_at": "2026-07-21T01:30:03.501Z",
   "models": [
     {
       "id": "kling-video-v3-pro",
@@ -752,21 +752,6 @@
       ]
     },
     {
-      "id": "ltx-2-fast",
-      "name": "LTX Video 2.0 Fast",
-      "org": "lightricks",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.04
-        }
-      ]
-    },
-    {
       "id": "wan-v2.6-flash",
       "name": "V2.6",
       "org": "alibaba",
@@ -838,21 +823,6 @@
           "resolution": null,
           "audio": null,
           "cost_per_second": 0.04
-        }
-      ]
-    },
-    {
-      "id": "ltx-2",
-      "name": "LTX Video 2.0 Pro",
-      "org": "lightricks",
-      "provider": "fal",
-      "supported_durations": [],
-      "supported_resolutions": [],
-      "pricing": [
-        {
-          "resolution": null,
-          "audio": null,
-          "cost_per_second": 0.06
         }
       ]
     },
@@ -1203,6 +1173,36 @@
     },
     {
       "id": "heygen-v2-video-agent",
+      "name": "Heygen",
+      "org": "heygen",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.034
+        }
+      ]
+    },
+    {
+      "id": "kling-video-v1-standard-effects",
+      "name": "Kling 1.0",
+      "org": "kuaishou",
+      "provider": "fal",
+      "supported_durations": [],
+      "supported_resolutions": [],
+      "pricing": [
+        {
+          "resolution": null,
+          "audio": null,
+          "cost_per_second": 0.045
+        }
+      ]
+    },
+    {
+      "id": "heygen-avatar3-digital-twin",
       "name": "Heygen",
       "org": "heygen",
       "provider": "fal",
