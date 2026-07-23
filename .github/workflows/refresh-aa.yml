@@ -1,0 +1,60 @@
+name: Refresh Artificial Analysis Benchmarks
+
+concurrency:
+  group: repo-refresh
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # every Monday at 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch: {} # manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-aa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run tests
+        run: node --test test/*.test.mjs
+
+      - name: Fetch AA benchmarks (writes data/aa-benchmarks.json)
+        env:
+          ARTIFICIAL_ANALYSIS_API_KEY: ${{ secrets.ARTIFICIAL_ANALYSIS_API_KEY }}
+        run: node scripts/fetch-aa.mjs
+
+      - name: Re-fetch pricing with updated AA cache
+        run: node scripts/fetch-pricing.mjs
+
+      - name: Commit AA cache + refreshed pricing
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aa-benchmarks.json public/pricing.json
+          if git diff --cached --quiet; then
+            echo "No AA changes — skipping commit."
+          else
+            git commit -m "chore: refresh AA benchmarks ($(date -u +%Y-%m-%dT%H:%M) UTC)"
+            git push
+          fi
+
+      - name: Bust cache (content-hash ?v= tokens)
+        run: node scripts/bust-cache.mjs
+
+      - name: Minify JSON
+        run: node scripts/minify-json.mjs
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name payg-inference-calculator --branch main

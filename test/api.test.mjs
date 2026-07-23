@@ -244,6 +244,30 @@ test('?min_context=500000 filters by context length', async () => {
     assert.ok(m.context_length >= 500000);
   }
 });
+test('?min_intelligence=50 filters out models with intelligence_index < 50 and excludes null', async () => {
+  const { body } = await getJson(makeContext('/api/v1/models', '?min_intelligence=50'));
+  for (const m of body.models) {
+    assert.ok(m.benchmarks?.intelligence_index != null, `${m.id} should have non-null intelligence_index`);
+    assert.ok(m.benchmarks.intelligence_index >= 50, `${m.id} should have intelligence_index >= 50`);
+  }
+});
+
+test('?min_intelligence=0 returns all models (0 means no filter)', async () => {
+  const { body } = await getJson(makeContext('/api/v1/models', '?min_intelligence=0'));
+  const withNull = body.models.filter(m => m.benchmarks?.intelligence_index == null);
+  assert.ok(withNull.length > 0, '0 should not filter — null intelligence_index models included');
+});
+
+test('?min_intelligence=100 excludes all models (no model has IQ ≥ 100)', async () => {
+  const { body } = await getJson(makeContext('/api/v1/models', '?min_intelligence=100'));
+  assert.equal(body.models.length, 0, 'no model should have intelligence_index >= 100');
+});
+
+test('?min_intelligence without filter returns all models including null', async () => {
+  const { body } = await getJson(makeContext('/api/v1/models'));
+  const withNull = body.models.filter(m => m.benchmarks?.intelligence_index == null);
+  assert.ok(withNull.length > 0, 'fixture has models with null intelligence_index');
+});
 
 // ── /api/v1/models/:id/providers (the regression fix) ─────────────────────────
 

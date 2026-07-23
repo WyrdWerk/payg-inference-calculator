@@ -168,6 +168,75 @@ function resolveBenchmark(modelId, index) {
   return null;
 }
 
+// Known ID-asymmetry aliases: model IDs where the org-token is missing from
+// the canonical form but present in the AA/OR source. Mapped to the AA
+// index key (conservativeBase of the slug).
+const BENCHMARK_ALIAS_MAP = {
+  'glm5.2': 'glm-5.2',
+};
+
+/**
+ * Apply Artificial Analysis free-tier enrichment to our text models.
+ *
+ * AA indices fill null/undefined intelligence/coding/agentic values that
+ * OpenRouter didn't provide. OR values are authoritative — never overwritten.
+ *
+ * Index is keyed by conservativeBase — same structure as buildBenchmarkIndex output.
+ * Collision resolution (prefer non-preview/non-turbo) is done at index build time
+ * in fetch-aa.mjs/buildIndexFromModels().
+ *
+ * AA free-tier doesn't have design_arena — never touches that field.
+ *
+ * @param {Array} models - our pricing.json text models (mutated in-place)
+ * @param {Map<string, {intelligence_index, coding_index, agentic_index}>} aaIndex - from fetchAABenchmarks()
+ * @returns {{ filledCount: number, totalAttempts: number }}
+ */
+export function applyAAEnrichment(models, aaIndex) {
+  if (!aaIndex) return { filledCount: 0, totalAttempts: 0 };
+  let filledCount = 0;
+  let totalAttempts = 0;
+
+  for (const m of models) {
+    const canonical = canonicalId(m.id);
+    const base = conservativeBase(canonical);
+
+    // Apply BENCHMARK_ALIAS_MAP if needed for the base lookup
+    const alias = BENCHMARK_ALIAS_MAP[base];
+    const lookupBase = alias || base;
+
+    const match = aaIndex.get(lookupBase);
+    if (!match) continue;
+
+    totalAttempts++;
+
+    // Initialize benchmarks block if missing
+    if (!m.benchmarks) {
+      m.benchmarks = {
+        intelligence_index: null,
+        coding_index: null,
+        agentic_index: null,
+        design_arena_best: null,
+      };
+    }
+
+    // Fill null/undefined indices only — never overwrite non-null values
+    if (m.benchmarks.intelligence_index == null && match.intelligence_index != null) {
+      m.benchmarks.intelligence_index = match.intelligence_index;
+      filledCount++;
+    }
+    if (m.benchmarks.coding_index == null && match.coding_index != null) {
+      m.benchmarks.coding_index = match.coding_index;
+      filledCount++;
+    }
+    if (m.benchmarks.agentic_index == null && match.agentic_index != null) {
+      m.benchmarks.agentic_index = match.agentic_index;
+      filledCount++;
+    }
+  }
+
+  return { filledCount, totalAttempts };
+}
+
 /**
  * Apply benchmark enrichment to our text models (in-place mutation).
  *

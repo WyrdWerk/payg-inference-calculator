@@ -49,6 +49,7 @@ const els = {
   promoOnly: $('promoOnly'),
   zdrOnly: $('zdrOnly'),
   subscriptionOnly: $('subscriptionOnly'),
+  minIntelligence: $('minIntelligence'),
   modePerRequest: $('modePerRequest'),
   modeMonthly: $('modeMonthly'),
   totalTokensLabel: $('totalTokensLabel'),
@@ -99,6 +100,7 @@ const DEFAULTS = {
   promoOnly: false,
   zdrOnly: false,
   subscriptionOnly: false,
+  minIntelligence: 0,
   sortBy: 'cost',
   sortDir: 'asc',
   groupBy: 'none',
@@ -130,6 +132,8 @@ function serializeState() {
   if (els.zdrOnly?.checked) params.set('zdr', '1');
   if (els.subscriptionOnly?.checked) params.set('sub', '1');
 
+  const minInt = parseInt(els.minIntelligence?.value, 10) || 0;
+  if (minInt !== DEFAULTS.minIntelligence) params.set('minIntelligence', String(minInt));
   if (els.promoOnly.checked) params.set('promo', '1');
 
   if (state.sortBy !== DEFAULTS.sortBy || state.sortDir !== DEFAULTS.sortDir) {
@@ -160,6 +164,7 @@ function deserializeState(hash) {
   els.outputPct.value = DEFAULTS.outputPct;
   els.providerSearch.value = DEFAULTS.providerSearch;
   if (els.zdrOnly) els.zdrOnly.checked = DEFAULTS.zdrOnly;
+  if (els.minIntelligence) els.minIntelligence.value = DEFAULTS.minIntelligence;
   els.modelSearch.value = DEFAULTS.modelSearch;
   els.promoOnly.checked = DEFAULTS.promoOnly;
   if (els.subscriptionOnly) els.subscriptionOnly.checked = DEFAULTS.subscriptionOnly;
@@ -196,6 +201,7 @@ function deserializeState(hash) {
   if (params.has('promo')) els.promoOnly.checked = params.get('promo') === '1';
   if (params.has('zdr') && els.zdrOnly) els.zdrOnly.checked = params.get('zdr') === '1';
   if (params.has('sub') && els.subscriptionOnly) els.subscriptionOnly.checked = params.get('sub') === '1';
+  if (params.has('minIntelligence')) els.minIntelligence.value = params.get('minIntelligence');
   if (params.has('sort')) {
     const [by, dir] = params.get('sort').split(':');
     if (by) state.sortBy = by;
@@ -410,6 +416,7 @@ function attachListeners() {
   els.modelSearch.addEventListener('input', onFilterChangeDebounced);
   els.promoOnly.addEventListener('change', onFilterChange);
   if (els.zdrOnly) els.zdrOnly.addEventListener('change', onFilterChange);
+  if (els.minIntelligence) els.minIntelligence.addEventListener('input', onFilterChangeDebounced);
   if (els.subscriptionOnly) els.subscriptionOnly.addEventListener('change', onFilterChange);
   els.groupBy.addEventListener('change', onFilterChange);
   els.showOrg?.addEventListener('change', () => {
@@ -655,27 +662,6 @@ function showDetailModal(idx) {
       parts.push('</div>');
     }
 
-    // Section: Quality (only if benchmark data exists)
-    if (r.benchmarks) {
-      const b = r.benchmarks;
-      const hasAA = b.intelligence_index !== null && b.intelligence_index !== undefined;
-      const hasArena = !!b.design_arena_best;
-      if (hasAA || hasArena) {
-        parts.push('<div class="detail-section"><div class="detail-section-title">Quality</div>');
-        if (hasAA) {
-          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Intelligence Index</span><span class="detail-quality-value">' + esc(b.intelligence_index) + '</span></div>');
-          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Coding Index</span><span class="detail-quality-value">' + esc(b.coding_index) + '</span></div>');
-          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Agentic Index</span><span class="detail-quality-value">' + esc(b.agentic_index) + '</span></div>');
-        }
-        if (hasArena) {
-          const a = b.design_arena_best;
-          const arenaStr = a.elo + ' (' + esc(a.category) + ', rank ' + a.rank + ', ' + a.win_rate + '% win rate)';
-          parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Design Arena Elo</span><span class="detail-quality-value">' + arenaStr + '</span></div>');
-        }
-        parts.push('<div class="detail-quality-source">Source: Artificial Analysis via OpenRouter</div>');
-        parts.push('</div>');
-      }
-    }
 
     // Section: About
     parts.push('<div class="detail-section"><div class="detail-section-title">About</div>');
@@ -695,6 +681,29 @@ function showDetailModal(idx) {
       parts.push('<div class="detail-disclaimer">⚠ Model details sourced from models.dev (different provider). Configuration above is not available for this provider — verify on the provider\'s site.</div>');
     }
     parts.push('</div>');
+  }
+
+  // Section: Quality (only if benchmark data exists)
+  // Outside the meta block — benchmark data is independent of modelsdev enrichment.
+  if (r.benchmarks) {
+    const b = r.benchmarks;
+    const hasAA = b.intelligence_index !== null && b.intelligence_index !== undefined;
+    const hasArena = !!b.design_arena_best;
+    if (hasAA || hasArena) {
+      parts.push('<div class="detail-section"><div class="detail-section-title">Quality</div>');
+      if (hasAA) {
+        parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Intelligence Index</span><span class="detail-quality-value">' + esc(b.intelligence_index) + '</span></div>');
+        parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Coding Index</span><span class="detail-quality-value">' + esc(b.coding_index) + '</span></div>');
+        parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Agentic Index</span><span class="detail-quality-value">' + esc(b.agentic_index) + '</span></div>');
+      }
+      if (hasArena) {
+        const a = b.design_arena_best;
+        const arenaStr = a.elo + ' (' + esc(a.category) + ', rank ' + a.rank + ', ' + a.win_rate + '% win rate)';
+        parts.push('<div class="detail-quality-row"><span class="detail-quality-label">Design Arena Elo</span><span class="detail-quality-value">' + arenaStr + '</span></div>');
+      }
+      parts.push('<div class="detail-quality-source">Source: Artificial Analysis via OpenRouter</div>');
+      parts.push('</div>');
+    }
   }
 
   // Section: Performance (latency + throughput from performance.json)
@@ -1022,6 +1031,7 @@ function computeAndRender() {
   const promoOnly = els.promoOnly.checked;
   const zdrOnly = els.zdrOnly?.checked;
   const subscriptionOnly = els.subscriptionOnly?.checked;
+  const minIntelligence = els.minIntelligence ? (parseInt(els.minIntelligence.value, 10) || 0) : 0;
   let offerings = state.data.models.filter((m) => {
     if (provSearch) {
       const provName = providerName(m.provider, m.provider_display).toLowerCase();
@@ -1040,6 +1050,7 @@ function computeAndRender() {
     if (zdrOnly && !m.zdr) return false;
     if (subscriptionOnly && !m.subscription) return false;
     if (promoOnly && !(m.discount > 0)) return false;
+    if (minIntelligence && !(m.benchmarks?.intelligence_index != null && m.benchmarks.intelligence_index >= minIntelligence)) return false;
     return true;
   });
 
@@ -1055,6 +1066,7 @@ function computeAndRender() {
   if (zdrOnly) title += ' (ZDR only)';
   if (promoOnly) title += ' (promos only)';
   if (subscriptionOnly) title += ' (subscription only)';
+  if (minIntelligence) title += ` (IQ ≥ ${minIntelligence})`;
   els.resultsTitle.textContent = title;
 
   // Compute the per-row headline value (cost $ in forward mode, affordable

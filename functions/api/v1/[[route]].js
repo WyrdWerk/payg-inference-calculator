@@ -233,6 +233,11 @@ export async function onRequestGet(context) {
     const minOutput = parseInt(params.get('min_output'), 10);
     if (minOutput) models = models.filter(m => m.max_completion_tokens && m.max_completion_tokens >= minOutput);
 
+    if (params.has('min_intelligence')) {
+      const minIntelligence = Number(params.get('min_intelligence'));
+      if (Number.isFinite(minIntelligence) && minIntelligence > 0) models = models.filter(m => m.benchmarks?.intelligence_index != null && m.benchmarks.intelligence_index >= minIntelligence);
+    }
+
     const quantization = params.get('quantization');
     if (quantization) models = models.filter(m => (m.quantization || 'unknown') === quantization.toLowerCase());
 

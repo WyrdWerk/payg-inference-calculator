@@ -42,9 +42,11 @@ import {
   checkCoverageDrop,
   applyEnrichment,
   applyBenchmarkEnrichment,
+  applyAAEnrichment,
   buildBenchmarkIndex,
 } from './lib.mjs';
 import { fetchModelsDevEnrichment } from './fetch-modelsdev.mjs';
+import { fetchAABenchmarks } from './fetch-aa.mjs';
 
 // ── direct providers config ───────────────────────────────────────────────────
 
@@ -926,6 +928,15 @@ async function main() {
       const total = out.models.length;
       console.log(`  Benchmark enrichment: ${matchedCount}/${total} matched (${aaCount} AA indices, ${arenaCount} design_arena only, ${total - matchedCount} unscored)`);
     }
+  }
+
+  // ── Artificial Analysis free-tier enrichment (sidecar, non-fatal) ──
+  // AA fills intelligence/coding/agentic indices that OR doesn't have.
+  // OR values are authoritative — AA only fills nulls.
+  const aaIndex = await fetchAABenchmarks(console);
+  if (aaIndex && aaIndex.size > 0) {
+    const { filledCount, totalAttempts } = applyAAEnrichment(out.models, aaIndex);
+    console.log(`  Artificial Analysis: filled ${filledCount}/${totalAttempts} null indices`);
   }
 
   if (dryRun) {
